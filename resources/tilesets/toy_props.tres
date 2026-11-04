@@ -1,9 +1,9 @@
 [gd_resource type="TileSet" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/art/toys/toyset_32.png" id="1_fmr6i"]
-[ext_resource type="Texture2D" path="res://assets/packs/ninja_adventure/Backgrounds/Tilesets/TilesetHouse.png" id="2_5ivq2"]
-[ext_resource type="Texture2D" path="res://assets/packs/ninja_adventure/Backgrounds/Tilesets/TilesetFloor.png" id="3_qx2pa"]
-[ext_resource type="Texture2D" path="res://assets/packs/ninja_adventure/Backgrounds/Tilesets/TilesetFloorDetail.png" id="4_w2rra"]
+[ext_resource type="Texture2D" path="res://assets/items/toys/toyset_32.png" id="1_fmr6i"]
+[ext_resource type="Texture2D" path="res://assets/tiles/ninja_adventure/Tilesets/TilesetHouse.png" id="2_5ivq2"]
+[ext_resource type="Texture2D" path="res://assets/tiles/ninja_adventure/Tilesets/TilesetFloor.png" id="3_qx2pa"]
+[ext_resource type="Texture2D" path="res://assets/tiles/ninja_adventure/Tilesets/TilesetFloorDetail.png" id="4_w2rra"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_feb5d"]
 texture = ExtResource("1_fmr6i")

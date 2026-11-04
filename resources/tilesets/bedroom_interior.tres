@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/packs/mana_seed/tilesets/home interiors, timber roof.png" id="1_wbehi"]
+[ext_resource type="Texture2D" path="res://assets/tiles/mana_seed/home interiors, timber roof.png" id="1_wbehi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_room"]
 texture = ExtResource("1_wbehi")
