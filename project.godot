@@ -11,9 +11,8 @@ config_version=5
 [application]
 
 config/name="Skraptopia"
-run/main_scene="uid://drpl7k8gjvcg5"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://assets/branding/icon.svg"
 
 [display]
 
