@@ -237,6 +237,33 @@ texture_region_size = Vector2i(32, 32)
 2:1/0 = 0
 3:1/0 = 0
 
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy000"]
+tile_data = PackedInt32Array(0, 655360, 2, 1, 720896, 2)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy001"]
+tile_data = PackedInt32Array(0, 65536, 4, 65536, 65536, 5)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy002"]
+tile_data = PackedInt32Array(0, 393216, 4, 65536, 393216, 5)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy003"]
+tile_data = PackedInt32Array(0, 786432, 4, 1, 851968, 4)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy004"]
+tile_data = PackedInt32Array(0, 786432, 5, 1, 851968, 5)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy005"]
+tile_data = PackedInt32Array(0, 851968, 5, 1, 917504, 5, 2, 983040, 5)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy006"]
+tile_data = PackedInt32Array(0, 655360, 6, 1, 720896, 6)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy007"]
+tile_data = PackedInt32Array(0, 720896, 6, 1, 786432, 6)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_toy008"]
+tile_data = PackedInt32Array(0, 720896, 7, 1, 786432, 7)
+
 [resource]
 tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
@@ -244,3 +271,12 @@ sources/0 = SubResource("TileSetAtlasSource_feb5d")
 sources/8 = SubResource("TileSetAtlasSource_hve3p")
 sources/9 = SubResource("TileSetAtlasSource_mfdv2")
 sources/10 = SubResource("TileSetAtlasSource_vef74")
+pattern_0 = SubResource("TileMapPattern_toy000")
+pattern_1 = SubResource("TileMapPattern_toy001")
+pattern_2 = SubResource("TileMapPattern_toy002")
+pattern_3 = SubResource("TileMapPattern_toy003")
+pattern_4 = SubResource("TileMapPattern_toy004")
+pattern_5 = SubResource("TileMapPattern_toy005")
+pattern_6 = SubResource("TileMapPattern_toy006")
+pattern_7 = SubResource("TileMapPattern_toy007")
+pattern_8 = SubResource("TileMapPattern_toy008")
