@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bxr1gcykuvavh" path="res://level_root.tscn" id="2_level"]
 
 [node name="Main" type="Node2D" unique_id=2044780576]
+y_sort_enabled = true
 
 [node name="LevelRoot" parent="." unique_id=1587342901 instance=ExtResource("2_level")]
 
