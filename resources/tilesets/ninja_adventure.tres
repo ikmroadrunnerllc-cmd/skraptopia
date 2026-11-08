@@ -7951,6 +7951,24 @@ texture = ExtResource("24_kbtr3")
 0:4/size_in_atlas = Vector2i(2, 2)
 0:4/0 = 0
 
+[sub_resource type="TileMapPattern" id="TileMapPattern_frog00"]
+tile_data = PackedInt32Array(0, 7, 19, 65536, 7, 20, 131072, 7, 21, 3, 7, 19, 65539, 7, 20, 131075, 7, 21, 65537, 196615, 21, 131073, 196615, 22, 65538, 262151, 21, 131074, 262151, 22)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_frog01"]
+tile_data = PackedInt32Array(0, 7, 19, 65536, 7, 20, 131072, 7, 21, 5, 7, 19, 65541, 7, 20, 131077, 7, 21, 65538, 196615, 21, 131074, 196615, 22, 65539, 262151, 21, 131075, 262151, 22)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_frog02"]
+tile_data = PackedInt32Array(0, 7, 19, 65536, 7, 20, 131072, 7, 21, 7, 7, 19, 65543, 7, 20, 131079, 7, 21, 65539, 196615, 21, 131075, 196615, 22, 65540, 262151, 21, 131076, 262151, 22)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_frog03"]
+tile_data = PackedInt32Array(0, 458759, 21, 65536, 458759, 22, 5, 458759, 21, 65541, 458759, 22, 2, 196615, 21, 65538, 196615, 22, 3, 262151, 21, 65539, 262151, 22)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_frog04"]
+tile_data = PackedInt32Array(0, 7, 15, 65536, 7, 16, 131072, 7, 17, 5, 7, 15, 65541, 7, 16, 131077, 7, 17, 131074, 196615, 17)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_frog05"]
+tile_data = PackedInt32Array(0, 458759, 17, 65536, 458759, 18, 5, 458759, 17, 65541, 458759, 18, 65538, 196615, 17)
+
 [resource]
 physics_layer_0/collision_layer = 1
 terrain_set_0/mode = 1
@@ -8451,3 +8469,9 @@ pattern_397 = SubResource("TileMapPattern_dkv004")
 pattern_398 = SubResource("TileMapPattern_dkv005")
 pattern_399 = SubResource("TileMapPattern_dkv006")
 pattern_400 = SubResource("TileMapPattern_dkv007")
+pattern_401 = SubResource("TileMapPattern_frog00")
+pattern_402 = SubResource("TileMapPattern_frog01")
+pattern_403 = SubResource("TileMapPattern_frog02")
+pattern_404 = SubResource("TileMapPattern_frog03")
+pattern_405 = SubResource("TileMapPattern_frog04")
+pattern_406 = SubResource("TileMapPattern_frog05")
