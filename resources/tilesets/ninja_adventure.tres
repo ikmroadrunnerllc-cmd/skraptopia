@@ -7969,6 +7969,15 @@ tile_data = PackedInt32Array(0, 7, 15, 65536, 7, 16, 131072, 7, 17, 5, 7, 15, 65
 [sub_resource type="TileMapPattern" id="TileMapPattern_frog05"]
 tile_data = PackedInt32Array(0, 458759, 17, 65536, 458759, 18, 5, 458759, 17, 65541, 458759, 18, 65538, 196615, 17)
 
+[sub_resource type="TileMapPattern" id="TileMapPattern_moss00"]
+tile_data = PackedInt32Array(65536, 131082, 3, 65540, 131082, 3, 131074, 589834, 5)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_moss01"]
+tile_data = PackedInt32Array(65536, 131082, 3, 65542, 131082, 3, 131075, 589834, 5)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_moss02"]
+tile_data = PackedInt32Array(65536, 131082, 3, 65540, 131082, 3, 65538, 589834, 5)
+
 [resource]
 physics_layer_0/collision_layer = 1
 terrain_set_0/mode = 1
@@ -8475,3 +8484,6 @@ pattern_403 = SubResource("TileMapPattern_frog02")
 pattern_404 = SubResource("TileMapPattern_frog03")
 pattern_405 = SubResource("TileMapPattern_frog04")
 pattern_406 = SubResource("TileMapPattern_frog05")
+pattern_407 = SubResource("TileMapPattern_moss00")
+pattern_408 = SubResource("TileMapPattern_moss01")
+pattern_409 = SubResource("TileMapPattern_moss02")
