@@ -7976,6 +7976,18 @@ texture = ExtResource("24_kbtr3")
 0:4/size_in_atlas = Vector2i(2, 2)
 0:4/0 = 0
 
+[sub_resource type="TileMapPattern" id="TileMapPattern_stone00"]
+tile_data = PackedInt32Array(0, 393226, 4, 1, 589834, 3, 2, 458762, 4, 65536, 589834, 3, 65537, 393226, 8, 65538, 589834, 4, 131072, 458762, 4, 131073, 589834, 4, 131074, 458762, 4)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_stone01"]
+tile_data = PackedInt32Array(0, 458762, 4, 1, 393226, 4, 2, 393226, 3, 65536, 589834, 4, 65538, 655370, 3, 131072, 589834, 4, 131073, 458762, 3, 131074, 458762, 4)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_stone02"]
+tile_data = PackedInt32Array(1, 524298, 4, 2, 524298, 4, 3, 524298, 4, 65536, 655370, 4, 65537, 655370, 3, 65538, 589834, 4, 65539, 458762, 3, 65540, 655370, 4, 131072, 524298, 3, 131073, 393226, 3, 131074, 393226, 8, 131075, 393226, 4, 131076, 524298, 4, 196608, 524298, 4, 196609, 458762, 4, 196610, 458762, 3, 196611, 655370, 3, 196612, 655370, 4, 262145, 524298, 4, 262146, 655370, 4, 262147, 524298, 4)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_stone03"]
+tile_data = PackedInt32Array(1, 524298, 4, 2, 524298, 4, 3, 524298, 3, 65536, 524298, 3, 65537, 655370, 3, 65538, 458762, 3, 65539, 458762, 3, 65540, 524298, 4, 131072, 524298, 4, 131073, 458762, 3, 131075, 589834, 4, 131076, 524298, 4, 196608, 524298, 4, 196609, 589834, 4, 196610, 458762, 3, 196611, 589834, 3, 196612, 655370, 4, 262145, 524298, 4, 262146, 524298, 3, 262147, 524298, 3)
+
 [resource]
 physics_layer_0/collision_layer = 1
 terrain_set_0/mode = 1
@@ -8485,3 +8497,7 @@ pattern_406 = SubResource("TileMapPattern_frog05")
 pattern_407 = SubResource("TileMapPattern_moss00")
 pattern_408 = SubResource("TileMapPattern_moss01")
 pattern_409 = SubResource("TileMapPattern_moss02")
+pattern_410 = SubResource("TileMapPattern_stone00")
+pattern_411 = SubResource("TileMapPattern_stone01")
+pattern_412 = SubResource("TileMapPattern_stone02")
+pattern_413 = SubResource("TileMapPattern_stone03")
