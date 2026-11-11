@@ -1,0 +1,159 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://ui/themes/jrpg_theme.tres" id="1_wqg5c"]
+[ext_resource type="Script" path="res://Scenes/battle/battle.gd" id="2_7jhgr"]
+[ext_resource type="Script" path="res://ui/components/stat_bar.gd" id="3_wjqfl"]
+[ext_resource type="Script" path="res://ui/components/choice_list.gd" id="4_n8n4j"]
+
+[node name="Battle" type="Control" unique_id=321105876]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("1_wqg5c")
+script = ExtResource("2_7jhgr")
+
+[node name="Sky" type="ColorRect" parent="." unique_id=1639533314]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.19215687, 0.25490198, 0.36078432, 1)
+
+[node name="Ground" type="ColorRect" parent="." unique_id=416571074]
+layout_mode = 0
+anchor_top = 0.45
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.30980393, 0.47843137, 0.22745098, 1)
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1297639039]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Layout" type="VBoxContainer" parent="Margin" unique_id=1985316779]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MessagePanel" type="PanelContainer" parent="Margin/Layout" unique_id=1218297922]
+layout_mode = 2
+
+[node name="Message" type="Label" parent="Margin/Layout/MessagePanel" unique_id=336841954]
+unique_name_in_owner = true
+layout_mode = 2
+text = "..."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EnemyArea" type="CenterContainer" parent="Margin/Layout" unique_id=1622014393]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EnemyStack" type="VBoxContainer" parent="Margin/Layout/EnemyArea" unique_id=550114242]
+layout_mode = 2
+alignment = 1
+
+[node name="EnemySprite" type="TextureRect" parent="Margin/Layout/EnemyArea/EnemyStack" unique_id=912322901]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EnemyPanel" type="PanelContainer" parent="Margin/Layout/EnemyArea/EnemyStack" unique_id=1215572596]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="EnemyInfo" type="VBoxContainer" parent="Margin/Layout/EnemyArea/EnemyStack/EnemyPanel" unique_id=149954022]
+layout_mode = 2
+
+[node name="EnemyName" type="Label" parent="Margin/Layout/EnemyArea/EnemyStack/EnemyPanel/EnemyInfo" unique_id=1163152994]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NameLabel"
+text = "Enemy"
+horizontal_alignment = 1
+
+[node name="EnemyHP" type="HBoxContainer" parent="Margin/Layout/EnemyArea/EnemyStack/EnemyPanel/EnemyInfo" unique_id=1971086641]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_wjqfl")
+bar_variation = &"EnemyHPBar"
+
+[node name="BottomRow" type="HBoxContainer" parent="Margin/Layout" unique_id=201340523]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PlayerPanel" type="PanelContainer" parent="Margin/Layout/BottomRow" unique_id=1970744570]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayerInfo" type="VBoxContainer" parent="Margin/Layout/BottomRow/PlayerPanel" unique_id=1367688707]
+layout_mode = 2
+
+[node name="HeroName" type="Label" parent="Margin/Layout/BottomRow/PlayerPanel/PlayerInfo" unique_id=156579738]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NameLabel"
+text = "Hero"
+
+[node name="HeroHP" type="HBoxContainer" parent="Margin/Layout/BottomRow/PlayerPanel/PlayerInfo" unique_id=810132549]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_wjqfl")
+
+[node name="HeroMP" type="HBoxContainer" parent="Margin/Layout/BottomRow/PlayerPanel/PlayerInfo" unique_id=113898909]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_wjqfl")
+label_text = "MP"
+bar_variation = &"MPBar"
+
+[node name="CommandPanel" type="PanelContainer" parent="Margin/Layout/BottomRow" unique_id=1911523399]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+
+[node name="Commands" type="VBoxContainer" parent="Margin/Layout/BottomRow/CommandPanel" unique_id=1761460793]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("4_n8n4j")
+
+[node name="ResultWindow" type="PanelContainer" parent="." unique_id=524922631]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultBox" type="VBoxContainer" parent="ResultWindow" unique_id=1183578503]
+layout_mode = 2
+
+[node name="ResultTitle" type="Label" parent="ResultWindow/ResultBox" unique_id=380244066]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "Victory!"
+horizontal_alignment = 1
+
+[node name="ResultText" type="Label" parent="ResultWindow/ResultBox" unique_id=2087664969]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ResultChoices" type="VBoxContainer" parent="ResultWindow/ResultBox" unique_id=1366239207]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("4_n8n4j")

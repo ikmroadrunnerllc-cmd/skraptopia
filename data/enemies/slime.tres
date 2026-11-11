@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/characters/ninja_adventure/Monster/Slime/Faceset.png" id="1_s20qs"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_n28aa"]
+[ext_resource type="Texture2D" path="res://assets/characters/ninja_adventure/Monster/Slime/Slime.png" id="3_nl3q0"]
+
+[resource]
+script = ExtResource("2_n28aa")
+sprite_sheet = ExtResource("3_nl3q0")
+portrait = ExtResource("1_s20qs")

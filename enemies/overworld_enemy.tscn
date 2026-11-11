@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://enemies/overworld_enemy.gd" id="1_unoqt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lffu3"]
+radius = 7.0
+
+[node name="OverworldEnemy" type="Area2D" unique_id=1167336705]
+collision_layer = 0
+script = ExtResource("1_unoqt")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2124319037]
+position = Vector2(0, -8)
+
+[node name="Placeholder" type="ColorRect" parent="." unique_id=910404421]
+visible = false
+offset_left = -6.0
+offset_top = -12.0
+offset_right = 6.0
+color = Color(1, 0, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1436727000]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_lffu3")

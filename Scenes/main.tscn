@@ -2,11 +2,44 @@
 
 [ext_resource type="PackedScene" uid="uid://qtta7fv4qinm" path="res://PlayerScene.tscn" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://bxr1gcykuvavh" path="res://level_root.tscn" id="2_level"]
+[ext_resource type="PackedScene" path="res://npcs/npc.tscn" id="4_ynf5e"]
+[ext_resource type="Resource" path="res://data/npcs/elder.tres" id="6_d1ilt"]
+[ext_resource type="Resource" path="res://data/npcs/merchant.tres" id="7_6iyac"]
+[ext_resource type="Script" path="res://systems/scene_exit.gd" id="8_fdnlq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jkdf5"]
+size = Vector2(112, 8)
 
 [node name="Main" type="Node2D" unique_id=2044780576]
 y_sort_enabled = true
+metadata/camera_limits = Rect2i(0, 0, 480, 320)
 
-[node name="player" parent="." unique_id=1030520602 instance=ExtResource("1_jjgbg")]
+[node name="player" type="CharacterBody2D" parent="." unique_id=1030520602 instance=ExtResource("1_jjgbg")]
 position = Vector2(244, 172)
 
-[node name="LevelRoot" parent="." unique_id=1942215094 instance=ExtResource("2_level")]
+[node name="LevelRoot" type="Node2D" parent="." unique_id=1942215094 instance=ExtResource("2_level")]
+y_sort_enabled = true
+
+[node name="VillageElder" type="CharacterBody2D" parent="." unique_id=834891758 instance=ExtResource("4_ynf5e")]
+position = Vector2(120, 104)
+data = ExtResource("6_d1ilt")
+
+[node name="Merchant" type="CharacterBody2D" parent="." unique_id=1775946685 instance=ExtResource("4_ynf5e")]
+position = Vector2(216, 108)
+data = ExtResource("7_6iyac")
+
+[node name="ExitToField" type="Area2D" parent="." unique_id=1999890036]
+position = Vector2(248, 316)
+collision_layer = 0
+script = ExtResource("8_fdnlq")
+target_scene = "res://Scenes/field/field.tscn"
+target_spawn = "FromVillage"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitToField" unique_id=733245503]
+shape = SubResource("RectangleShape2D_jkdf5")
+
+[node name="Start" type="Marker2D" parent="." unique_id=1571671689 groups=["spawn"]]
+position = Vector2(244, 172)
+
+[node name="FromField" type="Marker2D" parent="." unique_id=1929619114 groups=["spawn"]]
+position = Vector2(248, 280)
