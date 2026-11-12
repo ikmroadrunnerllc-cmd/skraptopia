@@ -2,5 +2,7 @@
 .godot/
 /android/
 
-# Claude Code personal settings
-.claude/settings.local.json
+# Local tooling files (kept on disk, not in the repo)
+.claude/
+CLAUDE.md
+AGENTS.md

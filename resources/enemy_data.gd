@@ -13,4 +13,4 @@ extends Resource
 @export var defense: int = 2
 @export var speed: int = 4
 @export var exp_reward: int = 10
-@export var ai: StringName = &"basic_attack"       ## Behaviour id used by the battle scene.
+@export var behavior: StringName = &"basic_attack"   ## Behaviour id used by the battle scene.

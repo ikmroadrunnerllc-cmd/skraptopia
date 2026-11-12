@@ -104,7 +104,7 @@ func _on_command(index: int) -> void:
 
 func _enemy_turn() -> void:
 	state = State.ENEMY_TURN
-	match enemy.ai:
+	match enemy.behavior:
 		_:   # &"basic_attack" and any unknown behaviour fall back to a basic attack
 			var dmg := _damage(enemy.attack, GameState.HERO.defense)
 			if _defending:
