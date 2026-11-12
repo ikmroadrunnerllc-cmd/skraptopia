@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/hud.gd" id="1_7ihmi"]
+[ext_resource type="Theme" path="res://ui/themes/jrpg_theme.tres" id="1_276te"]
+[ext_resource type="Script" path="res://ui/components/choice_list.gd" id="2_546lt"]
+[ext_resource type="Script" path="res://ui/menus/pause_menu.gd" id="3_en2x2"]
+
+[node name="HUD" type="CanvasLayer" unique_id=1263768965]
+script = ExtResource("1_7ihmi")
+
+[node name="HUDRoot" type="Control" parent="." unique_id=1510703363]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource("1_276te")
+
+[node name="Toast" type="PanelContainer" parent="HUDRoot" unique_id=1245683010]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 44.0
+grow_horizontal = 2
+
+[node name="ToastLabel" type="Label" parent="HUDRoot/Toast" unique_id=54601270]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quest"
+horizontal_alignment = 1
+
+[node name="PauseMenu" type="Control" parent="HUDRoot" unique_id=1370152588]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("3_en2x2")
+
+[node name="Dim" type="ColorRect" parent="HUDRoot/PauseMenu" unique_id=987068497]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.45)
+
+[node name="Margin" type="MarginContainer" parent="HUDRoot/PauseMenu" unique_id=767199031]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Columns" type="HBoxContainer" parent="HUDRoot/PauseMenu/Margin" unique_id=1999374799]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MenuPanel" type="PanelContainer" parent="HUDRoot/PauseMenu/Margin/Columns" unique_id=1809160060]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MenuList" type="VBoxContainer" parent="HUDRoot/PauseMenu/Margin/Columns/MenuPanel" unique_id=1788524832]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("2_546lt")
+
+[node name="InfoPanel" type="PanelContainer" parent="HUDRoot/PauseMenu/Margin/Columns" unique_id=1209226290]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="InfoText" type="Label" parent="HUDRoot/PauseMenu/Margin/Columns/InfoPanel" unique_id=1237755438]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3

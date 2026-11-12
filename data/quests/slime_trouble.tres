@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="QuestData" format=3 uid="uid://b8yu86e7ryy46"]
+
+[ext_resource type="Script" uid="uid://248xioxwsrja" path="res://resources/dialogue_data.gd" id="1_utro4"]
+[ext_resource type="Script" uid="uid://d2riwfvwxbww8" path="res://resources/quest_data.gd" id="2_ly3uq"]
+
+[sub_resource type="Resource" id="Resource_56fpo"]
+script = ExtResource("1_utro4")
+lines = Array[String](["Thank you! Leave through the south exit and you will reach the field."])
+
+[sub_resource type="Resource" id="Resource_u1srj"]
+script = ExtResource("1_utro4")
+lines = Array[String](["The field is just past the south exit. Be careful out there."])
+
+[sub_resource type="Resource" id="Resource_pseu5"]
+script = ExtResource("1_utro4")
+lines = Array[String](["Thanks to you, the children can play outside again."])
+
+[sub_resource type="Resource" id="Resource_rsgeb"]
+script = ExtResource("1_utro4")
+lines = Array[String](["I understand. Come back if you change your mind."])
+
+[sub_resource type="Resource" id="Resource_lbacy"]
+script = ExtResource("1_utro4")
+lines = Array[String](["Ah, a traveler! Welcome to our little village.", "Slimes have started to appear in the field south of here. The children are frightened.", "Would you defeat one for us?"])
+choices = Array[String](["I'll do it.", "Not right now."])
+
+[sub_resource type="Resource" id="Resource_bhc8j"]
+script = ExtResource("1_utro4")
+lines = Array[String](["You defeated the slime! The village is safe again.", "Thank you, traveler. Please take this as thanks."])
+
+[resource]
+script = ExtResource("2_ly3uq")
+id = &"slime_trouble"
+title = "Slime Trouble"
+description = "Defeat a slime in the field south of the village."
+target_enemy_id = &"slime"
+reward_exp = 20
+offer_dialogue = SubResource("Resource_lbacy")
+accepted_dialogue = SubResource("Resource_56fpo")
+declined_dialogue = SubResource("Resource_rsgeb")
+active_dialogue = SubResource("Resource_u1srj")
+ready_dialogue = SubResource("Resource_bhc8j")
+completed_dialogue = SubResource("Resource_pseu5")

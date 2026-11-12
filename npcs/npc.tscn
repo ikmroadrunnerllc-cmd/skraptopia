@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://npcs/npc.gd" id="1_cqejd"]
+[ext_resource type="Theme" path="res://ui/themes/jrpg_theme.tres" id="2_novm3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mea8m"]
+size = Vector2(10, 6)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_atlxo"]
+radius = 20.0
+
+[node name="NPC" type="CharacterBody2D" unique_id=834891758]
+script = ExtResource("1_cqejd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1383413899]
+position = Vector2(0, -8)
+hframes = 4
+vframes = 7
+
+[node name="Placeholder" type="ColorRect" parent="." unique_id=537180501]
+visible = false
+offset_left = -6.0
+offset_top = -15.0
+offset_right = 6.0
+color = Color(1, 0, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1958910764]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_mea8m")
+
+[node name="InteractionZone" type="Area2D" parent="." unique_id=236893404]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionZone" unique_id=333532098]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_atlxo")
+
+[node name="Prompt" type="PanelContainer" parent="." unique_id=2021682535]
+visible = false
+z_index = 10
+offset_left = -9.0
+offset_top = -34.0
+offset_right = -9.0
+offset_bottom = -34.0
+theme = ExtResource("2_novm3")
+theme_type_variation = &"Nameplate"
+
+[node name="Label" type="Label" parent="Prompt" unique_id=1897827454]
+layout_mode = 2
+theme_type_variation = &"NameLabel"
+theme_override_font_sizes/font_size = 8
+text = "!"
