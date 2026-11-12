@@ -1,12 +1,10 @@
 extends Control
-## Turn-based battle against GameState.pending_battle.enemy.
-## BATTLE_START -> PLAYER_TURN -> ACTION_RESOLUTION -> ENEMY_TURN -> ... -> VICTORY / DEFEAT
 
 enum State { BATTLE_START, PLAYER_TURN, ACTION_RESOLUTION, ENEMY_TURN, VICTORY, DEFEAT }
 enum Command { ATTACK, DEFEND, SKILLS, ITEMS, RUN }
 
 const COMMANDS: Array[String] = ["Attack", "Defend", "Skills", "Items", "Run"]
-const DISABLED_COMMANDS: Array[int] = [Command.SKILLS, Command.ITEMS, Command.RUN]   # reserved for later
+const DISABLED_COMMANDS: Array[int] = [Command.SKILLS, Command.ITEMS, Command.RUN]
 const STEP_TIME := 0.9
 const FALLBACK_ENEMY: EnemyData = preload("res://data/enemies/slime.tres")
 
@@ -25,7 +23,7 @@ const FALLBACK_ENEMY: EnemyData = preload("res://data/enemies/slime.tres")
 
 var state: State = State.BATTLE_START
 var enemy: EnemyData
-var enemy_hp: int = 0          # runtime copy; the EnemyData resource is never modified
+var enemy_hp: int = 0
 var _defending: bool = false
 var _rng := RandomNumberGenerator.new()
 
@@ -53,7 +51,7 @@ func _setup_view() -> void:
 		atlas.region = Rect2(0, 0, fw, fh)
 		_enemy_sprite.texture = atlas
 	else:
-		_enemy_sprite.texture = PlaceholderTexture2D.new()   # missing art must not crash
+		_enemy_sprite.texture = PlaceholderTexture2D.new()
 
 
 func _refresh() -> void:
@@ -85,7 +83,7 @@ func _player_turn() -> void:
 func _on_command(index: int) -> void:
 	if state != State.PLAYER_TURN:
 		return
-	state = State.ACTION_RESOLUTION   # commands are disarmed until the next player turn
+	state = State.ACTION_RESOLUTION
 	match index:
 		Command.ATTACK:
 			var dmg := _damage(GameState.HERO.attack, enemy.defense)
@@ -105,7 +103,7 @@ func _on_command(index: int) -> void:
 func _enemy_turn() -> void:
 	state = State.ENEMY_TURN
 	match enemy.behavior:
-		_:   # &"basic_attack" and any unknown behaviour fall back to a basic attack
+		_:
 			var dmg := _damage(enemy.attack, GameState.HERO.defense)
 			if _defending:
 				dmg = maxi(1, dmg / 2)
@@ -119,7 +117,6 @@ func _enemy_turn() -> void:
 		_player_turn()
 
 
-## attack - defence/2 with a little variance; never below 1.
 func _damage(attack: int, defense: int) -> int:
 	return maxi(1, attack - defense / 2 + _rng.randi_range(-1, 1))
 

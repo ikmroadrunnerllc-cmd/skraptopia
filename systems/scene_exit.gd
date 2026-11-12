@@ -1,6 +1,5 @@
 class_name SceneExit
 extends Area2D
-## Walking into this area moves the player to another scene, at the Marker2D named `target_spawn`.
 
 @export_file("*.tscn") var target_scene: String = ""
 @export var target_spawn: String = ""

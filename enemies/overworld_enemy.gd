@@ -1,9 +1,8 @@
 class_name OverworldEnemy
 extends Area2D
-## Enemy on the map. Touching it starts one battle; defeated encounters stay gone.
 
 @export var data: EnemyData
-@export var encounter_id: String = ""   ## Stable, unique per placed enemy, e.g. "field_slime_1".
+@export var encounter_id: String = ""
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -29,7 +28,7 @@ func _process(delta: float) -> void:
 	if _sprite.texture == null:
 		return
 	_anim_time += delta
-	_sprite.frame = int(_anim_time * 6.0) % _sprite.hframes   # idle loop on row 0
+	_sprite.frame = int(_anim_time * 6.0) % _sprite.hframes
 
 
 func _on_body_entered(body: Node) -> void:

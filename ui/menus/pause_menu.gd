@@ -1,5 +1,4 @@
 extends Control
-## Pause/main menu: Status, Quests, Resume. Cancel goes back one level; cancel at the top closes.
 
 const ITEMS: Array[String] = ["Status", "Quests", "Resume"]
 
@@ -58,7 +57,6 @@ func _close_menu() -> void:
 	_open = false
 	_list.disarm()
 	hide()
-	# release the lock a moment later so the closing key cannot also act in the world
 	await get_tree().create_timer(0.15).timeout
 	if not _open:
 		GameState.unlock(&"menu")
@@ -78,7 +76,6 @@ func _show_info(text: String) -> void:
 	_in_submenu = true
 	_info.text = text
 	_info_panel.show()
-	# the list stays visible but inactive; cancel returns to it
 	_list.set_choices(ITEMS)
 	_list.disarm()
 	_list.focus_first()

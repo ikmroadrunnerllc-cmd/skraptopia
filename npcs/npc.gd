@@ -1,6 +1,5 @@
 class_name NPC
 extends CharacterBody2D
-## Reusable NPC. All content comes from `data` (NPCData); quest flow is generic, driven by QuestData.
 
 @export var data: NPCData
 
@@ -16,7 +15,7 @@ func _ready() -> void:
 		_face(data.facing)
 	else:
 		_sprite.hide()
-		$Placeholder.show()   # missing art: show a marked placeholder instead of crashing
+		$Placeholder.show()
 	_zone.body_entered.connect(func(b: Node) -> void: if b.has_method("add_interactable"): b.add_interactable(self))
 	_zone.body_exited.connect(func(b: Node) -> void: if b.has_method("remove_interactable"): b.remove_interactable(self))
 
@@ -68,4 +67,4 @@ func _face_towards(target: Vector2) -> void:
 
 
 func _face(direction: int) -> void:
-	_sprite.frame = clampi(direction, 0, 3)   # row 0 of the sheet: down, up, left, right
+	_sprite.frame = clampi(direction, 0, 3)

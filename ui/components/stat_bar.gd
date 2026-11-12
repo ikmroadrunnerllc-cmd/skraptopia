@@ -1,6 +1,5 @@
 class_name StatBar
 extends HBoxContainer
-## Reusable "HP  [=====]  30/40" row. bar_variation picks the theme colour (HPBar / MPBar).
 
 @export var label_text: String = "HP"
 @export var bar_variation: StringName = &"HPBar"

@@ -1,5 +1,4 @@
 extends Node
-## Autoload "QuestManager": runtime quest progress keyed by stable quest id.
 
 signal quest_started(quest: QuestData)
 signal quest_progressed(quest: QuestData, count: int)
@@ -8,9 +7,9 @@ signal quest_completed(quest: QuestData)
 
 enum State { NOT_STARTED, ACTIVE, READY_TO_TURN_IN, COMPLETED }
 
-var _defs: Dictionary = {}      # id -> QuestData
-var _states: Dictionary = {}    # id -> State
-var _progress: Dictionary = {}  # id -> int
+var _defs: Dictionary = {}
+var _states: Dictionary = {}
+var _progress: Dictionary = {}
 
 
 func _ready() -> void:

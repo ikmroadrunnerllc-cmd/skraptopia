@@ -1,6 +1,5 @@
 class_name CharacterData
 extends Resource
-## Immutable template for a playable character. Runtime values (current HP, EXP) live in GameState.
 
 @export var id: StringName = &"hero"
 @export var display_name: String = "Hero"

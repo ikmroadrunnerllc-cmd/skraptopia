@@ -1,7 +1,5 @@
 class_name ChoiceList
 extends VBoxContainer
-## Reusable keyboard/mouse selection list (dialogue choices, menus, battle commands).
-## Emits `chosen` once per set_choices() call, so a held or double key cannot fire twice.
 
 signal chosen(index: int)
 
@@ -24,7 +22,6 @@ func set_choices(items: Array[String], disabled: Array[int] = []) -> void:
 		add_child(b)
 		if not b.disabled:
 			buttons.append(b)
-	# wrap focus top <-> bottom over enabled buttons only
 	for i in buttons.size():
 		buttons[i].focus_neighbor_top = buttons[i - 1].get_path()
 		buttons[i].focus_neighbor_bottom = buttons[(i + 1) % buttons.size()].get_path()

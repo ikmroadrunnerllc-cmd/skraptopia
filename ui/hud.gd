@@ -1,5 +1,4 @@
 extends CanvasLayer
-## Autoload "HUD": quest notifications (accepted / progress / completed) and the pause menu host.
 
 @onready var _toast: PanelContainer = %Toast
 @onready var _toast_label: Label = %ToastLabel

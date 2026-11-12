@@ -1,5 +1,4 @@
 extends CanvasLayer
-## Autoload "SceneManager": fades between scenes, places the player at a spawn, starts and ends battles.
 
 const BATTLE_SCENE := "res://Scenes/battle/battle.tscn"
 const VILLAGE_SCENE := "res://Scenes/main.tscn"
@@ -19,7 +18,6 @@ func _ready() -> void:
 	add_child(_fade)
 
 
-## Go to a scene; place the player at the Marker2D named `spawn` (group "spawn"), or at `position` if given.
 func change_to(scene_path: String, spawn: String = "", position: Variant = null) -> void:
 	if busy:
 		return

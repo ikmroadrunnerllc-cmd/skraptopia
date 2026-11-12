@@ -1,6 +1,4 @@
 extends Node
-## Autoload "GameState": runtime player stats, input locks, defeated encounters and pending battle.
-## Templates (CharacterData, EnemyData) are never modified here.
 
 signal stats_changed
 signal enemy_defeated(enemy_id: StringName)
@@ -11,12 +9,11 @@ var hp: int = HERO.max_hp
 var mp: int = HERO.max_mp
 var exp: int = 0
 var level: int = HERO.level
-var defeated_encounters: Dictionary = {}   # encounter_id -> true
-var pending_battle: Dictionary = {}         # enemy, encounter_id, return_scene, return_position, start_hp
-var _locks: Dictionary = {}                 # reason -> true
+var defeated_encounters: Dictionary = {}
+var pending_battle: Dictionary = {}
+var _locks: Dictionary = {}
 
 
-## Gameplay input is blocked while any lock is held (dialogue, menu, transition, battle).
 func lock(reason: StringName) -> void:
 	_locks[reason] = true
 

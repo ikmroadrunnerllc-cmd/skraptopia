@@ -1,7 +1,4 @@
 extends CanvasLayer
-## Autoload "Dialogue": classic bottom dialogue box with nameplate, typewriter text,
-## "more" indicator and optional choices. `await Dialogue.play(data, name)` returns the
-## chosen index, or -1 when there were no choices / the dialogue was aborted.
 
 signal _step(value: int)
 
@@ -68,7 +65,6 @@ func play(data: DialogueData, default_speaker: String = "") -> int:
 	return result
 
 
-## Ends any open dialogue immediately (used before scene changes).
 func abort() -> void:
 	if _active:
 		_typing = false
@@ -83,7 +79,6 @@ func _close() -> void:
 	_choices.disarm()
 	_choice_panel.hide()
 	_root.hide()
-	# release the lock a moment later so the same key press cannot re-open a conversation
 	await get_tree().create_timer(0.15).timeout
 	if not _active:
 		GameState.unlock(&"dialogue")
