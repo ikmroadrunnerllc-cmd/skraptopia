@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="NPCData" format=3]
+[gd_resource type="Resource" script_class="NPCData" format=3 uid="uid://kq1d8hefmxy8"]
 
-[ext_resource type="Script" path="res://resources/dialogue_data.gd" id="1_6tut3"]
-[ext_resource type="Script" path="res://resources/npc_data.gd" id="2_wp1os"]
-[ext_resource type="Texture2D" path="res://assets/characters/ninja_adventure/Character/Villager2/SpriteSheet.png" id="3_u88sx"]
+[ext_resource type="Script" uid="uid://248xioxwsrja" path="res://resources/dialogue_data.gd" id="1_6tut3"]
+[ext_resource type="Script" uid="uid://5tyq34vvfuw" path="res://resources/npc_data.gd" id="2_wp1os"]
+[ext_resource type="Texture2D" uid="uid://b5ew04x87tawb" path="res://assets/characters/ninja_adventure/Character/Villager2/SpriteSheet.png" id="3_u88sx"]
 
 [sub_resource type="Resource" id="Resource_8jut3"]
 script = ExtResource("1_6tut3")

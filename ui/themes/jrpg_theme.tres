@@ -1,10 +1,6 @@
-[gd_resource type="Theme" format=3]
+[gd_resource type="Theme" format=3 uid="uid://j661mr6hvwvb"]
 
-[ext_resource type="FontFile" path="res://assets/ui/ninja_adventure/Font/NormalFont.ttf" id="1_tf5do"]
-
-[sub_resource type="FontVariation" id="FontVariation_pixel"]
-base_font = ExtResource("1_tf5do")
-spacing_space = 5
+[ext_resource type="FontFile" uid="uid://b6fi51v5dr6cw" path="res://assets/ui/ninja_adventure/Font/NormalFont.ttf" id="1_tf5do"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bwogr"]
 content_margin_left = 8.0
@@ -143,6 +139,10 @@ corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="FontVariation" id="FontVariation_pixel"]
+base_font = ExtResource("1_tf5do")
+spacing_space = 5
 
 [resource]
 default_font = SubResource("FontVariation_pixel")
