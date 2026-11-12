@@ -1,0 +1,79 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/dialogue/dialogue_box.gd" id="1_ojlok"]
+[ext_resource type="Theme" path="res://ui/themes/jrpg_theme.tres" id="1_p0vhc"]
+[ext_resource type="Script" path="res://ui/components/choice_list.gd" id="2_ojlok"]
+
+[node name="Dialogue" type="CanvasLayer" unique_id=1527566384]
+script = ExtResource("1_ojlok")
+
+[node name="DialogueRoot" type="Control" parent="." unique_id=1919838652]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource("1_p0vhc")
+
+[node name="Box" type="VBoxContainer" parent="DialogueRoot" unique_id=1580473165]
+layout_mode = 0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -126.0
+offset_right = -12.0
+offset_bottom = -10.0
+grow_vertical = 0
+theme_override_constants/separation = 2
+
+[node name="TopRow" type="HBoxContainer" parent="DialogueRoot/Box" unique_id=194152683]
+layout_mode = 2
+
+[node name="Nameplate" type="PanelContainer" parent="DialogueRoot/Box/TopRow" unique_id=926455971]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_type_variation = &"Nameplate"
+
+[node name="SpeakerName" type="Label" parent="DialogueRoot/Box/TopRow/Nameplate" unique_id=1319635005]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NameLabel"
+text = "Speaker"
+
+[node name="Spacer" type="Control" parent="DialogueRoot/Box/TopRow" unique_id=172526020]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ChoicePanel" type="PanelContainer" parent="DialogueRoot/Box/TopRow" unique_id=2049454893]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Choices" type="VBoxContainer" parent="DialogueRoot/Box/TopRow/ChoicePanel" unique_id=1035401589]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("2_ojlok")
+
+[node name="Panel" type="PanelContainer" parent="DialogueRoot/Box" unique_id=652938122]
+custom_minimum_size = Vector2(0, 74)
+layout_mode = 2
+
+[node name="Inner" type="VBoxContainer" parent="DialogueRoot/Box/Panel" unique_id=935108094]
+layout_mode = 2
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueRoot/Box/Panel/Inner" unique_id=336434471]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Dialogue text"
+scroll_active = false
+
+[node name="MoreIndicator" type="Label" parent="DialogueRoot/Box/Panel/Inner" unique_id=1579944090]
+unique_name_in_owner = true
+layout_mode = 2
+text = "v"
+horizontal_alignment = 2

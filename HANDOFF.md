@@ -1,46 +1,74 @@
-# Handoff: where we left off (2026-10-18)
+# Handoff: JRPG vertical slice
 
-## Done so far
-- Sliced the AI toy sheet into `toyset_32.png` (128 transparent 32px toys).
-- Replaced the platformer player script with top-down 4-way movement.
-- Built a test bedroom in `game.tscn`: Mana Seed floor/walls, toys with collision, Y-sort, a camera that follows the player.
-- Chose **Ninja Adventure** as the main art pack and built `tilesets/ninja_adventure.tres`: all 23 sheets, 12 paintable terrains, nature objects as whole stamps with collision.
-- Made `path_example.tscn` to show how terrain painting works.
-- Added the Godot MCP server (restart Claude Code if its tools are missing).
+Branch: `jrpg-vertical-slice` (made from `level1-woods`). `main` was not touched.
+Godot 4.7.2. Screen: 640×360, scaled up to a 1280×720 window. Camera zoom 2.
 
-## The game plan (Level 1: Toy Box Kingdom)
-Story: Demari loads the cursed game "SkrapTopia", is pulled inside, saves Casimir (a tin soldier) from a clay sludge, meets Princess Asmara (a doll), and must recover her stolen Skrapbook. Clues lead to a tavern, ending in a boss fight with Zephyrion the clay dragon (who only took the job for money). Asmara then knights Demari.
+## Status: playable, automated playtest passes (52/52)
 
-Level 1 is **3 scenes**:
-- `overworld`: **Playroom Woods** (starting area) + **Block Town** in one map
-- `throne_room` (Asmara)
-- `tavern` (thief + Zephyrion boss)
+The whole loop works:
+village → talk to Elder → accept "Slime Trouble" → south exit → field → touch slime →
+turn-based battle → win → back to the Elder → quest complete (+20 EXP).
+Defeat → "Retry battle" or "Return to village". The pause menu (Esc / Tab) has Status, Quests and Resume.
 
-Build order: doors between maps → NPC dialogue → one simple turn-based battle → finish one full section → copy for the rest → title/ending/credits.
+## Controls
 
-Scope cuts (don't build these): open world, inventory, leveling, party, save system, branching dialogue.
+| Action | Keyboard | Controller |
+|---|---|---|
+| Move | WASD / arrow keys | D-pad / left stick |
+| Talk / confirm | E, Space, Enter | A |
+| Menu, then cancel/back inside it | Esc, Tab | Start |
+| Navigate menus | Arrow keys | D-pad |
 
-## Next up: the starting area (Playroom Woods)
-Use the **Grass & Dirt** terrain (set 2), not desert. Planned layout, about 30x20 tiles:
-- An open clearing at the bottom where Demari **drops from the sky**. Mark it with a `Marker2D` named `DropSpot`.
-- A dirt path winding north with one bend.
-- The Casimir vs clay sludge fight halfway along. Mark it with a `Marker2D` named `BattleSpot`.
-- The kingdom gate at the top (exit to Block Town).
-- A thick ring of trees (Nature source 6) as the walls.
+## Where things are
 
-Layers: `Ground` (terrain) / `Decor` (flowers, pebbles) / `Objects` (Y Sort: trees, toys, player, NPCs).
+| Path | What |
+|---|---|
+| `resources/*.gd` | Data classes: CharacterData, NPCData, DialogueData, EnemyData, QuestData |
+| `data/` | The editable `.tres` files: `characters/hero`, `npcs/elder`, `npcs/merchant`, `enemies/slime`, `quests/slime_trouble` |
+| `systems/game_state.gd` | Autoload **GameState**: hero HP/MP/EXP, input locks, defeated encounters, pending battle |
+| `systems/quest_manager.gd` | Autoload **QuestManager**: quest states NOT_STARTED → ACTIVE → READY_TO_TURN_IN → COMPLETED |
+| `systems/scene_manager.gd` | Autoload **SceneManager**: fade, spawn points, start/return from battle |
+| `systems/scene_exit.gd` | Area2D. Walking into it changes scene (`target_scene`, `target_spawn`) |
+| `ui/dialogue/` | Autoload **Dialogue**: bottom text box, nameplate, typewriter text, choices |
+| `ui/hud.tscn` | Autoload **HUD**: quest notifications and the pause menu (`ui/menus/pause_menu.gd`) |
+| `ui/components/` | Reusable `ChoiceList` (all menus and choices) and `StatBar` (HP/MP bars) |
+| `ui/themes/jrpg_theme.tres` | Shared theme, set project-wide (Project Settings → GUI → Theme) |
+| `npcs/npc.tscn` | Reusable NPC: give it an NPCData in the Inspector |
+| `enemies/overworld_enemy.tscn` | Reusable map enemy: EnemyData plus a unique `encounter_id` |
+| `Scenes/main.tscn` | Village (your `level_root` + player + Elder + Merchant + south exit + spawns `Start` / `FromField`) |
+| `Scenes/field/field.tscn` | Field: tree border, path, one slime, north exit, spawn `FromVillage` |
+| `Scenes/battle/battle.tscn` | Battle: BATTLE_START → PLAYER_TURN → ACTION_RESOLUTION → ENEMY_TURN → VICTORY/DEFEAT |
 
-The user offered to block out this map: ground + path + tree border + markers, then decorate it themselves to learn.
+## How to add content (no code)
 
-## Still to do / open items
-- Switch `game.tscn`'s `Ground` from Mana Seed to `ninja_adventure.tres`, and remove the Mana Seed folder (license conflict with AI).
-- Swap the knight player for a Ninja Adventure character (`Boy` or `Child`) with 4-direction walk animations.
-- Make Casimir: recolor Ninja Adventure `Knight` silver/red. Thief = `NinjaDark`. Clay sludge = recolor `Slime` brown. Zephyrion = recolor `DragonGreen` boss terracotta.
-- Add collision to houses/water if needed (only nature objects and the 10 placed toys have it now).
-- The "falling from the sky" intro: player starts above `DropSpot`, drops down, smoke puff (Ninja Adventure FX).
-- Story naming to settle: terracotta vs clay vs dirt-clay dragon; Skrapbook vs sketchbook; is Yasireth the Arts n' Crafts Witch?; slime vs clay sludge.
-- Credits screen: Will Tice / unTied Games (effects), Brackeys (CC0), Pixel-boy / Ninja Adventure (CC0, credit optional), AI-generated toy art. Check the class's rules on disclosing AI use.
+- **New NPC:** duplicate `data/npcs/merchant.tres`, change the name, sprite sheet and lines. Drag
+  `npcs/npc.tscn` into a level and set its `data`.
+- **New quest:** duplicate `data/quests/slime_trouble.tres`, give it a new `id`, and put it on an NPC's `quest`.
+- **New enemy:** duplicate `data/enemies/slime.tres`. Place `enemies/overworld_enemy.tscn` and give it a new `encounter_id`.
 
-## Notes
-- Helper scripts (slicing, terrain and nature builders) lived in a temp scratchpad and may be gone. They're easy to regenerate. See "Tools" in `CLAUDE.md`.
-- Backups of earlier `game.tscn` versions were in the same temp folder.
+## Rules the code follows
+
+- `.tres` templates are never changed at runtime. HP and quest progress live in GameState and QuestManager.
+- Movement, talking and the menu all check `GameState.is_locked()`. Dialogue, menu, battle and
+  scene changes each hold their own lock.
+- Only the closest NPC shows a prompt and responds. A key press that closes a window can't
+  also re-open one, because the lock is released 0.15 s later.
+
+## Testing (outside the project, in `../skraptopia_dev_tools/`)
+
+- `playtest.gd`: runs the whole loop and prints PASS/FAIL.
+  `Godot_v4.7.2-stable_win64_console.exe --headless --path . --script ../skraptopia_dev_tools/playtest.gd`
+  Add `-- shots dir=<folder>` (without `--headless`) to save screenshots.
+- `build_data.gd` / `build_scenes.gd`: the generators that made the theme, the data and the scenes.
+  **Don't rerun `build_scenes.gd`.** It would add the NPCs to `main.tscn` a second time.
+- `screenshots/`: images from the last passing run.
+
+## Known gaps and next steps
+
+- No level-up yet (EXP only adds up). The Skills, Items and Run buttons show greyed out on purpose.
+- No confirmation dialog component yet; nothing needs one.
+- The UI uses a flat-colour theme (StyleBoxFlat). It could switch to the Ninja Adventure `DialogBox.png` frames.
+- No saving or loading.
+- Mana Seed tiles have no collision.
+- Patterns 98 and 288 point at old cells (from your big-tile change in source 10).
+- The installed `dialogue_manager` addon is not used or enabled.
