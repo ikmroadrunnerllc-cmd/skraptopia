@@ -11,11 +11,26 @@ var _nearby: Array[Node2D] = []
 var _focused: Node2D = null
 
 @onready var animated_sprite = $AnimatedSprite2D
+@onready var _sprite_y: float = animated_sprite.position.y
+var _idle_tween: Tween
 
 
 func _ready() -> void:
 	add_to_group("player")
 	_apply_camera_limits()
+
+
+func _start_idle() -> void:
+	_idle_tween = create_tween().set_loops()
+	_idle_tween.tween_property(animated_sprite, "position:y", _sprite_y - 1.0, 0.5)
+	_idle_tween.tween_property(animated_sprite, "position:y", _sprite_y, 0.5)
+
+
+func _stop_idle() -> void:
+	if _idle_tween:
+		_idle_tween.kill()
+		_idle_tween = null
+	animated_sprite.position.y = _sprite_y
 
 
 func _physics_process(delta: float) -> void:
@@ -41,6 +56,8 @@ func Movement_Process(delta: float) -> void:
 func play_animation(dir: Vector2, delta: float, last_dir: Vector2) -> void:
 	if dir != Vector2.ZERO:
 		Idle_Timer = 0.0
+		if Special_Animation:
+			_stop_idle()
 		Special_Animation = false
 
 		if abs(dir.x) > abs(dir.y):
@@ -76,7 +93,7 @@ func play_animation(dir: Vector2, delta: float, last_dir: Vector2) -> void:
 	Idle_Timer += delta
 	if Idle_Timer >= Idle_Timer_THRESHOLD:
 		Special_Animation = true
-		animated_sprite.play("Idle_Animation")
+		_start_idle()
 
 
 func add_interactable(node: Node2D) -> void:

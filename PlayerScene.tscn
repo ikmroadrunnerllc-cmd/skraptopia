@@ -11,9 +11,10 @@ script = ExtResource("1_xub5c")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1735202389]
 texture_filter = 1
-position = Vector2(0, -19)
+position = Vector2(0, -10)
+scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("2_demari")
-animation = &"Idle_Animation"
+animation = &"Walking_Down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3)
