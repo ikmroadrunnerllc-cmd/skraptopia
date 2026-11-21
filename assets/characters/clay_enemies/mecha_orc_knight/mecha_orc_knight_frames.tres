@@ -1,0 +1,92 @@
+[gd_resource type="SpriteFrames" load_steps=19 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/cast/01.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/cast/02.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/cast/03.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/cast/04.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/cast/05.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/cast/06.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/damage/01.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/damage/02.png" id="8"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/damage/03.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/damage/04.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/damage/05.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/damage/06.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/idle/01.png" id="13"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/idle/02.png" id="14"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/idle/03.png" id="15"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/idle/04.png" id="16"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/idle/05.png" id="17"]
+[ext_resource type="Texture2D" path="res://assets/characters/clay_enemies/mecha_orc_knight/idle/06.png" id="18"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6")
+}],
+"loop": false,
+"name": &"cast",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12")
+}],
+"loop": false,
+"name": &"damage",
+"speed": 8.0
+}]
