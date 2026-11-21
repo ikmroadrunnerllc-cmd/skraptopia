@@ -177,6 +177,12 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 | Tavern | **Zephyrion** (boss, tuned for ~level 6) | 6 |
 
 - **Harder color versions** (color-shifted clay photos, about 1.5× stats, more EXP and Buttons, their own notebook page): Magma Sludge (red/orange), Frost Spider (icy blue), Ink-Dactyl (black/purple), Gold Orc Knight (gold, rare).
+- **Bonus boss: Kilnoxx, the Kiln Phoenix** (optional, not part of the story). Our own pixel-art fire dragon-phoenix: clay that went through the kiln. Made with PixelLab: one large side-view picture facing left, an idle wing-flap animation and an attack animation; the same picture, smaller, sleeps in the overworld.
+  - **Where:** hidden in a scorched clearing in **Road Carpet**, behind an easy-to-miss gap in the trees. A burnt sign warns: *"Turn back. The kiln is lit."* It can be fought any time, even early.
+  - **Strength:** tuned for level 9–10 (cap). Run is blocked. Losing gives the normal Retry / Return to village with no penalty.
+  - **Rage phase at half HP:** it roars (*"Its feathers ignite!"*), turns white-gold (palette shader), Attack +30%, and every other turn uses **Inferno Wings**, which hits both party members.
+  - **Reward:** big EXP and Buttons, its own notebook page, and the **Phoenix Feather**: a permanent key item that, once per battle, automatically revives the first knocked-out ally at half HP (*"The Phoenix Feather glows!"*).
+  - **Music:** its own Suno track (closer to the Bleach-inspired style); Zephyrion keeps "Clay Doesn't Pay".
 - **Save points are small shrines.** Walk up and press confirm; there's no saving from the menu. Saving refills HP and MP. Locations: after the tutorial, near the Block Town shop, and outside the tavern.
 
 ### Battle

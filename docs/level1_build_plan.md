@@ -66,6 +66,23 @@ Gate 2b:
 - [ ] G2b.4 Screenshot: a 3-enemy battle in the woods with the target arrow showing.
 - [ ] G2b.5 The user fought a group battle and said OK.
 
+## Phase 2c: Bonus boss Kilnoxx  (target: Nov 25)  status: todo
+Goal: a secret, very hard fire dragon-phoenix fight with a rage phase (design in the story doc).
+Needs: Phase 2b
+Builds:
+- PixelLab art: one large side-view picture facing left, an idle wing-flap and an attack animation, as `assets/characters/bosses/kilnoxx/kilnoxx_frames.tres`.
+- `data/enemies/kilnoxx.tres`: tuned for level 9-10, `can_run = false`.
+- Rage phase at half HP: message, white-gold palette shift, Attack +30%, Inferno Wings (hits both party members) every other turn.
+- Phoenix Feather: a permanent key item; once per battle it revives the first knocked-out ally at half HP.
+- His own music track (from the user's Suno song) when he's in the fight.
+- A temporary scorched spot in the field to start the fight until Phase 4 builds the real clearing.
+Gate 2c:
+- [ ] G2c.1 Headless import and run: 0 errors.
+- [ ] G2c.2 Playtest: at half HP the rage starts (color, Attack up), and Inferno Wings hits both party members every other turn.
+- [ ] G2c.3 Playtest: with the Phoenix Feather, the first knock-out in a battle revives at half HP, and only once.
+- [ ] G2c.4 Screenshot: Kilnoxx in battle, normal and raging.
+- [ ] G2c.5 The user fought Kilnoxx and said OK.
+
 ## Phase 3: RPG systems  (target: Nov 28)  status: todo
 Goal: growing stronger feels good.
 Needs: Phase 2
@@ -75,6 +92,7 @@ Builds:
 - Skills unlock at levels 1, 3 and 5.
 - Buttons (money) dropped after battles; inventory; the shop (Glue Stick, Juice Box, Bandage Tape).
 - Items usable in battle and from the pause menu.
+- Kilnoxx's Buttons reward.
 Gate 3:
 - [ ] G3.1 Headless import and run: 0 errors.
 - [ ] G3.2 Playtest: enough EXP gives a level-up with higher stats, and level 3 unlocks Patch Up and March Order.
@@ -92,6 +110,7 @@ Builds:
 - Markers for the story spots (clues, shrines, the tavern, the castle).
 - The alphabet block push puzzle in the back alley: blocks A–D slide one tile per push, can't be pushed into walls or other blocks, and the A-B-C-D order opens the alley. A reset spot puts the blocks back.
 - Casimir follows Demari around after the tutorial.
+- Kilnoxx's hidden scorched clearing in Road Carpet, with the burnt warning sign; it replaces the temporary field spot.
 Gate 4:
 - [ ] G4.1 Headless import and run: 0 errors.
 - [ ] G4.2 Playtest: you can walk from the woods to the tavern door without getting stuck, and you can't walk through buildings or trees.
@@ -109,7 +128,7 @@ Builds:
 - Castle: talking with Asmara, the guard's interruption, the quest, and starting Buttons.
 - Clues 1 and 2 (any order), then clue 3, which unlocks the tavern.
 - Tavern: the thief escapes and drops the badge, Zephyrion's dialogue (including the dragon joke), the boss, his last line, and he crumbles into dirt.
-- Notebook pages for each new enemy; after the boss, the pages fly into the SkrapBook.
+- Notebook pages for each new enemy; after the boss, the pages fly into the SkrapBook. Kilnoxx gets his own page.
 - The knighting at the castle, then the ending text screens.
 - Shrines: walk up, press confirm, save (and refill HP/MP); load from the title screen.
 Gate 5:
