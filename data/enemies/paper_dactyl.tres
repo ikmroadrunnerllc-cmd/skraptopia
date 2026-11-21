@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/paper_terodactyl/paper_terodactyl_frames.tres" id="1_mr0sl"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_jhnhs"]
+
+[resource]
+script = ExtResource("2_jhnhs")
+id = &"paper_dactyl"
+display_name = "Paper-Dactyl"
+frames = ExtResource("1_mr0sl")
+max_hp = 45
+attack = 10
+defense = 3
+speed = 9
+exp_reward = 18
+buttons_reward = 10

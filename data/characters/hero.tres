@@ -4,3 +4,5 @@
 
 [resource]
 script = ExtResource("1_n2hul")
+id = &"demari"
+display_name = "Demari"

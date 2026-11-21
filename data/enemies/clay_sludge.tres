@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/clay_sludge/clay_sludge_frames.tres" id="1_03twg"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_x7fmy"]
+
+[resource]
+script = ExtResource("2_x7fmy")
+id = &"clay_sludge"
+display_name = "Clay Sludge"
+frames = ExtResource("1_03twg")
+attack = 6
+speed = 3
+exp_reward = 8

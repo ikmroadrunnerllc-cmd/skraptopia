@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/pipe_spider/pipe_spider_frames.tres" id="1_nyi88"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_k741s"]
+
+[resource]
+script = ExtResource("2_k741s")
+id = &"pipe_spider"
+display_name = "Pipe Spider"
+frames = ExtResource("1_nyi88")
+max_hp = 36
+attack = 8
+speed = 7
+exp_reward = 12
+buttons_reward = 7

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://resources/item_data.gd" id="1_m1qdp"]
+
+[resource]
+script = ExtResource("1_m1qdp")
+id = &"juice_box"
+display_name = "Juice Box"
+description = "A sugary boost. Restores 15 MP."
+price = 20
+heal_mp = 15

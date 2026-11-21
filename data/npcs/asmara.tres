@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="NPCData" format=3]
+
+[ext_resource type="Script" path="res://resources/npc_data.gd" id="1_vdml6"]
+[ext_resource type="Texture2D" path="res://assets/characters/ninja_adventure/Character/Princess/SpriteSheet.png" id="2_lgdfd"]
+
+[resource]
+script = ExtResource("1_vdml6")
+id = &"asmara"
+display_name = "Princess Asmara"
+sprite_sheet = ExtResource("2_lgdfd")

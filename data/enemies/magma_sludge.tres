@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/clay_sludge/clay_sludge_frames.tres" id="1_lnfi7"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_yroyr"]
+
+[resource]
+script = ExtResource("2_yroyr")
+id = &"magma_sludge"
+display_name = "Magma Sludge"
+frames = ExtResource("1_lnfi7")
+hue_shift = -0.27
+saturation = 1.1
+max_hp = 45
+attack = 9
+defense = 3
+exp_reward = 15
+buttons_reward = 9

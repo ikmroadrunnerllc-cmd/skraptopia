@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/mecha_orc_lancer/mecha_orc_lancer_frames.tres" id="1_35c8n"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_cgdhj"]
+
+[resource]
+script = ExtResource("2_cgdhj")
+id = &"mecha_orc_lancer"
+display_name = "Mecha Orc Lancer"
+frames = ExtResource("1_35c8n")
+max_hp = 60
+attack = 15
+defense = 5
+speed = 6
+exp_reward = 30
+buttons_reward = 18

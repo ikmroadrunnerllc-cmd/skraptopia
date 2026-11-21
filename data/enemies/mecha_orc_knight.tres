@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/mecha_orc_knight/mecha_orc_knight_frames.tres" id="1_wck0i"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_sebry"]
+
+[resource]
+script = ExtResource("2_sebry")
+id = &"mecha_orc_knight"
+display_name = "Mecha Orc Knight"
+frames = ExtResource("1_wck0i")
+max_hp = 70
+attack = 13
+defense = 7
+exp_reward = 30
+buttons_reward = 18

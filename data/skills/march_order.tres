@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_lku7w"]
+
+[resource]
+script = ExtResource("1_lku7w")
+id = &"march_order"
+display_name = "March Order"
+description = "Raises the party's Attack by half for 3 turns."
+user = &"casimir"
+unlock_level = 3
+mp_cost = 4
+kind = "buff"
+power = 1.5
+turns = 3
+effect = &"sp_symbol_up"

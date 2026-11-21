@@ -15,7 +15,7 @@ Built with the `skraptopia-gated-build` workflow. Each phase ends in a gate: eve
 
 ---
 
-## Phase 1: Foundations  (target: Nov 23)  status: todo
+## Phase 1: Foundations  (target: Nov 23)  status: gate-check
 Goal: the new characters and all the game data are in, so later phases just use them.
 Needs: none
 Builds:
@@ -26,10 +26,10 @@ Builds:
 - Skill and item data (new `SkillData` and `ItemData` resources).
 - A color-shift shader for the harder versions.
 Gate 1:
-- [ ] G1.1 Headless import and game run: 0 errors.
-- [ ] G1.2 Playtest: Demari's animation has 4 directions × 4 frames.
-- [ ] G1.3 Playtest: all 11 enemy data files load, each with an idle animation.
-- [ ] G1.4 Screenshot: Demari standing in the village; the 4 color versions side by side.
+- [x] G1.1 Headless import and game run: 0 errors.
+- [x] G1.2 Playtest: Demari's animation has 4 directions × 4 frames.
+- [x] G1.3 Playtest: all 10 enemy data files load (5 base + 4 color versions + Zephyrion), each with an idle animation.
+- [x] G1.4 Screenshot: Demari standing in the village; the 4 color versions side by side.
 - [ ] G1.5 The user walked Demari around and said OK.
 
 ## Phase 2: Party battle  (target: Nov 26)  status: todo

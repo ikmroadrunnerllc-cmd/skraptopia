@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_4504s"]
+
+[resource]
+script = ExtResource("1_4504s")
+id = &"patch_up"
+display_name = "Patch Up"
+description = "Tape and glue an ally back together. Heals 25 HP."
+unlock_level = 3
+mp_cost = 4
+kind = "heal"
+power = 25.0
+effect = &"sp_magic_burst_green"

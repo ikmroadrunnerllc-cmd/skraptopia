@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/zephyrion/zephyrion_frames.tres" id="1_seewk"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_pjlhj"]
+
+[resource]
+script = ExtResource("2_pjlhj")
+id = &"zephyrion"
+display_name = "Zephyrion"
+frames = ExtResource("1_seewk")
+max_hp = 220
+attack = 18
+defense = 8
+speed = 6
+exp_reward = 120
+buttons_reward = 60

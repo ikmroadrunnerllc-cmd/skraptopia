@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_qsmdy"]
+
+[resource]
+script = ExtResource("1_qsmdy")
+id = &"tin_shield"
+display_name = "Tin Shield"
+description = "Casimir takes the next hit meant for Demari."
+user = &"casimir"
+mp_cost = 3
+kind = "shield"
+turns = 1
+effect = &"sp_symbol_shield"

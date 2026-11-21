@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://resources/item_data.gd" id="1_fo2ar"]
+
+[resource]
+script = ExtResource("1_fo2ar")
+id = &"glue_stick"
+display_name = "Glue Stick"
+description = "Sticks you back together. Heals 30 HP."
+price = 15
+heal_hp = 30

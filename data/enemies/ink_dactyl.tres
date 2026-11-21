@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/paper_terodactyl/paper_terodactyl_frames.tres" id="1_7yf73"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_ri1c1"]
+
+[resource]
+script = ExtResource("2_ri1c1")
+id = &"ink_dactyl"
+display_name = "Ink-Dactyl"
+frames = ExtResource("1_7yf73")
+hue_shift = 0.62
+saturation = 0.9
+brightness = 0.45
+max_hp = 68
+attack = 15
+defense = 5
+speed = 10
+exp_reward = 30
+buttons_reward = 16
