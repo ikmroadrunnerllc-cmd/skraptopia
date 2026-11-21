@@ -72,13 +72,15 @@ Builds:
 - Rustling bushes (pixel art + a shake animation). Touching one starts a battle using that area's enemy list (see the story doc), with a rare chance of a color version.
 - Bushes refill after about 60 seconds or when you leave and come back.
 - Markers for the story spots (clues, shrines, the tavern, the castle).
+- The alphabet block push puzzle in the back alley: blocks A–D slide one tile per push, can't be pushed into walls or other blocks, and the A-B-C-D order opens the alley. A reset spot puts the blocks back.
 - Casimir follows Demari around after the tutorial.
 Gate 4:
 - [ ] G4.1 Headless import and run: 0 errors.
 - [ ] G4.2 Playtest: you can walk from the woods to the tavern door without getting stuck, and you can't walk through buildings or trees.
 - [ ] G4.3 Playtest: a bush starts a battle with an enemy from its area's list, then refills.
-- [ ] G4.4 Screenshots: each of the 4 areas.
-- [ ] G4.5 The user explored the map and said OK.
+- [ ] G4.4 Playtest: pushing the blocks into A-B-C-D order opens the alley, a wrong order doesn't, and reset works.
+- [ ] G4.5 Screenshots: each of the 4 areas and the puzzle.
+- [ ] G4.6 The user explored the map, solved the puzzle and said OK.
 
 ## Phase 5: Story  (target: Dec 3)  status: todo
 Goal: the whole Level 1 story, playable from start to end.

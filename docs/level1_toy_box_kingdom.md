@@ -155,6 +155,7 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
   1. Toy train station bench: a torn guard's uniform. *"Someone swapped shifts with a palace guard..."*
   2. Market wall note: *"Sludge kept the tin soldier busy..."*
   3. Barrel behind the tavern: *"Meet at the tavern when the bells ring. Bring the book."* This unlocks the tavern boss.
+- **Puzzle (the only one in Level 1):** the thief blocked the back alley to clue 3 with toy **alphabet blocks** (Ninja Adventure Logic tiles A–D). Push them into A-B-C-D order to open the alley. Clue 2's note hints at it ("...easy as A, B, C..."). Extra if there's time: colored key gates.
 - **Notebook → SkrapBook:** Demari finds a plain notebook at the start and adds a page for each new enemy. After Zephyrion, the pages fly into the SkrapBook, and that's the reversal (Demari can use it).
 
 ### What's playable
