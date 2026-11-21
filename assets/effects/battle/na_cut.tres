@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/effects/ninja_adventure/Attack/Cut/SpriteSheet.png" id="1_2a7x1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jv2o6"]
+atlas = ExtResource("1_2a7x1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtn2x"]
+atlas = ExtResource("1_2a7x1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0dau4"]
+atlas = ExtResource("1_2a7x1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6adyq"]
+atlas = ExtResource("1_2a7x1")
+region = Rect2(96, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jv2o6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtn2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0dau4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6adyq")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 14.0
+}]

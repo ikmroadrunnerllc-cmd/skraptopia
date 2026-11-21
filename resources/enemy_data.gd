@@ -17,4 +17,5 @@ extends Resource
 @export var speed: int = 4
 @export var exp_reward: int = 10
 @export var buttons_reward: int = 5
+@export var can_run: bool = true
 @export var behavior: StringName = &"basic_attack"

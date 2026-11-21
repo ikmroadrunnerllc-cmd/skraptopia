@@ -1,0 +1,126 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0000.png" id="1_k0gue"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0001.png" id="2_igw0l"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0002.png" id="3_6ybgw"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0003.png" id="4_f46um"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0004.png" id="5_xx3u4"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0005.png" id="6_inr7h"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0006.png" id="7_bcm2q"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0007.png" id="8_0lj4p"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0008.png" id="9_e01g5"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0009.png" id="10_hl4qt"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0010.png" id="11_vshpe"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0011.png" id="12_is1wh"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0012.png" id="13_le61q"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0013.png" id="14_uw0te"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0014.png" id="15_sp8d3"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0015.png" id="16_nbm7d"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0016.png" id="17_7expu"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0017.png" id="18_or0uq"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0018.png" id="19_wpob4"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0019.png" id="20_1hhac"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0020.png" id="21_uxusa"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0021.png" id="22_jdjcb"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0022.png" id="23_576bb"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0023.png" id="24_mk36j"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0024.png" id="25_xeioc"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0025.png" id="26_28xg2"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0026.png" id="27_ho8wb"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0027.png" id="28_ocyj8"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Fantasy Spells/spell_haste_001/spell_haste_001_large_green/frame0028.png" id="29_xer77"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_k0gue")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_igw0l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6ybgw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f46um")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xx3u4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_inr7h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_bcm2q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_0lj4p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_e01g5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_hl4qt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_vshpe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_is1wh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_le61q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_uw0te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_sp8d3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_nbm7d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_7expu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_or0uq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_wpob4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_1hhac")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_uxusa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_jdjcb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_576bb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_mk36j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_xeioc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_28xg2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_ho8wb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_ocyj8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_xer77")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 30.0
+}]

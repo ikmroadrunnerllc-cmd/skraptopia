@@ -1,0 +1,250 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0000.png" id="1_7d5v5"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0001.png" id="2_xtt26"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0002.png" id="3_adkx0"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0003.png" id="4_qwlhk"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0004.png" id="5_t7dmp"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0005.png" id="6_b10ja"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0006.png" id="7_a6n5u"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0007.png" id="8_x14j6"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0008.png" id="9_osn8k"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0009.png" id="10_4u5ax"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0010.png" id="11_ehoam"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0011.png" id="12_tnc5e"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0012.png" id="13_wln2l"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0013.png" id="14_riemg"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0014.png" id="15_6ymqo"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0015.png" id="16_0ei7y"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0016.png" id="17_lcn58"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0017.png" id="18_xph02"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0018.png" id="19_pu0no"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0019.png" id="20_l8x1w"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0020.png" id="21_v4rt3"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0021.png" id="22_gtula"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0022.png" id="23_qpgl8"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0023.png" id="24_g5pec"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0024.png" id="25_vs1ki"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0025.png" id="26_5i6uo"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0026.png" id="27_mm3ub"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0027.png" id="28_f1kcl"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0028.png" id="29_mbud2"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0029.png" id="30_bduuq"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0030.png" id="31_clt2d"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0031.png" id="32_bc21t"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0032.png" id="33_g4ayb"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0033.png" id="34_in6cc"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0034.png" id="35_qjn8g"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0035.png" id="36_xkjxw"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0036.png" id="37_c8yyq"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0037.png" id="38_6p0b0"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0038.png" id="39_8b4s1"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0039.png" id="40_a3g68"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0040.png" id="41_cvi7w"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0041.png" id="42_rk6wa"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0042.png" id="43_rsh6p"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0043.png" id="44_owb1y"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0044.png" id="45_vus2p"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0045.png" id="46_hxj4v"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0046.png" id="47_1kckd"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0047.png" id="48_c0thm"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0048.png" id="49_rypgi"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0049.png" id="50_myust"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0050.png" id="51_k3wiv"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0051.png" id="52_11yvm"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0052.png" id="53_850mj"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0053.png" id="54_vp7py"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0054.png" id="55_w0o0y"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0055.png" id="56_w1pss"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0056.png" id="57_1lcwf"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0057.png" id="58_e1xq0"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0058.png" id="59_yip43"]
+[ext_resource type="Texture2D" path="res://assets/effects/super_pixel_v3/PNG/Symbols/symbol_defense_up_001/symbol_defense_up_001_large_blue/frame0059.png" id="60_hmkkm"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7d5v5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_xtt26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_adkx0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_qwlhk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_t7dmp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_b10ja")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_a6n5u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_x14j6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_osn8k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_4u5ax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ehoam")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_tnc5e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_wln2l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_riemg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_6ymqo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_0ei7y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_lcn58")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_xph02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_pu0no")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_l8x1w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_v4rt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_gtula")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_qpgl8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_g5pec")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_vs1ki")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_5i6uo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_mm3ub")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_f1kcl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_mbud2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_bduuq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_clt2d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_bc21t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_g4ayb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_in6cc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_qjn8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_xkjxw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_c8yyq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_6p0b0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_8b4s1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_a3g68")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_cvi7w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_rk6wa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_rsh6p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_owb1y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_vus2p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_hxj4v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_1kckd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_c0thm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_rypgi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_myust")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_k3wiv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_11yvm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_850mj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_vp7py")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_w0o0y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_w1pss")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_1lcwf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_e1xq0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_yip43")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_hmkkm")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 40.0
+}]

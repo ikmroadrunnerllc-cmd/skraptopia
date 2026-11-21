@@ -32,7 +32,7 @@ Gate 1:
 - [x] G1.4 Screenshot: Demari standing in the village; the 4 color versions side by side.
 - [x] G1.5 The user walked Demari around and said OK.
 
-## Phase 2: Party battle  (target: Nov 26)  status: building
+## Phase 2: Party battle  (target: Nov 26)  status: gate-check
 Goal: the side-view battle with two party members against a clay enemy.
 Needs: Phase 1
 Builds:
@@ -40,12 +40,13 @@ Builds:
 - Commands: Attack, Skill, Item, Defend, Run (Run is Demari only).
 - 6 skills with their effects (see the move→effect table in the story doc).
 - Tin Shield (redirect a hit), March Order (Attack up for 3 turns), Wind-Up Charge (charge for a turn, then hit).
-- Backdrops rendered from the map tiles (woods, road, town, tavern).
+- Backdrops rendered from the map tiles. Woods is done; road, town and tavern come in Phase 4, once those areas exist.
+- Items command is greyed out until Phase 3 adds the inventory.
 Gate 2:
-- [ ] G2.1 Headless import and run: 0 errors.
-- [ ] G2.2 Playtest: each of the 6 skills does what its description says (damage, heal, shield, buff, charge).
-- [ ] G2.3 Playtest: winning and losing both end the battle correctly; Run works on normal enemies and is blocked on the boss.
-- [ ] G2.4 Screenshot: a battle against the Clay Sludge in the woods.
+- [x] G2.1 Headless import and run: 0 errors.
+- [x] G2.2 Playtest: each of the 6 skills does what its description says (damage, heal, shield, buff, charge).
+- [x] G2.3 Playtest: winning and losing both end the battle correctly; Run works on normal enemies and is blocked on the boss.
+- [x] G2.4 Screenshot: a battle against the Clay Sludge in the woods.
 - [ ] G2.5 The user fought a battle and said OK.
 
 ## Phase 3: RPG systems  (target: Nov 28)  status: todo

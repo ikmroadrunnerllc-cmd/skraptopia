@@ -34,7 +34,7 @@ func change_to(scene_path: String, spawn: String = "", position: Variant = null)
 	GameState.unlock(&"transition")
 
 
-func start_battle(enemy: EnemyData, encounter_id: String) -> void:
+func start_battle(enemy: EnemyData, encounter_id: String, backdrop: String = "woods") -> void:
 	if busy or enemy == null:
 		return
 	var scene := get_tree().current_scene
@@ -45,6 +45,8 @@ func start_battle(enemy: EnemyData, encounter_id: String) -> void:
 		"return_scene": scene.scene_file_path,
 		"return_position": player.global_position if player else Vector2.ZERO,
 		"start_hp": GameState.hp,
+		"start_casimir_hp": GameState.casimir_hp,
+		"backdrop": backdrop,
 	}
 	change_to(BATTLE_SCENE)
 
@@ -56,6 +58,7 @@ func return_from_battle() -> void:
 
 func retry_battle() -> void:
 	GameState.set_hp(GameState.pending_battle.get("start_hp", GameState.HERO.max_hp))
+	GameState.set_member_hp(&"casimir", GameState.pending_battle.get("start_casimir_hp", GameState.CASIMIR.max_hp))
 	change_to(BATTLE_SCENE)
 
 

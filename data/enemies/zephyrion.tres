@@ -14,3 +14,4 @@ defense = 8
 speed = 6
 exp_reward = 120
 buttons_reward = 60
+can_run = false
