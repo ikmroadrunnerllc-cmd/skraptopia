@@ -16,7 +16,7 @@ Godot 4.7.2. Screen 640×360, scaled to a 1280×720 window. World camera zoom 2.
 | Phase | Status | Branch |
 |---|---|---|
 | 1. Foundations | **done** (user approved) | `phase-1-foundations` |
-| 2. Party battle | **gate-check:** G2.1–G2.4 passed; waiting for **G2.5, the user playing a battle and saying OK** | `phase-2-party-battle` (current) |
+| 2. Party battle | **done** (user approved) | `phase-2-party-battle` (current) |
 | 3. RPG systems | next: level-ups, Buttons, shop, items | — |
 | 4. Open world | map, rustling bushes, alphabet block puzzle | — |
 | 5. Story | cutscenes, clues, boss, notebook → SkrapBook, shrines (save) | — |

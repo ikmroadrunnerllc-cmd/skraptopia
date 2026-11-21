@@ -32,7 +32,7 @@ Gate 1:
 - [x] G1.4 Screenshot: Demari standing in the village; the 4 color versions side by side.
 - [x] G1.5 The user walked Demari around and said OK.
 
-## Phase 2: Party battle  (target: Nov 26)  status: gate-check
+## Phase 2: Party battle  (target: Nov 26)  status: done
 Goal: the side-view battle with two party members against a clay enemy.
 Needs: Phase 1
 Builds:
@@ -47,7 +47,7 @@ Gate 2:
 - [x] G2.2 Playtest: each of the 6 skills does what its description says (damage, heal, shield, buff, charge).
 - [x] G2.3 Playtest: winning and losing both end the battle correctly; Run works on normal enemies and is blocked on the boss.
 - [x] G2.4 Screenshot: a battle against the Clay Sludge in the woods.
-- [ ] G2.5 The user fought a battle and said OK.
+- [x] G2.5 The user fought a battle and said OK.
 
 ## Phase 3: RPG systems  (target: Nov 28)  status: todo
 Goal: growing stronger feels good.
