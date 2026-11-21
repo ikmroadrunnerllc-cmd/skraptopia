@@ -139,17 +139,84 @@ Money · Magic · Status · Knowledge/intelligence · Memories · Mental stabili
 > **Demari:** Oh, thank you!
 > **Casimir:** It's the least I can do for you saving me.
 
-## Open questions (team must settle these)
+## Decisions (settled 2026-11-21)
 
-The group docs disagree with each other here. Until each one is answered, the game shouldn't commit to either side.
+These override anything above that disagrees with them. Deadline: **about Dec 7, 2026**.
 
-- [ ] The witch's name: **Yasireth** (narrative doc), **Yalboa** (design doc), or just "the Arts n' Krafts Witch"? Pronouns: "his" or "them"?
-- [ ] Is Zephyrion a "dirt clay dragon" or a "terracotta dragon"? The clay model looks like a one-eyed humanoid, not a dragon.
-- [ ] Is Casimir a tin soldier, or something with a fin ("My arm! I mean, fin!")?
-- [ ] Is the tutorial enemy a slime or the Clay Sludge?
-- [ ] Is the Clay Sludge "Person B" from the theft plan?
-- [ ] Who is Person A (the thief)? Do they ever get caught?
-- [ ] Bosses: the walkthrough lists the Witch as a Level 1 boss, but the design doc says the witch doesn't appear. Assumed: the witch doesn't appear.
-- [ ] Is Mecha Orc one enemy or two (knight and lancer)? Do Amfurrbians and Nappin Susa appear in Level 1?
-- [ ] Does Zephyrion die or flee? ("dies as he was")
-- [ ] Do Block Town, Playroom Woods and Witch's Workshop all belong in Level 1?
+### Story
+
+- The witch is **Yalboa, the Arts n' Krafts Witch** (he/him). He doesn't appear in Level 1.
+- **Zephyrion** keeps his clay model (a multi-eyed clay creature) and the title "the Dirt Clay Dragon". The joke: *"You don't look much like a dragon." / "Commissions don't pay for wings."*
+- Casimir is a **tin soldier**. His opening line becomes *"Oh goodness, great heavens! My arm! My freshly polished arm!"*
+- The tutorial enemy is the **Clay Sludge**, and it is **Person B**. A clue reveals this.
+- **The thief (Person A)** escapes while Zephyrion causes a scene, and drops a **Yalboa sewing-needle badge**. Their identity stays a mystery for later levels.
+- **Zephyrion crumbles into dirt** after his last line: *"You think I wanted this? Clay doesn't pay rent, kid..."*
+- **Clues**, all in Block Town. Clues 1 and 2 can be found in any order; clue 3 appears only after both:
+  1. Toy train station bench: a torn guard's uniform. *"Someone swapped shifts with a palace guard..."*
+  2. Market wall note: *"Sludge kept the tin soldier busy..."*
+  3. Barrel behind the tavern: *"Meet at the tavern when the bells ring. Bring the book."* This unlocks the tavern boss.
+- **Notebook → SkrapBook:** Demari finds a plain notebook at the start and adds a page for each new enemy. After Zephyrion, the pages fly into the SkrapBook, and that's the reversal (Demari can use it).
+
+### What's playable
+
+- **Playable:** the tutorial fight (Playroom Woods), the castle talk with the guard's interruption, the Block Town investigation (3 clues), the tavern boss, and the knighting at the castle.
+- **Text screens:** the opening (getting the cursed game) and the ending (leaving with Casimir).
+- **Cut:** the moving toy train, the SkrapBook as a battle item, Amfurrbians, Nappin Susa, and the Witch's Workshop.
+
+### World
+
+- **One open-world map:** Playroom Woods → Road Carpet → Block Town (castle, shop, train station, market, tavern).
+- **Enemies hide in rustling bushes** (pixel-art bushes). Touching a bush starts the battle. Bushes **refill** after a while; story fights happen once.
+
+| Area | Enemies | Rough level |
+|---|---|---|
+| Playroom Woods | Clay Sludge, Pipe Spider | 1-2 |
+| Road Carpet | Pipe Spider, Paper-Dactyl, Magma Sludge | 2-4 |
+| Block Town outskirts | Paper-Dactyl, Mecha Orc Knight, Mecha Orc Lancer, Frost Spider, Ink-Dactyl, Gold Orc Knight (rare) | 4-6 |
+| Tavern | **Zephyrion** (boss, tuned for ~level 6) | 6 |
+
+- **Harder color versions** (color-shifted clay photos, about 1.5× stats, more EXP and Buttons, their own notebook page): Magma Sludge (red/orange), Frost Spider (icy blue), Ink-Dactyl (black/purple), Gold Orc Knight (gold, rare).
+- **Save points are small shrines.** Walk up and press confirm; there's no saving from the menu. Saving refills HP and MP. Locations: after the tutorial, near the Block Town shop, and outside the tavern.
+
+### Battle
+
+- **Side view:** Demari and Casimir on the left, the clay enemy on the right, and a backdrop made from our own map art. Party sprites are scaled 3× and step forward to act. Enemies play `idle` / `cast` / `damage`.
+- **Party:** Demari and Casimir both fight and share EXP. Level cap 10.
+- Both have Attack, Defend and Item. Demari can also Run. Level-ups raise HP, MP, Attack, Defense and Speed.
+
+| Level | Demari | Casimir |
+|---|---|---|
+| 1 | Scribble Strike: strong hit (3 MP) | Tin Shield: takes the next hit meant for Demari (3 MP) |
+| 3 | Patch Up: heals one ally (4 MP) | March Order: party Attack up for 3 turns (4 MP) |
+| 5 | Eraser Blast: big damage (6 MP) | Wind-Up Charge: winds up for a turn, then deals huge damage (5 MP) |
+
+- **Money is Buttons.** Enemies drop them, and Asmara gives some at the start of the quest.
+- **Shop (Block Town):** Glue Stick (30 HP), Juice Box (15 MP), Bandage Tape (full heal, one ally, expensive).
+
+| Move | Effect |
+|---|---|
+| Attack | Ninja Adventure Cut |
+| Scribble Strike | Ninja Adventure CutX |
+| Patch Up | Super Pixel Magic Burst (green) |
+| Eraser Blast | Super Pixel Explosion |
+| Tin Shield / March Order | Super Pixel Symbols |
+| Wind-Up Charge | Ninja Adventure Thunder, then Super Pixel Impact |
+| Enemy hits | Ninja Adventure Claw |
+| Zephyrion | Ninja Adventure Rock / RockSpike |
+
+- **Credits** must include "Super Pixel Effects by Will Tice / unTied Games".
+- **Music and sound:** Ninja Adventure audio.
+
+### Art
+
+- **Demari:** the real sheet (`Documents/Skraptopia Sprites Sheet/demari.png`, 4×4 of 32×48).
+- **Placeholders until the real art arrives:**
+  - Asmara: Ninja Adventure `Princess`. The team's princess file was a duplicate of Demari's, so we're waiting on the real one.
+  - Casimir: Ninja Adventure `Knight`.
+  - Guards (the Royal Toy Battalion): Ninja Adventure `CamouflageGreen`.
+
+### Team workflow
+
+- `jj921` re-downloads a fresh copy once. After that, `main` gets cleaned.
+- Teammates send art to Mario. Claude brings it into the project.
+- Work happens on branches, and only playable builds get merged into `main`.
