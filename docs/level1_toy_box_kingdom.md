@@ -182,6 +182,8 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 ### Battle
 
 - **Side view:** Demari and Casimir on the left, the clay enemy on the right, and a backdrop made from our own map art. Party sprites are scaled 3× and step forward to act. Enemies play `idle` / `cast` / `damage`.
+- **Enemy groups:** a bush fight has 1–3 enemies picked at random from that area's list, so different types can mix. The tutorial fight and the Zephyrion boss stay one-on-one. Each enemy takes its own turn. The party gets the EXP and Buttons of every enemy in the group.
+- **Targeting:** after picking Attack or a damage skill, the player moves an arrow onto the enemy they want to hit. Eraser Blast hits **all** enemies.
 - **Party:** Demari and Casimir both fight and share EXP. Level cap 10.
 - Both have Attack, Defend and Item. Demari can also Run. Level-ups raise HP, MP, Attack, Defense and Speed.
 
