@@ -34,13 +34,14 @@ func change_to(scene_path: String, spawn: String = "", position: Variant = null)
 	GameState.unlock(&"transition")
 
 
-func start_battle(enemy: EnemyData, encounter_id: String, backdrop: String = "woods") -> void:
-	if busy or enemy == null:
+func start_battle(enemies: Variant, encounter_id: String, backdrop: String = "woods") -> void:
+	var list: Array = (enemies if enemies is Array else [enemies]).filter(func(e: Variant) -> bool: return e is EnemyData)
+	if busy or list.is_empty():
 		return
 	var scene := get_tree().current_scene
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	GameState.pending_battle = {
-		"enemy": enemy,
+		"enemies": list,
 		"encounter_id": encounter_id,
 		"return_scene": scene.scene_file_path,
 		"return_position": player.global_position if player else Vector2.ZERO,

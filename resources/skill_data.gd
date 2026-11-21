@@ -10,4 +10,5 @@ extends Resource
 @export_enum("damage", "heal", "shield", "buff", "charge") var kind: String = "damage"
 @export var power: float = 1.0
 @export var turns: int = 0
+@export var hits_all: bool = false
 @export var effect: StringName = &""

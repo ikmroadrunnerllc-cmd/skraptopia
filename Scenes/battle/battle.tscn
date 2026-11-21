@@ -2,7 +2,6 @@
 
 [ext_resource type="Theme" path="res://ui/themes/jrpg_theme.tres" id="1_wqg5c"]
 [ext_resource type="Script" path="res://Scenes/battle/battle.gd" id="2_7jhgr"]
-[ext_resource type="Script" path="res://ui/components/stat_bar.gd" id="3_wjqfl"]
 [ext_resource type="Script" path="res://ui/components/choice_list.gd" id="4_n8n4j"]
 [ext_resource type="SpriteFrames" path="res://assets/characters/party/demari/demari_frames.tres" id="5_demari"]
 [ext_resource type="SpriteFrames" path="res://assets/characters/party/casimir/casimir_frames.tres" id="6_casimir"]
@@ -50,10 +49,6 @@ sprite_frames = ExtResource("5_demari")
 animation = &"Walking_Right"
 offset = Vector2(0, -19)
 
-[node name="Enemy" type="AnimatedSprite2D" parent="Stage" unique_id=912322901]
-unique_name_in_owner = true
-position = Vector2(470, 222)
-
 [node name="Margin" type="MarginContainer" parent="." unique_id=1297639039]
 layout_mode = 0
 anchor_right = 1.0
@@ -89,20 +84,8 @@ custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 
 [node name="EnemyInfo" type="VBoxContainer" parent="Margin/Layout/TopRow/EnemyPanel" unique_id=149954022]
-layout_mode = 2
-
-[node name="EnemyName" type="Label" parent="Margin/Layout/TopRow/EnemyPanel/EnemyInfo" unique_id=1163152994]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"NameLabel"
-text = "Enemy"
-horizontal_alignment = 1
-
-[node name="EnemyHP" type="HBoxContainer" parent="Margin/Layout/TopRow/EnemyPanel/EnemyInfo" unique_id=1971086641]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("3_wjqfl")
-bar_variation = &"EnemyHPBar"
 
 [node name="Spacer" type="Control" parent="Margin/Layout" unique_id=1622014393]
 layout_mode = 2

@@ -49,7 +49,7 @@ Gate 2:
 - [x] G2.4 Screenshot: a battle against the Clay Sludge in the woods.
 - [x] G2.5 The user fought a battle and said OK.
 
-## Phase 2b: Enemy groups  (target: Nov 23)  status: todo
+## Phase 2b: Enemy groups  (target: Nov 23)  status: gate-check
 Goal: fights can have 1–3 enemies at once, and you choose who to hit.
 Needs: Phase 2
 Builds:
@@ -60,10 +60,10 @@ Builds:
 - A simple area list for now: the field's Clay Sludge starts a random 1–3 group from the Playroom Woods list (Clay Sludge, Pipe Spider). Phase 4 bushes reuse this.
 - Victory adds up the EXP of all enemies; Run uses the group (blocked if any enemy can't run).
 Gate 2b:
-- [ ] G2b.1 Headless import and run: 0 errors.
-- [ ] G2b.2 Playtest: a 3-enemy battle; the target arrow hits the chosen enemy, Eraser Blast hits all of them, every living enemy acts, and you only win when all are down.
-- [ ] G2b.3 Playtest: a one-enemy battle (the boss) still works, and all older checks still pass.
-- [ ] G2b.4 Screenshot: a 3-enemy battle in the woods with the target arrow showing.
+- [x] G2b.1 Headless import and run: 0 errors.
+- [x] G2b.2 Playtest: a 3-enemy battle; the target arrow hits the chosen enemy, Eraser Blast hits all of them, every living enemy acts, and you only win when all are down.
+- [x] G2b.3 Playtest: a one-enemy battle (the boss) still works, and all older checks still pass.
+- [x] G2b.4 Screenshot: a 3-enemy battle in the woods with the target arrow showing.
 - [ ] G2b.5 The user fought a group battle and said OK.
 
 ## Phase 2c: Bonus boss Kilnoxx  (target: Nov 25)  status: todo

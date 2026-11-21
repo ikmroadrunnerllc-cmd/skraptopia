@@ -1,6 +1,8 @@
 extends Control
 
-enum State { BATTLE_START, PLAYER_TURN, ACTION_RESOLUTION, ENEMY_TURN, VICTORY, DEFEAT }
+signal target_picked(index: int)
+
+enum State { BATTLE_START, PLAYER_TURN, ACTION_RESOLUTION, ENEMY_TURN, VICTORY, DEFEAT, TARGETING }
 enum Command { ATTACK, SKILLS, ITEMS, DEFEND, RUN }
 
 const COMMANDS: Array[String] = ["Attack", "Skills", "Items", "Defend", "Run"]
@@ -9,15 +11,21 @@ const FALLBACK_ENEMY: EnemyData = preload("res://data/enemies/slime.tres")
 const PALETTE: Shader = preload("res://resources/shaders/palette_shift.gdshader")
 const FX_PATH := "res://assets/effects/battle/%s.tres"
 const BACKDROP_PATH := "res://assets/backgrounds/battle_%s.png"
+const BATTLE_MUSIC := "res://assets/audio/game/music/battle.ogg"
+const BOSS_MUSIC := "res://assets/audio/game/music/boss_zephyrion.mp3"
 const RUN_CHANCE := 0.7
 const ENEMY_MAX := Vector2(220, 150)
+const GROUP_MAX := Vector2(100, 100)
+const SLOTS := [
+	[Vector2(470, 222)],
+	[Vector2(420, 214), Vector2(550, 232)],
+	[Vector2(385, 208), Vector2(475, 234), Vector2(565, 212)],
+]
 const FX_SIZE := 72.0
 const STEP_FORWARD := 28.0
 
 @onready var _backdrop: TextureRect = %Backdrop
-@onready var _enemy_sprite: AnimatedSprite2D = %Enemy
-@onready var _enemy_name: Label = %EnemyName
-@onready var _enemy_hp: StatBar = %EnemyHP
+@onready var _enemy_info: VBoxContainer = %EnemyInfo
 @onready var _party_rows: VBoxContainer = %PartyRows
 @onready var _commands: ChoiceList = %Commands
 @onready var _message: Label = %Message
@@ -27,13 +35,16 @@ const STEP_FORWARD := 28.0
 @onready var _result_choices: ChoiceList = %ResultChoices
 
 var state: State = State.BATTLE_START
-var enemy: EnemyData
-var enemy_hp: int = 0
+var foes: Array[Dictionary] = []
 var actor: StringName = &""
 var shield_up: bool = false
 var buff_turns: int = 0
 var charging: bool = false
+var charge_target: int = 0
 var guarding: Dictionary = {}
+var music: AudioStreamPlayer
+var _target: int = 0
+var _arrow: Polygon2D
 var _order: Array[StringName] = []
 var _index: int = 0
 var _menu: String = "main"
@@ -45,13 +56,12 @@ var _rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
 	GameState.lock(&"battle")
-	enemy = GameState.pending_battle.get("enemy", FALLBACK_ENEMY)
-	enemy_hp = enemy.max_hp
 	_result.hide()
 	_commands.chosen.connect(_on_command)
 	_result_choices.chosen.connect(_on_result_choice)
 	_sprites = {&"demari": %Demari, &"casimir": %Casimir}
 	_setup_view()
+	_play_music()
 	_refresh()
 	_start()
 
@@ -60,12 +70,27 @@ func _setup_view() -> void:
 	var bd := BACKDROP_PATH % GameState.pending_battle.get("backdrop", "woods")
 	if ResourceLoader.exists(bd):
 		_backdrop.texture = load(bd)
-	_enemy_name.text = enemy.display_name
 	for id: StringName in _sprites:
 		_sprites[id].visible = id in GameState.party
 	for id in GameState.party:
 		_rows[id] = _make_row(id)
-	_setup_enemy_sprite()
+	var list: Array = GameState.pending_battle.get("enemies", [FALLBACK_ENEMY])
+	var counts := {}
+	for e: EnemyData in list:
+		counts[e.display_name] = counts.get(e.display_name, 0) + 1
+	var seen := {}
+	for i in list.size():
+		var e: EnemyData = list[i]
+		var label := e.display_name
+		if counts[label] > 1:
+			seen[label] = seen.get(label, 0) + 1
+			label += " " + "ABC"[seen[label] - 1]
+		_add_foe(e, label, SLOTS[list.size() - 1][i], ENEMY_MAX if list.size() == 1 else GROUP_MAX)
+	_arrow = Polygon2D.new()
+	_arrow.polygon = PackedVector2Array([Vector2(-7, -10), Vector2(7, -10), Vector2(0, 0)])
+	_arrow.color = Color(1, 0.9, 0.3)
+	_arrow.hide()
+	%Stage.add_child(_arrow)
 
 
 func _make_row(id: StringName) -> Dictionary:
@@ -88,54 +113,91 @@ func _make_row(id: StringName) -> Dictionary:
 	return {"name": name_label, "hp": hp_bar, "mp": mp_bar}
 
 
-func _setup_enemy_sprite() -> void:
-	var sf := enemy.frames
+func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> void:
+	var name_label := Label.new()
+	name_label.text = label
+	name_label.theme_type_variation = &"NameLabel"
+	name_label.custom_minimum_size.x = 84
+	var bar := StatBar.new()
+	bar.bar_variation = &"EnemyHPBar"
+	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	row.add_child(name_label)
+	row.add_child(bar)
+	_enemy_info.add_child(row)
+	var spr := AnimatedSprite2D.new()
+	spr.position = at
+	%Stage.add_child(spr)
+	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar}
+	foes.append(foe)
+	var sf := e.frames
 	if sf == null:
 		sf = SpriteFrames.new()
 		sf.add_animation(&"idle")
-		if enemy.sprite_sheet:
-			var at := AtlasTexture.new()
-			at.atlas = enemy.sprite_sheet
-			at.region = Rect2(Vector2.ZERO, enemy.sprite_sheet.get_size() / Vector2(maxi(enemy.hframes, 1), maxi(enemy.vframes, 1)))
-			sf.add_frame(&"idle", at)
-			_enemy_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		if e.sprite_sheet:
+			var at_tex := AtlasTexture.new()
+			at_tex.atlas = e.sprite_sheet
+			at_tex.region = Rect2(Vector2.ZERO, e.sprite_sheet.get_size() / Vector2(maxi(e.hframes, 1), maxi(e.vframes, 1)))
+			sf.add_frame(&"idle", at_tex)
+			spr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		else:
 			sf.add_frame(&"idle", PlaceholderTexture2D.new())
-	_enemy_sprite.sprite_frames = sf
+	spr.sprite_frames = sf
 	var first := sf.get_frame_texture(&"idle", 0)
-	var k := minf(ENEMY_MAX.x / first.get_width(), ENEMY_MAX.y / first.get_height())
-	_enemy_sprite.scale = Vector2(k, k)
-	if enemy.hue_shift != 0.0 or enemy.saturation != 1.0 or enemy.brightness != 1.0:
+	var k := minf(max_size.x / first.get_width(), max_size.y / first.get_height())
+	spr.scale = Vector2(k, k)
+	if e.hue_shift != 0.0 or e.saturation != 1.0 or e.brightness != 1.0:
 		var m := ShaderMaterial.new()
 		m.shader = PALETTE
-		m.set_shader_parameter("hue_shift", enemy.hue_shift)
-		m.set_shader_parameter("saturation", enemy.saturation)
-		m.set_shader_parameter("brightness", enemy.brightness)
-		_enemy_sprite.material = m
-	_enemy_sprite.frame_changed.connect(_align_enemy)
-	_enemy_sprite.animation_finished.connect(func() -> void: if enemy_hp > 0: _enemy_sprite.play(&"idle"))
-	_enemy_sprite.play(&"idle")
-	_align_enemy()
+		m.set_shader_parameter("hue_shift", e.hue_shift)
+		m.set_shader_parameter("saturation", e.saturation)
+		m.set_shader_parameter("brightness", e.brightness)
+		spr.material = m
+	spr.frame_changed.connect(_align_enemy.bind(spr))
+	spr.animation_finished.connect(func() -> void: if foe.hp > 0: spr.play(&"idle"))
+	spr.play(&"idle")
+	_align_enemy(spr)
 
 
-func _align_enemy() -> void:
-	var tex := _enemy_sprite.sprite_frames.get_frame_texture(_enemy_sprite.animation, _enemy_sprite.frame)
+func _align_enemy(spr: AnimatedSprite2D) -> void:
+	var tex := spr.sprite_frames.get_frame_texture(spr.animation, spr.frame)
 	if tex:
-		_enemy_sprite.offset = Vector2(0, -tex.get_height() / 2.0)
+		spr.offset = Vector2(0, -tex.get_height() / 2.0)
 
 
-func _enemy_anim(anim: StringName) -> void:
-	if _enemy_sprite.sprite_frames.has_animation(anim):
-		_enemy_sprite.play(anim)
+func _enemy_anim(i: int, anim: StringName) -> void:
+	var spr: AnimatedSprite2D = foes[i].sprite
+	if spr.sprite_frames.has_animation(anim):
+		spr.play(anim)
+
+
+func _play_music() -> void:
+	var path := BATTLE_MUSIC
+	for f in foes:
+		if f.data.id == &"zephyrion":
+			path = BOSS_MUSIC
+	if not ResourceLoader.exists(path):
+		return
+	var stream: AudioStream = load(path)
+	stream.set("loop", true)
+	music = AudioStreamPlayer.new()
+	music.stream = stream
+	music.volume_db = -8.0
+	add_child(music)
+	music.play()
 
 
 func _refresh() -> void:
-	_enemy_hp.set_values(enemy_hp, enemy.max_hp)
+	for i in foes.size():
+		var f: Dictionary = foes[i]
+		f.bar.set_values(f.hp, f.data.max_hp)
+		f.name.modulate = Color(1, 0.9, 0.4) if state == State.TARGETING and i == _target else Color.WHITE
 	for id: StringName in _rows:
 		var m := GameState.member(id)
 		_rows[id].hp.set_values(GameState.get_hp(id), m.max_hp)
 		_rows[id].mp.set_values(GameState.get_mp(id), m.max_mp)
-		_rows[id].name.modulate = Color(1, 0.9, 0.4) if id == actor and state == State.PLAYER_TURN else Color.WHITE
+		_rows[id].name.modulate = Color(1, 0.9, 0.4) if id == actor and state in [State.PLAYER_TURN, State.TARGETING] else Color.WHITE
 		var spr: AnimatedSprite2D = _sprites[id]
 		spr.modulate = Color(0.45, 0.45, 0.45) if GameState.get_hp(id) <= 0 else Color.WHITE
 
@@ -148,14 +210,34 @@ func _alive() -> Array[StringName]:
 	return out
 
 
+func _living() -> Array[int]:
+	var out: Array[int] = []
+	for i in foes.size():
+		if foes[i].hp > 0:
+			out.append(i)
+	return out
+
+
 func _start() -> void:
 	_commands.set_choices(COMMANDS, [0, 1, 2, 3, 4])
 	_commands.disarm()
-	await _say("A wild %s appears!" % enemy.display_name)
-	if enemy.speed > GameState.HERO.speed:
+	await _say(_intro_text())
+	var fastest := 0
+	for f in foes:
+		fastest = maxi(fastest, f.data.speed)
+	if fastest > GameState.HERO.speed:
 		await _enemy_turn()
 	else:
 		_begin_round()
+
+
+func _intro_text() -> String:
+	if foes.size() == 1:
+		return "A wild %s appears!" % foes[0].label
+	var names: Array[String] = []
+	for f in foes:
+		names.append(f.label)
+	return "%s and %s appear!" % [", ".join(PackedStringArray(names.slice(0, -1))), names[-1]]
 
 
 func _begin_round() -> void:
@@ -169,7 +251,7 @@ func _begin_round() -> void:
 func _next_actor() -> void:
 	if state == State.VICTORY or state == State.DEFEAT:
 		return
-	if enemy_hp <= 0:
+	if _living().is_empty():
 		_victory()
 		return
 	if _index >= _order.size():
@@ -195,7 +277,7 @@ func _show_main_menu() -> void:
 	var disabled: Array[int] = [Command.ITEMS]
 	if GameState.skills_for(actor).is_empty():
 		disabled.append(Command.SKILLS)
-	if actor != &"demari" or not enemy.can_run:
+	if actor != &"demari" or not _can_run():
 		disabled.append(Command.RUN)
 	_message.text = "What will %s do?" % GameState.member(actor).display_name
 	_commands.set_choices(COMMANDS, disabled)
@@ -203,7 +285,15 @@ func _show_main_menu() -> void:
 	_refresh()
 
 
+func _can_run() -> bool:
+	for f in foes:
+		if not f.data.can_run:
+			return false
+	return true
+
+
 func _show_skill_menu() -> void:
+	state = State.PLAYER_TURN
 	_menu = "skills"
 	_menu_skills = GameState.skills_for(actor)
 	var names: Array[String] = []
@@ -217,6 +307,7 @@ func _show_skill_menu() -> void:
 	_message.text = _menu_skills[0].description if not _menu_skills.is_empty() else ""
 	_commands.set_choices(names, disabled)
 	_commands.focus_first()
+	_refresh()
 
 
 func _on_command(index: int) -> void:
@@ -226,14 +317,25 @@ func _on_command(index: int) -> void:
 		if index >= _menu_skills.size():
 			_show_main_menu()
 			return
+		var s := _menu_skills[index]
+		var t := -1
+		if s.kind in ["damage", "charge"] and not s.hits_all:
+			t = await _choose_target()
+			if t < 0:
+				_show_skill_menu()
+				return
 		state = State.ACTION_RESOLUTION
-		await _use_skill(_menu_skills[index])
+		await _use_skill(s, t)
 		_end_action()
 		return
 	match index:
 		Command.ATTACK:
+			var t := await _choose_target()
+			if t < 0:
+				_show_main_menu()
+				return
 			state = State.ACTION_RESOLUTION
-			await _attack()
+			await _attack(t)
 			_end_action()
 		Command.SKILLS:
 			_show_skill_menu()
@@ -245,6 +347,54 @@ func _on_command(index: int) -> void:
 		Command.RUN:
 			state = State.ACTION_RESOLUTION
 			await _try_run()
+
+
+func _choose_target() -> int:
+	var alive := _living()
+	if alive.size() == 1:
+		return alive[0]
+	if not alive.has(_target):
+		_target = alive[0]
+	state = State.TARGETING
+	_commands.disarm()
+	get_viewport().gui_release_focus()
+	_show_target()
+	var pick: int = await target_picked
+	_arrow.hide()
+	return pick
+
+
+func _show_target() -> void:
+	var spr: AnimatedSprite2D = foes[_target].sprite
+	var tex := spr.sprite_frames.get_frame_texture(spr.animation, spr.frame)
+	_arrow.position = spr.position + Vector2(0, -tex.get_height() * spr.scale.y - 6)
+	_arrow.show()
+	_message.text = "Choose a target: %s" % foes[_target].label
+	_refresh()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if state != State.TARGETING:
+		return
+	if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_up") or event.is_action_pressed("ControllerLeftMovement"):
+		_move_target(-1)
+	elif event.is_action_pressed("ui_right") or event.is_action_pressed("ui_down") or event.is_action_pressed("ControllerRightMovement"):
+		_move_target(1)
+	elif event.is_action_pressed("ui_accept") or event.is_action_pressed("interact"):
+		state = State.ACTION_RESOLUTION
+		target_picked.emit(_target)
+	elif event.is_action_pressed("ui_cancel"):
+		state = State.PLAYER_TURN
+		target_picked.emit(-1)
+	else:
+		return
+	get_viewport().set_input_as_handled()
+
+
+func _move_target(step: int) -> void:
+	var alive := _living()
+	_target = alive[(alive.find(_target) + step + alive.size()) % alive.size()]
+	_show_target()
 
 
 func _end_action() -> void:
@@ -260,34 +410,44 @@ func _attack_power(id: StringName) -> int:
 	return int(a * 1.5) if buff_turns > 0 else a
 
 
-func _hit_enemy(dmg: int, fx: StringName) -> void:
-	enemy_hp = maxi(enemy_hp - dmg, 0)
-	_play_fx(fx, _enemy_center())
-	_enemy_anim(&"damage")
-	_flash(_enemy_sprite)
+func _hit_enemy(i: int, dmg: int, fx: StringName) -> void:
+	var f: Dictionary = foes[i]
+	f.hp = maxi(f.hp - dmg, 0)
+	_play_fx(fx, _enemy_center(i))
+	_enemy_anim(i, &"damage")
+	_flash(f.sprite)
 	_refresh()
-	if enemy_hp <= 0:
+	if f.hp <= 0:
 		var t := create_tween()
-		t.tween_property(_enemy_sprite, "modulate:a", 0.0, 0.6)
+		t.tween_property(f.sprite, "modulate:a", 0.0, 0.6)
+		f.name.modulate = Color(0.5, 0.5, 0.5)
 
 
-func _attack() -> void:
+func _attack(t: int) -> void:
 	await _step(actor)
-	var dmg := _damage(_attack_power(actor), enemy.defense)
-	_hit_enemy(dmg, &"na_cut")
-	await _say("%s attacks! %s takes %d damage." % [GameState.member(actor).display_name, enemy.display_name, dmg])
+	var dmg := _damage(_attack_power(actor), foes[t].data.defense)
+	_hit_enemy(t, dmg, &"na_cut")
+	await _say("%s attacks! %s takes %d damage." % [GameState.member(actor).display_name, foes[t].label, dmg])
 
 
-func _use_skill(s: SkillData) -> void:
+func _use_skill(s: SkillData, t: int) -> void:
 	var who := GameState.member(actor).display_name
 	GameState.set_member_mp(actor, GameState.get_mp(actor) - s.mp_cost)
 	_refresh()
 	await _step(actor)
 	match s.kind:
 		"damage":
-			var dmg := _damage(int(_attack_power(actor) * s.power), enemy.defense)
-			_hit_enemy(dmg, s.effect)
-			await _say("%s uses %s! %s takes %d damage." % [who, s.display_name, enemy.display_name, dmg])
+			if s.hits_all:
+				var total := 0
+				for i in _living():
+					var d := _damage(int(_attack_power(actor) * s.power), foes[i].data.defense)
+					total += d
+					_hit_enemy(i, d, s.effect)
+				await _say("%s uses %s! It hits every enemy for %d damage in total." % [who, s.display_name, total])
+			else:
+				var dmg := _damage(int(_attack_power(actor) * s.power), foes[t].data.defense)
+				_hit_enemy(t, dmg, s.effect)
+				await _say("%s uses %s! %s takes %d damage." % [who, s.display_name, foes[t].label, dmg])
 		"heal":
 			var target := _most_hurt()
 			var before := GameState.get_hp(target)
@@ -306,6 +466,7 @@ func _use_skill(s: SkillData) -> void:
 			await _say("%s calls a March Order! The party's Attack rises." % who)
 		"charge":
 			charging = true
+			charge_target = t
 			_play_fx(&"sp_windup", _center_of(actor))
 			await _say("%s starts winding his key..." % who)
 
@@ -316,10 +477,11 @@ func _unleash_charge() -> void:
 	for k in GameState.SKILLS:
 		if k.kind == "charge":
 			s = k
+	var t := charge_target if foes[charge_target].hp > 0 else _living()[0]
 	await _step(&"casimir")
-	var dmg := _damage(int(_attack_power(&"casimir") * s.power), enemy.defense)
-	_hit_enemy(dmg, s.effect)
-	await _say("Casimir unleashes the Wind-Up Charge! %s takes %d damage." % [enemy.display_name, dmg])
+	var dmg := _damage(int(_attack_power(&"casimir") * s.power), foes[t].data.defense)
+	_hit_enemy(t, dmg, s.effect)
+	await _say("Casimir unleashes the Wind-Up Charge! %s takes %d damage." % [foes[t].label, dmg])
 
 
 func _most_hurt() -> StringName:
@@ -347,37 +509,42 @@ func _enemy_turn() -> void:
 	state = State.ENEMY_TURN
 	actor = &""
 	_refresh()
-	var targets := _alive()
-	if targets.is_empty():
-		_defeat()
-		return
-	var target: StringName = targets[_rng.randi_range(0, targets.size() - 1)]
-	var blocked := false
-	if target == &"demari" and shield_up and GameState.get_hp(&"casimir") > 0:
-		target = &"casimir"
-		shield_up = false
-		blocked = true
-	_enemy_anim(&"cast")
-	var dmg := _damage(enemy.attack, GameState.member(target).defense)
-	if guarding.get(target, false):
-		dmg = maxi(1, int(dmg / 2.0))
-	GameState.set_member_hp(target, GameState.get_hp(target) - dmg)
-	_play_fx(&"na_rock" if enemy.id == &"zephyrion" else &"na_claw", _center_of(target))
-	_flash(_sprites[target])
-	_refresh()
-	var tname := GameState.member(target).display_name
-	if blocked:
-		await _say("Casimir blocks the hit for Demari! He takes %d damage." % dmg)
-	else:
-		await _say("%s attacks! %s takes %d damage." % [enemy.display_name, tname, dmg])
-	if GameState.get_hp(target) <= 0:
-		await _say("%s is knocked out!" % tname)
+	for i in _living():
+		if _alive().is_empty():
+			break
+		await _foe_attacks(i)
 	if _alive().is_empty():
 		_defeat()
 		return
 	if buff_turns > 0:
 		buff_turns -= 1
 	_begin_round()
+
+
+func _foe_attacks(i: int) -> void:
+	var f: Dictionary = foes[i]
+	var targets := _alive()
+	var target: StringName = targets[_rng.randi_range(0, targets.size() - 1)]
+	var blocked := false
+	if target == &"demari" and shield_up and GameState.get_hp(&"casimir") > 0:
+		target = &"casimir"
+		shield_up = false
+		blocked = true
+	_enemy_anim(i, &"cast")
+	var dmg := _damage(f.data.attack, GameState.member(target).defense)
+	if guarding.get(target, false):
+		dmg = maxi(1, int(dmg / 2.0))
+	GameState.set_member_hp(target, GameState.get_hp(target) - dmg)
+	_play_fx(&"na_rock" if f.data.id == &"zephyrion" else &"na_claw", _center_of(target))
+	_flash(_sprites[target])
+	_refresh()
+	var tname := GameState.member(target).display_name
+	if blocked:
+		await _say("Casimir blocks the hit for Demari! He takes %d damage." % dmg)
+	else:
+		await _say("%s attacks! %s takes %d damage." % [f.label, tname, dmg])
+	if GameState.get_hp(target) <= 0:
+		await _say("%s is knocked out!" % tname)
 
 
 func _damage(attack: int, defense: int) -> int:
@@ -390,10 +557,14 @@ func _victory() -> void:
 	for id in GameState.party:
 		if GameState.get_hp(id) <= 0:
 			GameState.set_member_hp(id, 1)
-	GameState.add_exp(enemy.exp_reward)
-	GameState.mark_defeated(GameState.pending_battle.get("encounter_id", ""), enemy.id)
+	var total := 0
+	for f in foes:
+		total += f.data.exp_reward
+		GameState.mark_defeated(GameState.pending_battle.get("encounter_id", ""), f.data.id)
+	GameState.add_exp(total)
 	_refresh()
-	_show_result("Victory!", "%s was defeated.\nThe party gained %d EXP." % [enemy.display_name, enemy.exp_reward], ["Continue"])
+	var who: String = "%s was defeated." % foes[0].label if foes.size() == 1 else "All enemies were defeated."
+	_show_result("Victory!", "%s\nThe party gained %d EXP." % [who, total], ["Continue"])
 
 
 func _defeat() -> void:
@@ -446,9 +617,10 @@ func _center_of(id: StringName) -> Vector2:
 	return spr.position + Vector2(0, -h * 0.45)
 
 
-func _enemy_center() -> Vector2:
-	var tex := _enemy_sprite.sprite_frames.get_frame_texture(_enemy_sprite.animation, _enemy_sprite.frame)
-	return _enemy_sprite.position + Vector2(0, -tex.get_height() * _enemy_sprite.scale.y * 0.5)
+func _enemy_center(i: int) -> Vector2:
+	var spr: AnimatedSprite2D = foes[i].sprite
+	var tex := spr.sprite_frames.get_frame_texture(spr.animation, spr.frame)
+	return spr.position + Vector2(0, -tex.get_height() * spr.scale.y * 0.5)
 
 
 func _play_fx(id: StringName, at: Vector2) -> void:

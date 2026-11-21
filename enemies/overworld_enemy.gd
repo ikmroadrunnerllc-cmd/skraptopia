@@ -3,6 +3,7 @@ extends Area2D
 
 @export var data: EnemyData
 @export var encounter_id: String = ""
+@export var group_pool: Array[EnemyData] = []
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -36,4 +37,8 @@ func _on_body_entered(body: Node) -> void:
 		return
 	_triggered = true
 	set_deferred("monitoring", false)
-	SceneManager.start_battle(data, encounter_id)
+	var group: Array = [data]
+	if not group_pool.is_empty():
+		for i in randi_range(0, 2):
+			group.append(group_pool.pick_random())
+	SceneManager.start_battle(group, encounter_id)

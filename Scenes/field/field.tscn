@@ -5,6 +5,9 @@
 [ext_resource type="PackedScene" path="res://PlayerScene.tscn" id="3_dyqcr"]
 [ext_resource type="PackedScene" path="res://enemies/overworld_enemy.tscn" id="5_xtgtv"]
 [ext_resource type="Resource" path="res://data/enemies/slime.tres" id="7_pueth"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="8_edata"]
+[ext_resource type="Resource" path="res://data/enemies/clay_sludge.tres" id="9_sludge"]
+[ext_resource type="Resource" path="res://data/enemies/pipe_spider.tres" id="10_spider"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gmfb"]
 size = Vector2(112, 8)
@@ -49,3 +52,4 @@ position = Vector2(248, 184)
 collision_layer = 0
 data = ExtResource("7_pueth")
 encounter_id = "field_slime_1"
+group_pool = Array[ExtResource("8_edata")]([ExtResource("9_sludge"), ExtResource("10_spider")])
