@@ -8,6 +8,13 @@
 [ext_resource type="Script" path="res://resources/enemy_data.gd" id="8_edata"]
 [ext_resource type="Resource" path="res://data/enemies/clay_sludge.tres" id="9_sludge"]
 [ext_resource type="Resource" path="res://data/enemies/pipe_spider.tres" id="10_spider"]
+[ext_resource type="Resource" path="res://data/enemies/paper_dactyl.tres" id="demo_paper_dactyl"]
+[ext_resource type="Resource" path="res://data/enemies/mecha_orc_knight.tres" id="demo_mecha_orc_knight"]
+[ext_resource type="Resource" path="res://data/enemies/mecha_orc_lancer.tres" id="demo_mecha_orc_lancer"]
+[ext_resource type="Resource" path="res://data/enemies/magma_sludge.tres" id="demo_magma_sludge"]
+[ext_resource type="Resource" path="res://data/enemies/frost_spider.tres" id="demo_frost_spider"]
+[ext_resource type="Resource" path="res://data/enemies/ink_dactyl.tres" id="demo_ink_dactyl"]
+[ext_resource type="Resource" path="res://data/enemies/gold_orc_knight.tres" id="demo_gold_orc_knight"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gmfb"]
 size = Vector2(112, 8)
@@ -52,4 +59,4 @@ position = Vector2(248, 184)
 collision_layer = 0
 data = ExtResource("7_pueth")
 encounter_id = "field_slime_1"
-group_pool = Array[ExtResource("8_edata")]([ExtResource("9_sludge"), ExtResource("10_spider")])
+group_pool = Array[ExtResource("8_edata")]([ExtResource("9_sludge"), ExtResource("10_spider"), ExtResource("demo_paper_dactyl"), ExtResource("demo_mecha_orc_knight"), ExtResource("demo_mecha_orc_lancer"), ExtResource("demo_magma_sludge"), ExtResource("demo_frost_spider"), ExtResource("demo_ink_dactyl"), ExtResource("demo_gold_orc_knight")])

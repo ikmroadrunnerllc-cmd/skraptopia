@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/bosses/captain_crackjack/captain_crackjack_frames.tres" id="1_frames"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+id = &"captain_crackjack"
+display_name = "Captain CrackJack"
+frames = ExtResource("1_frames")
+max_hp = 380
+attack = 25
+defense = 12
+speed = 9
+exp_reward = 260
+buttons_reward = 130
+can_run = false

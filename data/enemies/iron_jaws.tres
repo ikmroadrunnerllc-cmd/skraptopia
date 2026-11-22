@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/bosses/iron_jaws/iron_jaws_frames.tres" id="1_frames"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+id = &"iron_jaws"
+display_name = "Iron Jaws"
+frames = ExtResource("1_frames")
+max_hp = 320
+attack = 22
+defense = 10
+speed = 7
+exp_reward = 200
+buttons_reward = 100
+can_run = false

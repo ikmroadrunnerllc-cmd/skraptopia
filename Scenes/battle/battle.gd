@@ -12,7 +12,12 @@ const PALETTE: Shader = preload("res://resources/shaders/palette_shift.gdshader"
 const FX_PATH := "res://assets/effects/battle/%s.tres"
 const BACKDROP_PATH := "res://assets/backgrounds/battle_%s.png"
 const BATTLE_MUSIC := "res://assets/audio/game/music/battle.ogg"
-const BOSS_MUSIC := "res://assets/audio/game/music/boss_zephyrion.mp3"
+const BOSS_MUSIC := {
+	&"zephyrion": "res://assets/audio/game/music/boss_zephyrion.mp3",
+	&"iron_jaws": "res://assets/audio/game/music/boss_iron_jaws.mp3",
+	&"kilnoxx": "res://assets/audio/game/music/boss_kilnoxx.mp3",
+	&"captain_crackjack": "res://assets/audio/game/music/boss_captain_crackjack.mp3",
+}
 const RUN_CHANCE := 0.7
 const ENEMY_MAX := Vector2(220, 150)
 const GROUP_MAX := Vector2(100, 100)
@@ -175,8 +180,8 @@ func _enemy_anim(i: int, anim: StringName) -> void:
 func _play_music() -> void:
 	var path := BATTLE_MUSIC
 	for f in foes:
-		if f.data.id == &"zephyrion":
-			path = BOSS_MUSIC
+		if BOSS_MUSIC.has(f.data.id):
+			path = BOSS_MUSIC[f.data.id]
 	if not ResourceLoader.exists(path):
 		return
 	var stream: AudioStream = load(path)

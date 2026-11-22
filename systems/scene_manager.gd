@@ -18,6 +18,38 @@ func _ready() -> void:
 	add_child(_fade)
 
 
+const TEST_BOSSES := {
+	KEY_F1: "iron_jaws",
+	KEY_F2: "kilnoxx",
+	KEY_F3: "captain_crackjack",
+	KEY_F4: "zephyrion",
+}
+const TEST_MONSTERS: Array[String] = [
+	"clay_sludge", "pipe_spider", "paper_dactyl", "mecha_orc_knight", "mecha_orc_lancer",
+	"magma_sludge", "frost_spider", "ink_dactyl", "gold_orc_knight",
+]
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not OS.is_debug_build() or not event is InputEventKey or not event.pressed or event.echo:
+		return
+	if GameState.is_locked() or get_tree().get_first_node_in_group("player") == null:
+		return
+	var key: Key = event.keycode
+	if TEST_BOSSES.has(key) or key == KEY_F6:
+		GameState.restore_party()
+	if TEST_BOSSES.has(key):
+		start_battle(load("res://data/enemies/%s.tres" % TEST_BOSSES[key]), "test_" + TEST_BOSSES[key])
+	elif key == KEY_F6:
+		var group: Array = []
+		for i in randi_range(1, 3):
+			group.append(load("res://data/enemies/%s.tres" % TEST_MONSTERS.pick_random()))
+		start_battle(group, "test_group")
+	else:
+		return
+	get_viewport().set_input_as_handled()
+
+
 func change_to(scene_path: String, spawn: String = "", position: Variant = null) -> void:
 	if busy:
 		return

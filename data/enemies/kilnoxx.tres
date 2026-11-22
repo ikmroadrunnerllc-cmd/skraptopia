@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/characters/bosses/kilnoxx/kilnoxx_frames.tres" id="1_frames"]
+[ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+id = &"kilnoxx"
+display_name = "Kilnoxx"
+frames = ExtResource("1_frames")
+max_hp = 480
+attack = 30
+defense = 14
+speed = 8
+exp_reward = 350
+buttons_reward = 180
+can_run = false
