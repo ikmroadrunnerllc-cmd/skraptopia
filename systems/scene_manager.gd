@@ -23,6 +23,7 @@ const TEST_BOSSES := {
 	KEY_F2: "kilnoxx",
 	KEY_F3: "captain_crackjack",
 	KEY_F4: "zephyrion",
+	KEY_F7: "mecha_orc_knight",
 }
 const TEST_MONSTERS: Array[String] = [
 	"clay_sludge", "pipe_spider", "paper_dactyl", "mecha_orc_knight", "mecha_orc_lancer",

@@ -5,6 +5,7 @@ signal enemy_defeated(enemy_id: StringName)
 
 const HERO: CharacterData = preload("res://data/characters/hero.tres")
 const CASIMIR: CharacterData = preload("res://data/characters/casimir.tres")
+const SETTINGS_PATH := "user://settings.cfg"
 const SKILLS: Array[SkillData] = [
 	preload("res://data/skills/scribble_strike.tres"),
 	preload("res://data/skills/patch_up.tres"),
@@ -24,6 +25,21 @@ var level: int = HERO.level
 var defeated_encounters: Dictionary = {}
 var pending_battle: Dictionary = {}
 var _locks: Dictionary = {}
+var boss_music_lyrics: bool = false
+
+
+func _ready() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) == OK:
+		boss_music_lyrics = cfg.get_value("audio", "boss_music_lyrics", false)
+
+
+func set_boss_music_lyrics(on: bool) -> void:
+	boss_music_lyrics = on
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS_PATH)
+	cfg.set_value("audio", "boss_music_lyrics", on)
+	cfg.save(SETTINGS_PATH)
 
 
 func lock(reason: StringName) -> void:

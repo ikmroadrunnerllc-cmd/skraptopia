@@ -281,6 +281,9 @@ func _play_music() -> void:
 	for f in foes:
 		if BOSS_MUSIC.has(f.data.id):
 			path = BOSS_MUSIC[f.data.id]
+	var lyrics := path.replace(".mp3", "_lyrics.mp3")
+	if GameState.boss_music_lyrics and lyrics != path and ResourceLoader.exists(lyrics):
+		path = lyrics
 	if not ResourceLoader.exists(path):
 		return
 	var stream: AudioStream = load(path)

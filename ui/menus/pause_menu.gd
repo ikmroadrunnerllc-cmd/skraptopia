@@ -1,6 +1,6 @@
 extends Control
 
-const ITEMS: Array[String] = ["Status", "Quests", "Resume"]
+const ITEMS: Array[String] = ["Status", "Quests", "Boss music", "Resume"]
 
 @onready var _list: ChoiceList = %MenuList
 @onready var _info_panel: PanelContainer = %InfoPanel
@@ -49,8 +49,14 @@ func _open_menu() -> void:
 func _back_to_list() -> void:
 	_in_submenu = false
 	_info_panel.hide()
-	_list.set_choices(ITEMS)
+	_list.set_choices(_items())
 	_list.focus_first()
+
+
+func _items() -> Array[String]:
+	var out := ITEMS.duplicate()
+	out[2] = "Boss music: %s" % ("Lyrics" if GameState.boss_music_lyrics else "Instrumental")
+	return out
 
 
 func _close_menu() -> void:
@@ -69,6 +75,10 @@ func _on_chosen(index: int) -> void:
 		1:
 			_show_info(_quest_text())
 		2:
+			GameState.set_boss_music_lyrics(not GameState.boss_music_lyrics)
+			_list.set_choices(_items())
+			(_list.get_child(2) as Button).grab_focus()
+		3:
 			_close_menu()
 
 
@@ -76,7 +86,7 @@ func _show_info(text: String) -> void:
 	_in_submenu = true
 	_info.text = text
 	_info_panel.show()
-	_list.set_choices(ITEMS)
+	_list.set_choices(_items())
 	_list.disarm()
 	_list.focus_first()
 
