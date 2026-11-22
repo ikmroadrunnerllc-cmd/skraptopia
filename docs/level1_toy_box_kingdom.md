@@ -186,11 +186,17 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
   | Where | A toy fishbowl pond in **Playroom Woods**, behind bushes. Sign: *"Something is ticking under the water..."* | A scorched clearing in **Road Carpet**, behind an easy-to-miss gap in the trees. Sign: *"Turn back. The kiln is lit."* | A closed platform at the **Block Town** train station (not the clue-1 bench). Sign: *"Platform closed by order of the Captain."* |
   | Tuned for | level 7 | level 9–10 | level 8 |
   | Normal attack | Chomp (one target) | Fire attack (one target) | Arm Cannon (one target) |
-  | Rage line | *"Its spring winds tighter!"* (red eye flashes) | *"Its feathers ignite!"* (turns white-gold, palette shader) | *"He blasts off into the air!"* (hovers; takes 30% less damage while raging) |
+  | Rage line | *"Its spring winds tighter!"* (red eye flashes) | *「我が羽よ、燃え上がれ！」* ("My feathers, burst into flame!", in Japanese on purpose; turns white-gold, palette shader) | *"He blasts off into the air!"* (hovers; takes 30% less damage while raging) |
   | Special | **Clockwork Frenzy:** bites one target twice | **Inferno Wings:** hits both party members | **Liberty Dash:** hits both party members |
   | Drop | **Steel Fang:** the party deals +15% damage | **Phoenix Feather:** once per battle, revives the first knocked-out ally at half HP (*"The Phoenix Feather glows!"*) | **Star Medal:** the party takes 15% less damage |
   | Icon | Kyrise `necklace_03e` | Ninja Adventure `Resource/feather.png` | Kyrise `necklace_02d` |
 
+  - **Rage moment (settled 2026-11-22):** the rage line appears big in the middle of the screen with shaking letters, in each boss's own font and color (Iron Jaws: New Rocker, steel blue; Kilnoxx: WDXL Lubrifont TC, fire orange; CrackJack: Ewert, red). The screen shakes on rage and on each special. Then the party quips:
+    - Iron Jaws: Demari *"A wind-up fish... with anger issues."* / Casimir *"Who keeps winding that thing?!"*
+    - Kilnoxx: Demari *"...Does anyone here speak Japanese?"* / Casimir *"No, but I'm pretty sure it means 'run.'"*
+    - CrackJack: Demari *"Since when do nutcrackers FLY?!"* / Casimir *"Since when do they have cannons?!"*
+    - The ogre (Mecha Orc, for its cutscene later) uses Creepster, green: *"The ogre roars with rage!"* / Demari *"I think we made it mad."* / Casimir *"You think?!"*
+    - Fonts are in `assets/ui/fonts/bosses/` with their SIL Open Font License files; credit them in the game credits.
   - **Boss music:** each bonus boss has the user's own Suno song in two versions. The **instrumental** plays by default; Settings can switch boss fights to the **lyrics** versions. Zephyrion keeps "Clay Doesn't Pay" (one version only).
   - **Boss Rush** (Phase 6): unlocks after beating all 4 bosses (Zephyrion, Iron Jaws, Kilnoxx, Captain CrackJack). A Boss Rush option appears in the pause menu: all 4 back to back, HP and MP refill halfway, losing returns you with no penalty, and winning gives a SkrapBook trophy and the title "Boss Rush Champion".
 - **Save points are small shrines.** Walk up and press confirm; there's no saving from the menu. Saving refills HP and MP. Locations: after the tutorial, near the Block Town shop, and outside the tavern.

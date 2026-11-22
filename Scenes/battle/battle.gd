@@ -18,6 +18,26 @@ const BOSS_MUSIC := {
 	&"kilnoxx": "res://assets/audio/game/music/boss_kilnoxx.mp3",
 	&"captain_crackjack": "res://assets/audio/game/music/boss_captain_crackjack.mp3",
 }
+const BOSS_FONTS := "res://assets/ui/fonts/bosses/%s.ttf"
+const BOSS_RAGE := {
+	&"iron_jaws": {
+		"line": "Its spring winds tighter!", "font": "NewRocker-Regular", "color": Color(0.16, 0.78, 0.86),
+		"special": "Clockwork Frenzy", "both": false,
+		"quips": [[&"demari", "A wind-up fish... with anger issues."], [&"casimir", "Who keeps winding that thing?!"]],
+	},
+	&"kilnoxx": {
+		"line": "我が羽よ、燃え上がれ！", "font": "WDXLLubrifontTC-Regular", "color": Color(1.0, 0.47, 0.08),
+		"special": "Inferno Wings", "both": true,
+		"quips": [[&"demari", "...Does anyone here speak Japanese?"], [&"casimir", "No, but I'm pretty sure it means \"run.\""]],
+	},
+	&"captain_crackjack": {
+		"line": "He blasts off into the air!", "font": "Ewert-Regular", "color": Color(0.9, 0.16, 0.2),
+		"special": "Liberty Dash", "both": true,
+		"quips": [[&"demari", "Since when do nutcrackers FLY?!"], [&"casimir", "Since when do they have cannons?!"]],
+	},
+}
+const RAGE_ATTACK := 1.3
+const QUIP_TIME := 1.6
 const RUN_CHANCE := 0.7
 const ENEMY_MAX := Vector2(220, 150)
 const GROUP_MAX := Vector2(100, 100)
@@ -134,7 +154,7 @@ func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> vo
 	var spr := AnimatedSprite2D.new()
 	spr.position = at
 	%Stage.add_child(spr)
-	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar}
+	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar, "raging": false, "rage_turns": 0, "rest": &"idle"}
 	foes.append(foe)
 	var sf := e.frames
 	if sf == null:
@@ -160,7 +180,7 @@ func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> vo
 		m.set_shader_parameter("brightness", e.brightness)
 		spr.material = m
 	spr.frame_changed.connect(_align_enemy.bind(spr))
-	spr.animation_finished.connect(func() -> void: if foe.hp > 0: spr.play(&"idle"))
+	spr.animation_finished.connect(func() -> void: if foe.hp > 0: spr.play(foe.rest))
 	spr.play(&"idle")
 	_align_enemy(spr)
 
@@ -528,6 +548,14 @@ func _enemy_turn() -> void:
 
 func _foe_attacks(i: int) -> void:
 	var f: Dictionary = foes[i]
+	var rage: Dictionary = BOSS_RAGE.get(f.data.id, {})
+	if not rage.is_empty() and not f.raging and f.hp * 2 <= f.data.max_hp:
+		await _enrage(i, rage)
+	if f.raging:
+		f.rage_turns += 1
+		if f.rage_turns % 2 == 1:
+			await _special(i, rage)
+			return
 	var targets := _alive()
 	var target: StringName = targets[_rng.randi_range(0, targets.size() - 1)]
 	var blocked := false
@@ -536,13 +564,7 @@ func _foe_attacks(i: int) -> void:
 		shield_up = false
 		blocked = true
 	_enemy_anim(i, &"cast")
-	var dmg := _damage(f.data.attack, GameState.member(target).defense)
-	if guarding.get(target, false):
-		dmg = maxi(1, int(dmg / 2.0))
-	GameState.set_member_hp(target, GameState.get_hp(target) - dmg)
-	_play_fx(&"na_rock" if f.data.id == &"zephyrion" else &"na_claw", _center_of(target))
-	_flash(_sprites[target])
-	_refresh()
+	var dmg := _hit_member(i, target, &"na_rock" if f.data.id == &"zephyrion" else &"na_claw")
 	var tname := GameState.member(target).display_name
 	if blocked:
 		await _say("Casimir blocks the hit for Demari! He takes %d damage." % dmg)
@@ -550,6 +572,91 @@ func _foe_attacks(i: int) -> void:
 		await _say("%s attacks! %s takes %d damage." % [f.label, tname, dmg])
 	if GameState.get_hp(target) <= 0:
 		await _say("%s is knocked out!" % tname)
+
+
+func _foe_attack_power(i: int) -> int:
+	var f: Dictionary = foes[i]
+	return int(f.data.attack * RAGE_ATTACK) if f.raging else f.data.attack
+
+
+func _hit_member(i: int, target: StringName, fx: StringName) -> int:
+	var dmg := _damage(_foe_attack_power(i), GameState.member(target).defense)
+	if guarding.get(target, false):
+		dmg = maxi(1, int(dmg / 2.0))
+	GameState.set_member_hp(target, GameState.get_hp(target) - dmg)
+	_play_fx(fx, _center_of(target))
+	_flash(_sprites[target])
+	_refresh()
+	return dmg
+
+
+func _enrage(i: int, rage: Dictionary) -> void:
+	var f: Dictionary = foes[i]
+	f.raging = true
+	if f.sprite.sprite_frames.has_animation(&"hover"):
+		f.rest = &"hover"
+	_enemy_anim(i, &"rage")
+	_shake()
+	_message.text = "%s is enraged! Its Attack rises!" % f.label
+	await _rage_banner(rage)
+	for q: Array in rage.quips:
+		if q[0] in _alive():
+			await _say("%s: %s" % [GameState.member(q[0]).display_name, q[1]], QUIP_TIME)
+
+
+func _rage_banner(rage: Dictionary) -> void:
+	var banner := RichTextLabel.new()
+	banner.bbcode_enabled = true
+	banner.fit_content = true
+	banner.scroll_active = false
+	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	banner.size = Vector2(size.x, 0)
+	banner.position = Vector2(0, size.y * 0.3)
+	var font_path := BOSS_FONTS % rage.font
+	if ResourceLoader.exists(font_path):
+		banner.add_theme_font_override("normal_font", load(font_path))
+	banner.add_theme_font_size_override("normal_font_size", 32)
+	banner.add_theme_color_override("default_color", rage.color)
+	banner.add_theme_color_override("font_outline_color", Color.BLACK)
+	banner.add_theme_constant_override("outline_size", 8)
+	banner.text = "[center][shake rate=25.0 level=12]%s[/shake][/center]" % rage.line
+	add_child(banner)
+	await get_tree().create_timer(QUIP_TIME * 1.5).timeout
+	var t := create_tween()
+	t.tween_property(banner, "modulate:a", 0.0, 0.3)
+	await t.finished
+	banner.queue_free()
+
+
+func _special(i: int, rage: Dictionary) -> void:
+	var f: Dictionary = foes[i]
+	_enemy_anim(i, &"smash")
+	_shake()
+	var hit: Array[StringName] = []
+	var parts: Array[String] = []
+	if rage.both:
+		for id in _alive():
+			hit.append(id)
+			parts.append("%s takes %d" % [GameState.member(id).display_name, _hit_member(i, id, &"na_claw")])
+		await _say("%s uses %s! %s damage." % [f.label, rage.special, ", ".join(PackedStringArray(parts))])
+	else:
+		var targets := _alive()
+		var target: StringName = targets[_rng.randi_range(0, targets.size() - 1)]
+		hit.append(target)
+		var total := _hit_member(i, target, &"na_claw")
+		if GameState.get_hp(target) > 0:
+			total += _hit_member(i, target, &"na_claw")
+		await _say("%s uses %s! It bites %s twice for %d damage." % [f.label, rage.special, GameState.member(target).display_name, total])
+	for id in hit:
+		if GameState.get_hp(id) <= 0:
+			await _say("%s is knocked out!" % GameState.member(id).display_name)
+
+
+func _shake() -> void:
+	var t := create_tween()
+	for k in 8:
+		t.tween_property(self, "position", Vector2(randf_range(-5, 5), randf_range(-4, 4)), 0.04)
+	t.tween_property(self, "position", Vector2.ZERO, 0.04)
 
 
 func _damage(attack: int, defense: int) -> int:
@@ -599,9 +706,9 @@ func _on_result_choice(index: int) -> void:
 		SceneManager.change_to(SceneManager.VILLAGE_SCENE, "FromField")
 
 
-func _say(text: String) -> void:
+func _say(text: String, time := STEP_TIME) -> void:
 	_message.text = text
-	await get_tree().create_timer(STEP_TIME).timeout
+	await get_tree().create_timer(time).timeout
 
 
 func _step(id: StringName) -> void:
