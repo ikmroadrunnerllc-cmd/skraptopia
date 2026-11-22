@@ -93,11 +93,12 @@ Builds:
 - Settings: boss music (Instrumental or Lyrics), music volume, sound volume; saved to `user://settings.cfg`.
 - Restart: an *"Are you sure?"* Yes/No, then it goes back to the last shrine save (for now, the start of the game).
 - Button hints that switch between controller and keyboard icons (Ninja Adventure input icons) in the pause menu, dialogue and battle.
+- New battle layout (see the story doc and the v3 mockup): front view for clay monster fights with the party seen from behind; side view kept for bosses; the slim gold HUD (thin message strip, Retro Inventory heart bars, Kyrise icon commands) in every battle.
 Gate 2d:
 - [ ] G2d.1 Headless import and run: 0 errors.
 - [ ] G2d.2 Playtest: changing the boss music and volumes is saved and loaded again; Restart asks first and only restarts on Yes.
 - [ ] G2d.3 Playtest: a controller press shows controller icons and a key press shows keyboard icons; older checks still pass.
-- [ ] G2d.4 Screenshots: the pause menu and Settings, with keyboard hints and with controller hints.
+- [ ] G2d.4 Screenshots: the pause menu and Settings with keyboard and controller hints; a front-view clay fight and a side-view boss fight with the new HUD.
 - [ ] G2d.5 The user tried the menu with keyboard and controller and said OK.
 
 ## Phase 3: RPG systems  (target: Nov 28)  status: todo

@@ -198,6 +198,11 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 ### Battle
 
 - **Side view:** Demari and Casimir on the left, the clay enemy on the right, and a backdrop made from our own map art. Party sprites are scaled 3× and step forward to act. Enemies play `idle` / `cast` / `damage`.
+- **Battle layout (settled 2026-11-22; replaces the side view for clay monsters):**
+  - **Clay monster fights use a front view**, as the team's photos intended: the monsters face the camera in the middle of the screen, smaller and further back. Each has its name and a small red HP bar above it, and the target arrow points at the chosen one.
+  - **The party stays on screen, seen from behind:** Demari at the bottom left and Casimir at the bottom right, using the back-view frames of their sheets. The one acting steps forward.
+  - **Boss fights (Iron Jaws, Kilnoxx, Captain CrackJack, Zephyrion) keep the side view:** the boss on the right facing left, the party on the left.
+  - **Slim HUD in every battle:** one thin message strip at the top, and one gold bar at the bottom (about 20% of the screen) with each member's portrait, Retro Inventory heart HP/MP bars, the 5 commands as Kyrise icon slots (sword Attack, book Skills, potion Items, shield Defend, boot Run) with the selected name underneath, and button hints. Mockup: `../skraptopia_dev_tools/screenshots/mockup_front_view_hud_v3.png` (script `battle_hud_mockup.py`).
 - **Enemy groups:** a bush fight has 1–3 enemies picked at random from that area's list, so different types can mix. The tutorial fight and the Zephyrion boss stay one-on-one. Each enemy takes its own turn. The party gets the EXP and Buttons of every enemy in the group.
 - **Targeting:** after picking Attack or a damage skill, the player moves an arrow onto the enemy they want to hit. Eraser Blast hits **all** enemies.
 - **Party:** Demari and Casimir both fight and share EXP. Level cap 10.

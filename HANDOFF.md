@@ -1,6 +1,6 @@
 # Handoff: Level 1 build (Toy Box Kingdom)
 
-**Last updated:** Nov 22, 2026. **Deadline:** Dec 7, 2026 (presentation).
+**Last updated:** Nov 22, 2026 (late). **Deadline:** Dec 7, 2026 (presentation).
 Godot 4.7.2. Screen 640×360, scaled to a 1280×720 window. World camera zoom 2.
 **Everything is local only. Nothing is pushed, by the user's choice.**
 
@@ -20,7 +20,7 @@ Godot 4.7.2. Screen 640×360, scaled to a 1280×720 window. World camera zoom 2.
 | 2. Party battle | **done** | `phase-2-party-battle` |
 | 2b. Enemy groups | **done** (the user played a group fight, Nov 22) | `phase-2b-enemy-groups` |
 | 2c. Secret bonus bosses | **building:** art, data, music and test keys are in; the rage phases, specials and drops aren't built yet | `phase-2c-bosses` (current) |
-| 2d. Menus and button hints | next | — |
+| 2d. Menus, button hints and the new battle layout | next | — |
 | 3. RPG systems | level-ups, Buttons, shop, items, inventory screens | — |
 | 4. Open world | map, rustling bushes, alphabet block puzzle, the 3 boss hiding spots | — |
 | 5. Story | cutscenes, clues, boss, notebook → SkrapBook (Paper UI), shrines (save) | — |
@@ -45,6 +45,18 @@ Press F5 in Godot, then in the village or field press:
 The keys refill the party first. The party is level 1 and level-ups don't exist yet (Phase 3), so the bonus bosses (tuned for 7–10) win quickly. Use Retry. The keys live in `systems/scene_manager.gd` (`TEST_BOSSES`, `TEST_MONSTERS`) and only work when `OS.is_debug_build()`.
 
 **Demo setup:** the field's Clay Sludge now mixes in all 9 clay monsters (Clay Sludge, Pipe Spider, Paper-Dactyl, Mecha Orc Knight and Lancer, and the 4 color versions) so the demo shows off the team's monsters. Phase 4 gives each monster its real area.
+
+## Latest decision: the new battle layout (Nov 22)
+
+The user approved this mockup: `../skraptopia_dev_tools/screenshots/mockup_front_view_hud_v3.png` (re-render with `python ../skraptopia_dev_tools/battle_hud_mockup.py`).
+- **Clay monster fights use a front view**, because the team's clay photos face the camera. The monsters stand smaller and further back in the middle, with a name and a small HP bar above each.
+- **The party stays on screen, seen from behind:** Demari at the bottom left and Casimir at the bottom right. Demari's sheet row 2 (`demari.png`, y 48–96) and the Knight sheet column 2 are back views.
+- **Bosses keep the side view** (boss on the right facing left).
+- **Slim HUD in every battle** (about 20% of the screen, instead of about 40% now):
+  - a thin message strip at the top
+  - a gold bar at the bottom (Retro Inventory 9-slice) with portraits, Retro Inventory heart HP/MP bars (`Health_01` with `_Bar01` red and `_Bar03` blue, 64×16 overlays), and the commands as Kyrise icon slots (sword, spellbook, potion, shield, boots) with the selected name underneath
+  - button hints
+- It's written into the story doc (Battle) and Phase 2d of the plan. It gets built in 2d. Use the real keys (E/Esc, A/B) in the hints, not the pack's sample X/C letters.
 
 ## Next steps
 
