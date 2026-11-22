@@ -177,12 +177,22 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 | Tavern | **Zephyrion** (boss, tuned for ~level 6) | 6 |
 
 - **Harder color versions** (color-shifted clay photos, about 1.5× stats, more EXP and Buttons, their own notebook page): Magma Sludge (red/orange), Frost Spider (icy blue), Ink-Dactyl (black/purple), Gold Orc Knight (gold, rare).
-- **Bonus boss: Kilnoxx, the Kiln Phoenix** (optional, not part of the story). Our own pixel-art fire dragon-phoenix: clay that went through the kiln. Made with PixelLab: one large side-view picture facing left, an idle wing-flap animation and an attack animation; the same picture, smaller, sleeps in the overworld.
-  - **Where:** hidden in a scorched clearing in **Road Carpet**, behind an easy-to-miss gap in the trees. A burnt sign warns: *"Turn back. The kiln is lit."* It can be fought any time, even early.
-  - **Strength:** tuned for level 9–10 (cap). Run is blocked. Losing gives the normal Retry / Return to village with no penalty.
-  - **Rage phase at half HP:** it roars (*"Its feathers ignite!"*), turns white-gold (palette shader), Attack +30%, and every other turn uses **Inferno Wings**, which hits both party members.
-  - **Reward:** big EXP and Buttons, its own notebook page, and the **Phoenix Feather**: a permanent key item that, once per battle, automatically revives the first knocked-out ally at half HP (*"The Phoenix Feather glows!"*).
-  - **Music:** its own Suno track (closer to the Bleach-inspired style); Zephyrion keeps "Clay Doesn't Pay".
+- **Secret bonus bosses (settled 2026-11-22).** Three optional bosses, not part of the story, one hidden in each area of Level 1. All are the user's own designs, animated with PixelLab (256×160 frames facing left: `idle`, `attack`, `rage`, `smash`). The same picture, smaller, waits in the overworld. They can be fought any time, even early. Run is blocked. Losing gives the normal Retry / Return to village with no penalty. Each gives big EXP and Buttons, its own notebook page and a permanent key item.
+  - **Shared rage rule:** at half HP the boss shows its rage line, gets Attack +30%, and uses its special every other turn.
+
+  | | **Iron Jaws** | **Kilnoxx, the Kiln Phoenix** | **Captain CrackJack** |
+  |---|---|---|---|
+  | What | A wind-up clockwork piranha with a pig snout | A patchwork clay dragon-phoenix that went through the kiln | A red, white and blue nutcracker soldier with jets and an arm cannon |
+  | Where | A toy fishbowl pond in **Playroom Woods**, behind bushes. Sign: *"Something is ticking under the water..."* | A scorched clearing in **Road Carpet**, behind an easy-to-miss gap in the trees. Sign: *"Turn back. The kiln is lit."* | A closed platform at the **Block Town** train station (not the clue-1 bench). Sign: *"Platform closed by order of the Captain."* |
+  | Tuned for | level 7 | level 9–10 | level 8 |
+  | Normal attack | Chomp (one target) | Fire attack (one target) | Arm Cannon (one target) |
+  | Rage line | *"Its spring winds tighter!"* (red eye flashes) | *"Its feathers ignite!"* (turns white-gold, palette shader) | *"He blasts off into the air!"* (hovers; takes 30% less damage while raging) |
+  | Special | **Clockwork Frenzy:** bites one target twice | **Inferno Wings:** hits both party members | **Liberty Dash:** hits both party members |
+  | Drop | **Steel Fang:** the party deals +15% damage | **Phoenix Feather:** once per battle, revives the first knocked-out ally at half HP (*"The Phoenix Feather glows!"*) | **Star Medal:** the party takes 15% less damage |
+  | Icon | Kyrise `necklace_03e` | Ninja Adventure `Resource/feather.png` | Kyrise `necklace_02d` |
+
+  - **Boss music:** each bonus boss has the user's own Suno song in two versions. The **instrumental** plays by default; Settings can switch boss fights to the **lyrics** versions. Zephyrion keeps "Clay Doesn't Pay" (one version only).
+  - **Boss Rush** (Phase 6): unlocks after beating all 4 bosses (Zephyrion, Iron Jaws, Kilnoxx, Captain CrackJack). A Boss Rush option appears in the pause menu: all 4 back to back, HP and MP refill halfway, losing returns you with no penalty, and winning gives a SkrapBook trophy and the title "Boss Rush Champion".
 - **Save points are small shrines.** Walk up and press confirm; there's no saving from the menu. Saving refills HP and MP. Locations: after the tutorial, near the Block Town shop, and outside the tavern.
 
 ### Battle
@@ -213,8 +223,18 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 | Enemy hits | Ninja Adventure Claw |
 | Zephyrion | Ninja Adventure Rock / RockSpike |
 
-- **Credits** must include "Super Pixel Effects by Will Tice / unTied Games".
-- **Music and sound:** Ninja Adventure audio.
+- **Credits** must include "Super Pixel Effects by Will Tice / unTied Games", "Icons by Kyrise" (CC BY 4.0) and "Retro Inventory by ElvGames", plus the Pocket Inventory, Paper UI and 500 Bullets packs once their license PDFs are checked.
+- **Music and sound:** Ninja Adventure audio, plus the user's own Suno boss songs.
+- **Captain CrackJack's shots** use the 500 Bullets 24×24 pack.
+
+### Menus and controls (settled 2026-11-22)
+
+- **Look:** the Pocket Inventory (Pixel Map) pack for the pause and settings menus. The Paper UI pack is saved for the SkrapBook (Phase 5), and Retro Inventory for the item screens (Phase 3).
+- **Pause menu:** Status, Quests, Settings, Restart, Resume, and Boss Rush once it's unlocked.
+  - **Settings:** boss music (Instrumental, the default, or Lyrics), music volume and sound volume. Choices are remembered between sessions.
+  - **Restart:** goes back to the last shrine save after an *"Are you sure?"* Yes/No. Until shrines exist, it restarts the game from the beginning.
+- **Button hints** switch automatically: controller icons after a controller press, keyboard icons after a key press (Ninja Adventure input icons).
+- **Controls page** (Phase 6): rebind every action for keyboard and controller. Picking a key that's already used swaps the two actions. There's a Reset to default, and the choices are saved.
 
 ### Art
 

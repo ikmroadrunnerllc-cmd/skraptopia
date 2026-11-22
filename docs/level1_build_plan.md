@@ -66,22 +66,39 @@ Gate 2b:
 - [x] G2b.4 Screenshot: a 3-enemy battle in the woods with the target arrow showing.
 - [ ] G2b.5 The user fought a group battle and said OK.
 
-## Phase 2c: Bonus boss Kilnoxx  (target: Nov 25)  status: todo
-Goal: a secret, very hard fire dragon-phoenix fight with a rage phase (design in the story doc).
+## Phase 2c: Secret bonus bosses  (target: Nov 25)  status: todo
+Goal: three secret, hard boss fights (Iron Jaws, Kilnoxx, Captain CrackJack), each with a rage phase, a special move, a drop and its own music (design in the story doc).
 Needs: Phase 2b
 Builds:
-- PixelLab art: one large side-view picture facing left, an idle wing-flap and an attack animation, as `assets/characters/bosses/kilnoxx/kilnoxx_frames.tres`.
-- `data/enemies/kilnoxx.tres`: tuned for level 9-10, `can_run = false`.
-- Rage phase at half HP: message, white-gold palette shift, Attack +30%, Inferno Wings (hits both party members) every other turn.
-- Phoenix Feather: a permanent key item; once per battle it revives the first knocked-out ally at half HP.
-- His own music track (from the user's Suno song) when he's in the fight.
-- A temporary scorched spot in the field to start the fight until Phase 4 builds the real clearing.
+- Art (already made, in `../skraptopia_dev_tools/`): copy the frames into `assets/characters/bosses/<id>/{idle,attack,rage,smash}/NN.png` and build `<id>_frames.tres` for `iron_jaws`, `kilnoxx` (already in the project) and `captain_crackjack`. Attack and smash play forward, then backward to idle. CrackJack's rage is lift-off then a hover loop.
+- `data/enemies/iron_jaws.tres` (level 7), `kilnoxx.tres` (level 9–10), `captain_crackjack.tres` (level 8), all `can_run = false`.
+- `battle.gd`: play the `attack`, `rage` and `smash` animations; the shared rage rule at half HP (rage line, Attack +30%, special every other turn); the 3 specials (Clockwork Frenzy, Inferno Wings, Liberty Dash); CrackJack takes 30% less damage while raging; Kilnoxx's white-gold palette shift; CrackJack's shots use the 500 Bullets pack.
+- Key items in `GameState`: Steel Fang (+15% damage dealt), Phoenix Feather (once-per-battle revive at half HP), Star Medal (15% less damage taken). They're shown in the inventory in Phase 3.
+- Boss music: copy the user's 6 songs into `assets/audio/game/music/` with clear names; the instrumental plays by default. A `boss_music_lyrics` setting (default off) picks the lyrics version; Phase 2d adds the switch to the menu.
+- Temporary spots in the current field to start each fight, until Phase 4 builds the real pond, clearing and platform.
 Gate 2c:
 - [ ] G2c.1 Headless import and run: 0 errors.
-- [ ] G2c.2 Playtest: at half HP the rage starts (color, Attack up), and Inferno Wings hits both party members every other turn.
-- [ ] G2c.3 Playtest: with the Phoenix Feather, the first knock-out in a battle revives at half HP, and only once.
-- [ ] G2c.4 Screenshot: Kilnoxx in battle, normal and raging.
-- [ ] G2c.5 The user fought Kilnoxx and said OK.
+- [ ] G2c.2 Playtest: for each boss, the rage starts at half HP (Attack up), and the special is used every other turn with the right targets (Frenzy hits one target twice; Inferno Wings and Liberty Dash hit both).
+- [ ] G2c.3 Playtest: CrackJack takes less damage while raging; Steel Fang raises damage dealt; Star Medal lowers damage taken; Phoenix Feather revives the first knock-out at half HP, only once per battle.
+- [ ] G2c.4 Playtest: each boss plays its own instrumental, and the lyrics version when the setting is on; Zephyrion still plays his song; older checks still pass.
+- [ ] G2c.5 Screenshots: each boss in battle, normal and raging.
+- [ ] G2c.6 The user fought the bosses and said OK.
+
+## Phase 2d: Menus and button hints  (target: Nov 26)  status: todo
+Goal: a nicer pause menu with Settings and Restart, and button hints that match the keyboard or controller.
+Needs: Phase 2c
+Builds:
+- Bring in the Pocket Inventory UI pack (check its license PDF first) and restyle `ui/menus/pause_menu`.
+- Pause menu: Status, Quests, Settings, Restart, Resume.
+- Settings: boss music (Instrumental or Lyrics), music volume, sound volume; saved to `user://settings.cfg`.
+- Restart: an *"Are you sure?"* Yes/No, then it goes back to the last shrine save (for now, the start of the game).
+- Button hints that switch between controller and keyboard icons (Ninja Adventure input icons) in the pause menu, dialogue and battle.
+Gate 2d:
+- [ ] G2d.1 Headless import and run: 0 errors.
+- [ ] G2d.2 Playtest: changing the boss music and volumes is saved and loaded again; Restart asks first and only restarts on Yes.
+- [ ] G2d.3 Playtest: a controller press shows controller icons and a key press shows keyboard icons; older checks still pass.
+- [ ] G2d.4 Screenshots: the pause menu and Settings, with keyboard hints and with controller hints.
+- [ ] G2d.5 The user tried the menu with keyboard and controller and said OK.
 
 ## Phase 3: RPG systems  (target: Nov 28)  status: todo
 Goal: growing stronger feels good.
@@ -92,7 +109,8 @@ Builds:
 - Skills unlock at levels 1, 3 and 5.
 - Buttons (money) dropped after battles; inventory; the shop (Glue Stick, Juice Box, Bandage Tape).
 - Items usable in battle and from the pause menu.
-- Kilnoxx's Buttons reward.
+- The bonus bosses' Buttons rewards.
+- Item and inventory screens in the Retro Inventory style; the 3 key items (Steel Fang, Phoenix Feather, Star Medal) shown with their icons (Kyrise `necklace_03e`, Ninja Adventure feather, Kyrise `necklace_02d`).
 Gate 3:
 - [ ] G3.1 Headless import and run: 0 errors.
 - [ ] G3.2 Playtest: enough EXP gives a level-up with higher stats, and level 3 unlocks Patch Up and March Order.
@@ -110,7 +128,8 @@ Builds:
 - Markers for the story spots (clues, shrines, the tavern, the castle).
 - The alphabet block push puzzle in the back alley: blocks A–D slide one tile per push, can't be pushed into walls or other blocks, and the A-B-C-D order opens the alley. A reset spot puts the blocks back.
 - Casimir follows Demari around after the tutorial.
-- Kilnoxx's hidden scorched clearing in Road Carpet, with the burnt warning sign; it replaces the temporary field spot.
+- The 3 secret boss spots, each with its sign, replacing the temporary field spots: Iron Jaws' fishbowl pond (Playroom Woods), Kilnoxx's scorched clearing (Road Carpet), Captain CrackJack's closed platform (Block Town train station).
+- Puzzle buttons from the Pocket Inventory pack if they fit.
 Gate 4:
 - [ ] G4.1 Headless import and run: 0 errors.
 - [ ] G4.2 Playtest: you can walk from the woods to the tavern door without getting stuck, and you can't walk through buildings or trees.
@@ -128,7 +147,7 @@ Builds:
 - Castle: talking with Asmara, the guard's interruption, the quest, and starting Buttons.
 - Clues 1 and 2 (any order), then clue 3, which unlocks the tavern.
 - Tavern: the thief escapes and drops the badge, Zephyrion's dialogue (including the dragon joke), the boss, his last line, and he crumbles into dirt.
-- Notebook pages for each new enemy; after the boss, the pages fly into the SkrapBook. Kilnoxx gets his own page.
+- Notebook pages for each new enemy; after the boss, the pages fly into the SkrapBook. Each bonus boss gets its own page. The notebook/SkrapBook uses the Paper UI pack.
 - The knighting at the castle, then the ending text screens.
 - Shrines: walk up, press confirm, save (and refill HP/MP); load from the title screen.
 Gate 5:
@@ -144,7 +163,9 @@ Needs: Phase 5
 Builds:
 - Balancing (about level 6 by the boss; Zephyrion is beatable but tough).
 - Music and sounds (Ninja Adventure audio).
-- A credits screen (team roles, plus "Super Pixel Effects by Will Tice / unTied Games").
+- Controls page in Settings: rebind every action for keyboard and controller (swap on conflict, Reset to default, saved).
+- Boss Rush: unlocks after beating all 4 bosses; a pause menu option; all 4 back to back with a refill halfway; no penalty for losing; a SkrapBook trophy and the "Boss Rush Champion" title.
+- A credits screen (team roles, plus "Super Pixel Effects by Will Tice / unTied Games", Kyrise icons, ElvGames Retro Inventory, and the other packs' required credits).
 - Swap in any real art the team has sent (Asmara, Casimir).
 - Merge into `main`, push, and a fresh-download test.
 Gate 6:
