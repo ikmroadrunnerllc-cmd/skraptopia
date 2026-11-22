@@ -126,7 +126,7 @@ func _setup_view() -> void:
 	if ResourceLoader.exists(bd):
 		_backdrop.texture = load(bd)
 	var list: Array = GameState.pending_battle.get("enemies", [FALLBACK_ENEMY])
-	_front = not list.any(func(e: EnemyData) -> bool: return BOSS_MUSIC.has(e.id))
+	_front = not list.any(func(e: EnemyData) -> bool: return BOSS_RAGE.has(e.id))
 	for id: StringName in _sprites:
 		var spr: AnimatedSprite2D = _sprites[id]
 		spr.visible = id in GameState.party
@@ -152,7 +152,7 @@ func _setup_view() -> void:
 			seen[label] = seen.get(label, 0) + 1
 			label += " " + "ABC"[seen[label] - 1]
 		if _front:
-			_add_foe(e, label, FRONT_SLOTS[list.size() - 1][i], FRONT_MAX if list.size() == 1 else FRONT_GROUP_MAX)
+			_add_foe(e, label, FRONT_SLOTS[list.size() - 1][i], (ENEMY_MAX if BOSS_MUSIC.has(e.id) else FRONT_MAX) if list.size() == 1 else FRONT_GROUP_MAX)
 		else:
 			_add_foe(e, label, SLOTS[list.size() - 1][i], ENEMY_MAX if list.size() == 1 else GROUP_MAX)
 	_arrow = Polygon2D.new()
