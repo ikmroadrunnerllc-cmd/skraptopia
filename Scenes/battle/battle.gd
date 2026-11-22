@@ -42,17 +42,44 @@ const RUN_CHANCE := 0.7
 const ENEMY_MAX := Vector2(220, 150)
 const GROUP_MAX := Vector2(100, 100)
 const SLOTS := [
-	[Vector2(470, 222)],
-	[Vector2(420, 214), Vector2(550, 232)],
-	[Vector2(385, 208), Vector2(475, 234), Vector2(565, 212)],
+	[Vector2(470, 272)],
+	[Vector2(420, 264), Vector2(550, 282)],
+	[Vector2(385, 258), Vector2(475, 284), Vector2(565, 262)],
 ]
+const FRONT_MAX := Vector2(150, 130)
+const FRONT_GROUP_MAX := Vector2(105, 110)
+const FRONT_SLOTS := [
+	[Vector2(320, 220)],
+	[Vector2(250, 215), Vector2(390, 215)],
+	[Vector2(200, 215), Vector2(320, 215), Vector2(440, 215)],
+]
+const SIDE_PARTY := {&"demari": Vector2(175, 272), &"casimir": Vector2(105, 276)}
+const FRONT_PARTY := {&"demari": [Vector2(128, 272), 2.0], &"casimir": [Vector2(512, 278), 4.0]}
+const COMMAND_ICONS: Array[Texture2D] = [
+	preload("res://assets/ui/kyrise/sword_01a.png"),
+	preload("res://assets/ui/kyrise/spellbook_01a.png"),
+	preload("res://assets/ui/kyrise/potion_01a.png"),
+	preload("res://assets/ui/kyrise/shield_01a.png"),
+	preload("res://assets/ui/kyrise/boots_01a.png"),
+]
+const SLOT_TEX: Texture2D = preload("res://assets/ui/retro_inventory/Inventory_Slot_1.png")
+const HEART_FRAME: Texture2D = preload("res://assets/ui/retro_inventory/Health_01.png")
+const HP_FILL: Texture2D = preload("res://assets/ui/retro_inventory/Health_01_Bar01.png")
+const MP_FILL: Texture2D = preload("res://assets/ui/retro_inventory/Health_01_Bar03.png")
+const HINT_KEYS := ["res://assets/ui/ninja_adventure/Input/Keyboard/KeyE.png", "res://assets/ui/ninja_adventure/Input/Keyboard/KeyEscape.png"]
+const HINT_PADS := ["res://assets/ui/ninja_adventure/Input/Gamepad/ButtonA/Idle.png", "res://assets/ui/ninja_adventure/Input/Gamepad/ButtonB/Idle.png"]
+const GOLD := Color(1, 0.84, 0.35)
 const FX_SIZE := 72.0
 const STEP_FORWARD := 28.0
 
 @onready var _backdrop: TextureRect = %Backdrop
-@onready var _enemy_info: VBoxContainer = %EnemyInfo
-@onready var _party_rows: VBoxContainer = %PartyRows
+@onready var _enemy_info: Control = %EnemyInfo
+@onready var _party_rows: Control = %PartyRows
 @onready var _commands: ChoiceList = %Commands
+@onready var _command_name: Label = %CommandName
+@onready var _skill_panel: PanelContainer = %SkillPanel
+@onready var _skill_list: ChoiceList = %SkillList
+@onready var _hints: HBoxContainer = %Hints
 @onready var _message: Label = %Message
 @onready var _result: PanelContainer = %ResultWindow
 @onready var _result_title: Label = %ResultTitle
@@ -77,12 +104,15 @@ var _menu_skills: Array[SkillData] = []
 var _sprites: Dictionary = {}
 var _rows: Dictionary = {}
 var _rng := RandomNumberGenerator.new()
+var _front: bool = false
+var _pad: bool = false
 
 
 func _ready() -> void:
 	GameState.lock(&"battle")
 	_result.hide()
 	_commands.chosen.connect(_on_command)
+	_skill_list.chosen.connect(_on_command)
 	_result_choices.chosen.connect(_on_result_choice)
 	_sprites = {&"demari": %Demari, &"casimir": %Casimir}
 	_setup_view()
@@ -95,11 +125,22 @@ func _setup_view() -> void:
 	var bd := BACKDROP_PATH % GameState.pending_battle.get("backdrop", "woods")
 	if ResourceLoader.exists(bd):
 		_backdrop.texture = load(bd)
-	for id: StringName in _sprites:
-		_sprites[id].visible = id in GameState.party
-	for id in GameState.party:
-		_rows[id] = _make_row(id)
 	var list: Array = GameState.pending_battle.get("enemies", [FALLBACK_ENEMY])
+	_front = not list.any(func(e: EnemyData) -> bool: return BOSS_MUSIC.has(e.id))
+	for id: StringName in _sprites:
+		var spr: AnimatedSprite2D = _sprites[id]
+		spr.visible = id in GameState.party
+		if _front:
+			spr.position = FRONT_PARTY[id][0]
+			spr.scale = Vector2.ONE * FRONT_PARTY[id][1]
+			spr.animation = &"Walking_Up"
+		else:
+			spr.position = SIDE_PARTY[id]
+		spr.frame = 0
+	for i in GameState.party.size():
+		var id := GameState.party[i]
+		_rows[id] = _make_row(id, 292 + i * 28)
+	_set_hints(false)
 	var counts := {}
 	for e: EnemyData in list:
 		counts[e.display_name] = counts.get(e.display_name, 0) + 1
@@ -110,7 +151,10 @@ func _setup_view() -> void:
 		if counts[label] > 1:
 			seen[label] = seen.get(label, 0) + 1
 			label += " " + "ABC"[seen[label] - 1]
-		_add_foe(e, label, SLOTS[list.size() - 1][i], ENEMY_MAX if list.size() == 1 else GROUP_MAX)
+		if _front:
+			_add_foe(e, label, FRONT_SLOTS[list.size() - 1][i], FRONT_MAX if list.size() == 1 else FRONT_GROUP_MAX)
+		else:
+			_add_foe(e, label, SLOTS[list.size() - 1][i], ENEMY_MAX if list.size() == 1 else GROUP_MAX)
 	_arrow = Polygon2D.new()
 	_arrow.polygon = PackedVector2Array([Vector2(-7, -10), Vector2(7, -10), Vector2(0, 0)])
 	_arrow.color = Color(1, 0.9, 0.3)
@@ -118,36 +162,70 @@ func _setup_view() -> void:
 	%Stage.add_child(_arrow)
 
 
-func _make_row(id: StringName) -> Dictionary:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 6)
+func _make_row(id: StringName, y: float) -> Dictionary:
+	var slot := TextureRect.new()
+	slot.texture = SLOT_TEX
+	slot.position = Vector2(16, y)
+	_party_rows.add_child(slot)
+	var portrait := TextureRect.new()
+	portrait.texture = _portrait(id)
+	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	portrait.position = Vector2(32, y + 16) - portrait.texture.get_size() / 2.0
+	_party_rows.add_child(portrait)
 	var name_label := Label.new()
 	name_label.text = GameState.member(id).display_name
-	name_label.theme_type_variation = &"NameLabel"
-	name_label.custom_minimum_size.x = 64
-	row.add_child(name_label)
-	var hp_bar := StatBar.new()
-	hp_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(hp_bar)
-	var mp_bar := StatBar.new()
-	mp_bar.label_text = "MP"
-	mp_bar.bar_variation = &"MPBar"
-	mp_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(mp_bar)
-	_party_rows.add_child(row)
-	return {"name": name_label, "hp": hp_bar, "mp": mp_bar}
+	name_label.position = Vector2(52, y + 11)
+	_party_rows.add_child(name_label)
+	return {"name": name_label, "hp": _make_heart_bar(Vector2(100, y + 8), HP_FILL), "mp": _make_heart_bar(Vector2(210, y + 8), MP_FILL)}
+
+
+func _portrait(id: StringName) -> Texture2D:
+	var tex: AtlasTexture = _sprites[id].sprite_frames.get_frame_texture(&"Walking_Down", 0)
+	var r := tex.region
+	var side := minf(r.size.x, 20.0)
+	var out := AtlasTexture.new()
+	out.atlas = tex.atlas
+	out.region = Rect2(r.position.x + (r.size.x - side) / 2.0, r.position.y + (2.0 if r.size.y > r.size.x else 0.0), side, side)
+	return out
+
+
+func _make_heart_bar(at: Vector2, fill: Texture2D) -> Dictionary:
+	var frame := TextureRect.new()
+	frame.texture = HEART_FRAME
+	frame.position = at
+	_party_rows.add_child(frame)
+	var fill_tex := AtlasTexture.new()
+	fill_tex.atlas = fill
+	fill_tex.region = Rect2(16, 0, 45, 16)
+	var bar := TextureProgressBar.new()
+	bar.texture_progress = fill_tex
+	bar.position = at + Vector2(16, 0)
+	_party_rows.add_child(bar)
+	var value := Label.new()
+	value.position = at + Vector2(68, 3)
+	_party_rows.add_child(value)
+	return {"bar": bar, "value": value}
+
+
+func _set_heart_bar(b: Dictionary, current: int, maximum: int) -> void:
+	b.bar.max_value = maxi(maximum, 1)
+	b.bar.value = clampi(current, 0, maximum)
+	b.value.text = "%d/%d" % [maxi(current, 0), maximum]
 
 
 func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> void:
 	var name_label := Label.new()
 	name_label.text = label
-	name_label.theme_type_variation = &"NameLabel"
-	name_label.custom_minimum_size.x = 84
-	var bar := StatBar.new()
-	bar.bar_variation = &"EnemyHPBar"
-	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 6)
+	name_label.add_theme_color_override("font_color", GOLD)
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var bar := ProgressBar.new()
+	bar.theme_type_variation = &"EnemyHPBar"
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(60, 4)
+	bar.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var row := VBoxContainer.new()
+	row.add_theme_constant_override("separation", 1)
+	row.custom_minimum_size.x = 120
 	row.add_child(name_label)
 	row.add_child(bar)
 	_enemy_info.add_child(row)
@@ -183,6 +261,7 @@ func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> vo
 	spr.animation_finished.connect(func() -> void: if foe.hp > 0: spr.play(foe.rest))
 	spr.play(&"idle")
 	_align_enemy(spr)
+	row.position = at + Vector2(-60, -first.get_height() * k - 22)
 
 
 func _align_enemy(spr: AnimatedSprite2D) -> void:
@@ -216,13 +295,14 @@ func _play_music() -> void:
 func _refresh() -> void:
 	for i in foes.size():
 		var f: Dictionary = foes[i]
-		f.bar.set_values(f.hp, f.data.max_hp)
-		f.name.modulate = Color(1, 0.9, 0.4) if state == State.TARGETING and i == _target else Color.WHITE
+		f.bar.max_value = f.data.max_hp
+		f.bar.value = f.hp
+		f.name.modulate = Color(1.3, 1.3, 1.3) if state == State.TARGETING and i == _target else Color.WHITE
 	for id: StringName in _rows:
 		var m := GameState.member(id)
-		_rows[id].hp.set_values(GameState.get_hp(id), m.max_hp)
-		_rows[id].mp.set_values(GameState.get_mp(id), m.max_mp)
-		_rows[id].name.modulate = Color(1, 0.9, 0.4) if id == actor and state in [State.PLAYER_TURN, State.TARGETING] else Color.WHITE
+		_set_heart_bar(_rows[id].hp, GameState.get_hp(id), m.max_hp)
+		_set_heart_bar(_rows[id].mp, GameState.get_mp(id), m.max_mp)
+		_rows[id].name.modulate = GOLD if id == actor and state in [State.PLAYER_TURN, State.TARGETING] else Color.WHITE
 		var spr: AnimatedSprite2D = _sprites[id]
 		spr.modulate = Color(0.45, 0.45, 0.45) if GameState.get_hp(id) <= 0 else Color.WHITE
 
@@ -244,7 +324,8 @@ func _living() -> Array[int]:
 
 
 func _start() -> void:
-	_commands.set_choices(COMMANDS, [0, 1, 2, 3, 4])
+	_skill_panel.hide()
+	_set_commands([0, 1, 2, 3, 4])
 	_commands.disarm()
 	await _say(_intro_text())
 	var fastest := 0
@@ -305,9 +386,32 @@ func _show_main_menu() -> void:
 	if actor != &"demari" or not _can_run():
 		disabled.append(Command.RUN)
 	_message.text = "What will %s do?" % GameState.member(actor).display_name
-	_commands.set_choices(COMMANDS, disabled)
+	_skill_panel.hide()
+	_set_commands(disabled)
 	_commands.focus_first()
 	_refresh()
+
+
+func _set_commands(disabled: Array[int]) -> void:
+	_commands.set_choices(COMMANDS, disabled)
+	var slot := StyleBoxTexture.new()
+	slot.texture = SLOT_TEX
+	var ring := StyleBoxFlat.new()
+	ring.draw_center = false
+	ring.set_border_width_all(1)
+	ring.border_color = Color(1, 0.94, 0.59)
+	for j in _commands.get_child_count():
+		var b: Button = _commands.get_child(j)
+		b.text = ""
+		b.icon = COMMAND_ICONS[j]
+		b.custom_minimum_size = Vector2(26, 26)
+		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		b.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		for st in ["normal", "hover", "pressed", "disabled"]:
+			b.add_theme_stylebox_override(st, slot)
+		b.add_theme_stylebox_override("focus", ring)
+		b.add_theme_color_override("icon_disabled_color", Color(1, 1, 1, 0.3))
+		b.focus_entered.connect(func() -> void: _command_name.text = COMMANDS[j])
 
 
 func _can_run() -> bool:
@@ -330,8 +434,10 @@ func _show_skill_menu() -> void:
 			disabled.append(i)
 	names.append("Back")
 	_message.text = _menu_skills[0].description if not _menu_skills.is_empty() else ""
-	_commands.set_choices(names, disabled)
-	_commands.focus_first()
+	_commands.disarm()
+	_skill_list.set_choices(names, disabled)
+	_skill_panel.show()
+	_skill_list.focus_first()
 	_refresh()
 
 
@@ -392,10 +498,36 @@ func _choose_target() -> int:
 func _show_target() -> void:
 	var spr: AnimatedSprite2D = foes[_target].sprite
 	var tex := spr.sprite_frames.get_frame_texture(spr.animation, spr.frame)
-	_arrow.position = spr.position + Vector2(0, -tex.get_height() * spr.scale.y - 6)
+	_arrow.position = spr.position + Vector2(0, -tex.get_height() * spr.scale.y - 26)
 	_arrow.show()
 	_message.text = "Choose a target: %s" % foes[_target].label
 	_refresh()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf(event.axis_value) > 0.5):
+		_set_hints(true)
+	elif event is InputEventKey:
+		_set_hints(false)
+
+
+func _set_hints(pad: bool) -> void:
+	if pad == _pad and _hints.get_child_count() > 0:
+		return
+	_pad = pad
+	for c in _hints.get_children():
+		_hints.remove_child(c)
+		c.queue_free()
+	var icons: Array = HINT_PADS if pad else HINT_KEYS
+	for n in 2:
+		var icon := TextureRect.new()
+		icon.texture = load(icons[n])
+		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		_hints.add_child(icon)
+		var label := Label.new()
+		label.text = ["Select", "Back"][n]
+		_hints.add_child(label)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -686,7 +818,8 @@ func _defeat() -> void:
 
 
 func _show_result(title: String, text: String, choices: Array[String]) -> void:
-	_commands.set_choices(COMMANDS, [0, 1, 2, 3, 4])
+	_skill_panel.hide()
+	_set_commands([0, 1, 2, 3, 4])
 	_commands.disarm()
 	_result_title.text = title
 	_result_text.text = text
@@ -713,11 +846,12 @@ func _say(text: String, time := STEP_TIME) -> void:
 
 func _step(id: StringName) -> void:
 	var spr: AnimatedSprite2D = _sprites[id]
-	var x := spr.position.x
-	spr.play(&"Walking_Right")
+	var axis := "position:y" if _front else "position:x"
+	var start: float = spr.position.y if _front else spr.position.x
+	spr.play(&"Walking_Up" if _front else &"Walking_Right")
 	var t := create_tween()
-	t.tween_property(spr, "position:x", x + STEP_FORWARD, 0.15)
-	t.tween_property(spr, "position:x", x, 0.15)
+	t.tween_property(spr, axis, start + (-STEP_FORWARD if _front else STEP_FORWARD), 0.15)
+	t.tween_property(spr, axis, start, 0.15)
 	await t.finished
 	spr.stop()
 	spr.frame = 0

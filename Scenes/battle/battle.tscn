@@ -6,6 +6,25 @@
 [ext_resource type="SpriteFrames" path="res://assets/characters/party/demari/demari_frames.tres" id="5_demari"]
 [ext_resource type="SpriteFrames" path="res://assets/characters/party/casimir/casimir_frames.tres" id="6_casimir"]
 
+[ext_resource type="Texture2D" path="res://assets/ui/retro_inventory/Inventory_9Slices.png" id="7_frame"]
+[ext_resource type="FontFile" path="res://assets/ui/brackeys/fonts/PixelOperator8.ttf" id="8_font"]
+
+[sub_resource type="Theme" id="Theme_hud"]
+default_font = ExtResource("8_font")
+default_font_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_strip"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.09411765, 0.10980392, 0.17254902, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8392157, 0.6666667, 0.3137255, 1)
+
 [node name="Battle" type="Control" unique_id=321105876]
 layout_mode = 3
 anchors_preset = 0
@@ -49,66 +68,102 @@ sprite_frames = ExtResource("5_demari")
 animation = &"Walking_Right"
 offset = Vector2(0, -19)
 
-[node name="Margin" type="MarginContainer" parent="." unique_id=1297639039]
+[node name="Hud" type="Control" parent="."]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 8
+theme = SubResource("Theme_hud")
 
-[node name="Layout" type="VBoxContainer" parent="Margin" unique_id=1985316779]
-layout_mode = 2
+[node name="EnemyInfo" type="Control" parent="Hud"]
+unique_name_in_owner = true
+anchors_preset = 0
 mouse_filter = 2
-theme_override_constants/separation = 6
 
-[node name="TopRow" type="HBoxContainer" parent="Margin/Layout" unique_id=1218297923]
-layout_mode = 2
-theme_override_constants/separation = 6
+[node name="MessagePanel" type="PanelContainer" parent="Hud"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 6.0
+offset_right = 560.0
+offset_bottom = 22.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_strip")
 
-[node name="MessagePanel" type="PanelContainer" parent="Margin/Layout/TopRow" unique_id=1218297922]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Message" type="Label" parent="Margin/Layout/TopRow/MessagePanel" unique_id=336841954]
+[node name="Message" type="Label" parent="Hud/MessagePanel"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "..."
-horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnemyPanel" type="PanelContainer" parent="Margin/Layout/TopRow" unique_id=1215572596]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
+[node name="HudBar" type="NinePatchRect" parent="Hud"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 4.0
+offset_top = 282.0
+offset_right = 636.0
+offset_bottom = 356.0
+texture = ExtResource("7_frame")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
 
-[node name="EnemyInfo" type="VBoxContainer" parent="Margin/Layout/TopRow/EnemyPanel" unique_id=149954022]
+[node name="HudShade" type="ColorRect" parent="Hud"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 290.0
+offset_right = 628.0
+offset_bottom = 348.0
+mouse_filter = 2
+color = Color(0.09411765, 0.10980392, 0.17254902, 0.67)
+
+[node name="PartyRows" type="Control" parent="Hud"]
 unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="Margin/Layout" unique_id=1622014393]
-layout_mode = 2
-size_flags_vertical = 3
+anchors_preset = 0
 mouse_filter = 2
 
-[node name="BottomRow" type="HBoxContainer" parent="Margin/Layout" unique_id=201340523]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="PartyPanel" type="PanelContainer" parent="Margin/Layout/BottomRow" unique_id=1970744570]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="PartyRows" type="VBoxContainer" parent="Margin/Layout/BottomRow/PartyPanel" unique_id=1367688707]
+[node name="Commands" type="HBoxContainer" parent="Hud"]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
+offset_left = 336.0
+offset_top = 296.0
+offset_right = 490.0
+offset_bottom = 322.0
+theme_override_constants/separation = 4
+script = ExtResource("4_n8n4j")
 
-[node name="CommandPanel" type="PanelContainer" parent="Margin/Layout/BottomRow" unique_id=1911523399]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
+[node name="CommandName" type="Label" parent="Hud"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 336.0
+offset_top = 326.0
+offset_right = 490.0
+offset_bottom = 338.0
+theme_override_colors/font_color = Color(1, 0.8392157, 0.3529412, 1)
+text = "Attack"
 
-[node name="Commands" type="VBoxContainer" parent="Margin/Layout/BottomRow/CommandPanel" unique_id=1761460793]
+[node name="Hints" type="HBoxContainer" parent="Hud"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 492.0
+offset_top = 326.0
+offset_right = 624.0
+offset_bottom = 342.0
+alignment = 2
+theme_override_constants/separation = 4
+
+[node name="SkillPanel" type="PanelContainer" parent="Hud"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 336.0
+offset_top = 284.0
+offset_right = 496.0
+offset_bottom = 284.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_strip")
+
+[node name="SkillList" type="VBoxContainer" parent="Hud/SkillPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0

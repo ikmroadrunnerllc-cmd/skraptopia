@@ -1,5 +1,5 @@
 class_name ChoiceList
-extends VBoxContainer
+extends BoxContainer
 
 signal chosen(index: int)
 
@@ -23,8 +23,14 @@ func set_choices(items: Array[String], disabled: Array[int] = []) -> void:
 		if not b.disabled:
 			buttons.append(b)
 	for i in buttons.size():
-		buttons[i].focus_neighbor_top = buttons[i - 1].get_path()
-		buttons[i].focus_neighbor_bottom = buttons[(i + 1) % buttons.size()].get_path()
+		var prev := buttons[i - 1].get_path()
+		var next := buttons[(i + 1) % buttons.size()].get_path()
+		if vertical:
+			buttons[i].focus_neighbor_top = prev
+			buttons[i].focus_neighbor_bottom = next
+		else:
+			buttons[i].focus_neighbor_left = prev
+			buttons[i].focus_neighbor_right = next
 	_armed = true
 
 
