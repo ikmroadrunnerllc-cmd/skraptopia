@@ -5,6 +5,7 @@ const VILLAGE_SCENE := "res://Scenes/main.tscn"
 
 var busy: bool = false
 var _fade: ColorRect
+var _base_stats: Dictionary = {}
 
 
 func _ready() -> void:
@@ -19,11 +20,11 @@ func _ready() -> void:
 
 
 const TEST_BOSSES := {
-	KEY_F1: "iron_jaws",
-	KEY_F2: "kilnoxx",
-	KEY_F3: "captain_crackjack",
-	KEY_F4: "zephyrion",
-	KEY_F7: "mecha_orc_knight",
+	KEY_F1: ["iron_jaws", 49, 36],
+	KEY_F2: ["kilnoxx", 73, 50],
+	KEY_F3: ["captain_crackjack", 58, 40],
+	KEY_F4: ["zephyrion", 41, 24],
+	KEY_F7: ["mecha_orc_knight", 0, 0],
 }
 const TEST_MONSTERS: Array[String] = [
 	"clay_sludge", "pipe_spider", "paper_dactyl", "mecha_orc_knight", "mecha_orc_lancer",
@@ -38,9 +39,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	var key: Key = event.keycode
 	if TEST_BOSSES.has(key) or key == KEY_F6:
+		var test: Array = TEST_BOSSES.get(key, ["", 0, 0])
+		_set_test_stats(test[1], test[2])
 		GameState.restore_party()
 	if TEST_BOSSES.has(key):
-		start_battle(load("res://data/enemies/%s.tres" % TEST_BOSSES[key]), "test_" + TEST_BOSSES[key])
+		var id: String = TEST_BOSSES[key][0]
+		start_battle(load("res://data/enemies/%s.tres" % id), "test_" + id)
 	elif key == KEY_F6:
 		var group: Array = []
 		for i in randi_range(1, 3):
@@ -49,6 +53,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	else:
 		return
 	get_viewport().set_input_as_handled()
+
+
+func _set_test_stats(attack: int, defense: int) -> void:
+	for id in GameState.party:
+		var m := GameState.member(id)
+		if not _base_stats.has(id):
+			_base_stats[id] = [m.attack, m.defense]
+		m.attack = attack if attack > 0 else _base_stats[id][0]
+		m.defense = defense if defense > 0 else _base_stats[id][1]
 
 
 func change_to(scene_path: String, spawn: String = "", position: Variant = null) -> void:

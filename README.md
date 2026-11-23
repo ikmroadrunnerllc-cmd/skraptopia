@@ -3,16 +3,35 @@
 A fresh start for a top-down 2D JRPG in Godot 4.7.2.
 Learn by building small playable steps with placeholder art.
 
-## Current state
+## How to play
 
-The previous maps, player, scripts, and plans are archived outside the
-project under `../skraptopia_backups/`. They can be restored later.
-There is no gameplay scene or startup scene yet.
+1. Open `project.godot` in Godot 4.7.2 and let the imports finish.
+2. Press **F5** (Run Project). You start in the village.
+3. Move with **WASD**, the arrow keys or a controller. Talk/confirm with
+   **E**, Space or Enter (A on a controller). Open the menu with **Esc** or Tab.
 
-Open `project.godot` in Godot and let asset imports finish.
-Reopen the editor after the reset. If asked about external changes,
-choose Reload instead of saving an old scene back into the project.
-F5 will ask for a main scene until we create one together.
+## How to get into the boss fights
+
+Run the game from Godot with **F5**, walk around the village or the field,
+then press one of these keys:
+
+| Key | Fight |
+|---|---|
+| F1 | Iron Jaws (bonus boss) |
+| F2 | Kilnoxx, the Kiln Phoenix (bonus boss) |
+| F3 | Captain CrackJack (bonus boss) |
+| F4 | Zephyrion, the Dirt Clay Dragon (story boss) |
+| F6 | A random group of 1-3 clay monsters |
+| F7 | Mecha Orc Knight |
+
+- The keys only work when you run the game from Godot (debug runs), not in an exported build.
+- Each key refills the party's HP and MP first.
+- **F1-F4 make the party strong enough** (about level 8) to get each boss
+  to half HP, so you can see its **rage form**: the rage line, the screen shake
+  and its special move. F6 and F7 put the party back to normal.
+- In battle, pick **Attack** with E / Enter. When a boss is below half HP it rages.
+- To hear the boss songs with lyrics, open the menu (Esc) and switch
+  **Boss music** to Lyrics.
 
 ## Preserved files
 

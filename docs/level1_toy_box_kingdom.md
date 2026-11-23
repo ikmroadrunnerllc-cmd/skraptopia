@@ -199,6 +199,13 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
     - Fonts are in `assets/ui/fonts/bosses/` with their SIL Open Font License files; credit them in the game credits.
   - **Boss music:** each bonus boss has the user's own Suno song in two versions. The **instrumental** plays by default; Settings can switch boss fights to the **lyrics** versions. Zephyrion keeps "Clay Doesn't Pay" (one version only).
   - **Boss Rush** (Phase 6): unlocks after beating all 4 bosses (Zephyrion, Iron Jaws, Kilnoxx, Captain CrackJack). A Boss Rush option appears in the pause menu: all 4 back to back, HP and MP refill halfway, losing returns you with no penalty, and winning gives a SkrapBook trophy and the title "Boss Rush Champion".
+- **Playroom Woods map (settled 2026-11-23):**
+  - Each area is its **own map**. Walking off the edge fades into the next one (Woods → Road Carpet → Block Town), like most JRPGs.
+  - A **new map**, 40 × 30 tiles (about 2 × 3 screens). The user's hand-painted village stays as it is.
+  - **Look:** a Ninja Adventure forest with the dark green grass, with toys mixed in from `toyset_32.png` (Lego bricks as rocks, alphabet blocks by the path, a teddy bear under a tree, playing cards on the ground).
+  - **Route, bottom to top:** Demari wakes up at the bottom and finds the notebook → the tutorial clearing (Casimir vs. the Clay Sludge) → a shrine right after it → bush patches → the exit to Road Carpet at the top.
+  - **The village** becomes a side area. Its path opens on the **left side after the tutorial clearing**, once Casimir has joined. New games still start in the woods.
+  - **Iron Jaws' pond** is on the right, through a hidden gap in the bushes. It's a normal pond, set up like a legendary-monster encounter: **rocks in the water that you hop across** one by one to reach Iron Jaws, waiting on the far side, with the sign *"Something is ticking under the water..."* at the shore.
 - **Save points are small shrines.** Walk up and press confirm; there's no saving from the menu. Saving refills HP and MP. Locations: after the tutorial, near the Block Town shop, and outside the tavern.
 
 ### Battle

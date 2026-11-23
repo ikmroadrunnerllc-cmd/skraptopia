@@ -1,8 +1,8 @@
 # Handoff: Level 1 build (Toy Box Kingdom)
 
-**Last updated:** Nov 22, 2026 (night). **Deadline:** Dec 7, 2026 (presentation).
+**Last updated:** Nov 23, 2026. **Deadline:** Dec 7, 2026 (presentation).
 Godot 4.7.2. Screen 640×360, scaled to a 1280×720 window. World camera zoom 2.
-**Everything is local only. Nothing is pushed, by the user's choice.**
+**`phase-2c-bosses` was pushed to GitHub on Nov 23 at the user's request.** `main` is untouched.
 
 ## Start here
 
@@ -61,11 +61,11 @@ Press F5 in Godot, then in the village or field press:
 | F6 | A random group of 1–3 of the team's 9 clay monsters |
 | F7 | Mecha Orc Knight ("the ogre") |
 
-The keys refill the party first. The party is level 1, so the bonus bosses usually win before they reach rage. Offered but not built: start test-key bosses at half HP. The keys live in `systems/scene_manager.gd` (`TEST_BOSSES`, `TEST_MONSTERS`).
+The keys refill the party first. F1–F4 also give the party boss-ready stats (the `boss_demo.gd` values, about level 8) so each boss reaches rage; F6/F7 put the base stats back (`_set_test_stats`). The README has these instructions for the team. The keys live in `systems/scene_manager.gd` (`TEST_BOSSES`, `TEST_MONSTERS`).
 
 ## Next steps
 
-1. **The user wants to design the level next** (Phase 4). Open question asked: which area first? Recommended **Playroom Woods** (game start, tutorial fight, Iron Jaws pond). Run grilling one question at a time, write decisions into the story doc, extend the plan, then build.
+1. **Playroom Woods design is settled** (story doc, "Playroom Woods map"): own map per area, 40×30, forest + toys, route bottom to top, village as a side area on the left after the tutorial, Iron Jaws pond with rocks to hop across. Still to ask: anything else about the woods, then extend the Phase 4 plan and build. Proof screenshots for the team checklist are in `../skraptopia_dev_tools/milestone1/proof/` (concept art still missing).
 2. **Ogre cutscene** (requested earlier): a dialogue-box cutscene with the ogre before its fight, using the existing `ui/dialogue/dialogue_box.gd` (`play(DialogueData)`). Ogre rage line in Creepster green: *"The ogre roars with rage!"* / Demari *"I think we made it mad."* / Casimir *"You think?!"*. Confirm which enemy is the ogre first.
 3. Finish the open 2c items (above) and the rest of 2d.
 4. Phase 3 as planned. Also rename `GameState.exp` (the only warning) and fix Zephyrion floating about 10px above the ground.
