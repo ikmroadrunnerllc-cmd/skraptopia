@@ -31,7 +31,7 @@ data = ExtResource("7_6iyac")
 position = Vector2(248, 316)
 collision_layer = 0
 script = ExtResource("8_fdnlq")
-target_scene = "res://Scenes/field/field.tscn"
+target_scene = "res://Scenes/woods/playroom_woods.tscn"
 target_spawn = "FromVillage"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitToField" unique_id=733245503]

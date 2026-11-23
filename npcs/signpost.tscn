@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://npcs/signpost.gd" id="1_r14dc"]
+[ext_resource type="Texture2D" path="res://assets/tiles/ninja_adventure/Tilesets/TilesetNature.png" id="2_bholf"]
+[ext_resource type="Theme" path="res://ui/themes/jrpg_theme.tres" id="3_oaced"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_36sqp"]
+atlas = ExtResource("2_bholf")
+region = Rect2(80, 128, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x7ayo"]
+size = Vector2(12, 6)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bak1f"]
+radius = 18.0
+
+[node name="Signpost" type="StaticBody2D" unique_id=705800882]
+script = ExtResource("1_r14dc")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1012342972]
+position = Vector2(0, -8)
+texture = SubResource("AtlasTexture_36sqp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1628184955]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_x7ayo")
+
+[node name="InteractionZone" type="Area2D" parent="." unique_id=1397981725]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionZone" unique_id=1904795831]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_bak1f")
+
+[node name="Prompt" type="PanelContainer" parent="." unique_id=1870614738]
+visible = false
+z_index = 10
+offset_left = -9.0
+offset_top = -34.0
+offset_right = -9.0
+offset_bottom = -34.0
+theme = ExtResource("3_oaced")
+theme_type_variation = &"Nameplate"
+
+[node name="Label" type="Label" parent="Prompt" unique_id=1612996267]
+layout_mode = 2
+theme_type_variation = &"NameLabel"
+theme_override_font_sizes/font_size = 8
+text = "!"

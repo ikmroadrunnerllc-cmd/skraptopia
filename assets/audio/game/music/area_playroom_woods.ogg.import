@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/area_playroom_woods.ogg-f1e405d3224d49036854a
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

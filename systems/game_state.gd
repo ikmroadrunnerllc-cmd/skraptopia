@@ -108,9 +108,17 @@ func add_exp(amount: int) -> void:
 
 func mark_defeated(encounter_id: String, enemy_id: StringName) -> void:
 	if encounter_id != "":
-		defeated_encounters[encounter_id] = true
+		defeated_encounters[encounter_id] = Time.get_ticks_msec()
 	enemy_defeated.emit(enemy_id)
 
 
 func is_defeated(encounter_id: String) -> bool:
 	return defeated_encounters.has(encounter_id)
+
+
+func seconds_since_defeat(encounter_id: String) -> float:
+	return (Time.get_ticks_msec() - int(defeated_encounters.get(encounter_id, 0))) / 1000.0
+
+
+func forget_defeat(encounter_id: String) -> void:
+	defeated_encounters.erase(encounter_id)

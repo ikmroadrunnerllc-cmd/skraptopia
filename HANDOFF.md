@@ -22,6 +22,7 @@ Godot 4.7.2. Screen 640×360, scaled to a 1280×720 window. World camera zoom 2.
 | 2c. Secret bonus bosses | **mostly done:** art, data, music, test keys, rage phase + specials, lyrics setting. Still open: CrackJack −30% damage while raging, Kilnoxx white-gold palette, the 3 drops, temporary field spots | `phase-2c-bosses` (current) |
 | 2d. Menus, button hints, new battle layout | **battle layout done early**; boss-music switch in the pause menu done. Still open: Pocket Inventory restyle, Settings (volumes), Restart, button hints outside battle | — (work so far is on `phase-2c-bosses`) |
 | 3. RPG systems | level-ups, Buttons, shop, items, inventory screens | — |
+| 4a. Playroom Woods | **built, waiting for the user to try it** (G4a.4) | `phase-4a-playroom-woods` (off `phase-2c-bosses`) |
 | 4. Open world | map, rustling bushes, alphabet block puzzle, the 3 boss hiding spots, entering buildings | — |
 | 5. Story | cutscenes, clues, boss, notebook → SkrapBook (Paper UI), shrines (save) | — |
 | 6. Polish | balance, Controls rebinding, Boss Rush, credits, merge to `main` | — |
