@@ -107,7 +107,8 @@ Needs: Phase 2
 Builds:
 - EXP curve and level cap 10; stat growth for Demari and Casimir; shared EXP.
 - A "Level up!" screen showing the stat gains and any new skill.
-- Skills unlock at levels 1, 3 and 5.
+- Skills unlock at levels 1, 2, 3, 5, 7 and 9 (6 per hero, see the story doc). New: Ink Splash (poison), Lullaby Doodle (sleep, not on bosses), Group Patch (party heal), Dent Strike (Defense down), Cannon Volley (all enemies), Royal Salute (party Defense up).
+- Status effects with turn counters, and their Ninja Adventure icon floating above whoever has them (poison, sleep, Defense down/up, Attack up), each with its RPG Essentials sound.
 - Buttons (money) dropped after battles; inventory; the shop (Glue Stick, Juice Box, Bandage Tape).
 - Items usable in battle and from the pause menu.
 - The bonus bosses' Buttons rewards.
@@ -115,6 +116,7 @@ Builds:
 Gate 3:
 - [ ] G3.1 Headless import and run: 0 errors.
 - [ ] G3.2 Playtest: enough EXP gives a level-up with higher stats, and level 3 unlocks Patch Up and March Order.
+- [ ] G3.2b Playtest: poison deals damage each turn then wears off; a sleeping enemy skips its turn and wakes when hit; bosses can't sleep; Defense down/up change damage; each effect shows its icon and the icon goes away when it ends; Cannon Volley and Group Patch hit everyone.
 - [ ] G3.3 Playtest: buying an item spends Buttons, and using it heals the right amount.
 - [ ] G3.4 Screenshots: the level-up screen and the shop.
 - [ ] G3.5 The user leveled up, shopped, and said OK.
