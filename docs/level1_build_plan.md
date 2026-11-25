@@ -82,7 +82,7 @@ Gate 2c:
 - [ ] G2c.3 Playtest: CrackJack takes less damage while raging; Steel Fang raises damage dealt; Star Medal lowers damage taken; Phoenix Feather revives the first knock-out at half HP, only once per battle.
 - [ ] G2c.4 Playtest: each boss plays its own instrumental, and the lyrics version when the setting is on; Zephyrion still plays his song; older checks still pass.
 - [ ] G2c.5 Screenshots: each boss in battle, normal and raging.
-- [ ] G2c.6 The user fought the bosses and said OK.
+- [x] G2c.6 The user fought the bosses and said OK (Nov 25).
 
 ## Phase 2d: Menus and button hints  (target: Nov 26)  status: todo
 Goal: a nicer pause menu with Settings and Restart, and button hints that match the keyboard or controller.

@@ -195,7 +195,7 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
     - Iron Jaws: Demari *"A wind-up fish... with anger issues."* / Casimir *"Who keeps winding that thing?!"*
     - Kilnoxx: Demari *"...Does anyone here speak Japanese?"* / Casimir *"No, but I'm pretty sure it means 'run.'"*
     - CrackJack: Demari *"Since when do nutcrackers FLY?!"* / Casimir *"Since when do they have cannons?!"*
-    - The ogre (Mecha Orc, for its cutscene later) uses Creepster, green: *"The ogre roars with rage!"* / Demari *"I think we made it mad."* / Casimir *"You think?!"*
+    - The ogre is **Zephyrion** (the clay boss; settled 2026-11-25). His rage uses Creepster, green: *"The ogre roars with rage!"* / Demari *"I think we made it mad."* / Casimir *"You think?!"*
     - Fonts are in `assets/ui/fonts/bosses/` with their SIL Open Font License files; credit them in the game credits.
   - **Boss music:** each bonus boss has the user's own Suno song in two versions. The **instrumental** plays by default; Settings can switch boss fights to the **lyrics** versions. Zephyrion keeps "Clay Doesn't Pay" (one version only).
   - **Boss Rush** (Phase 6): unlocks after beating all 4 bosses (Zephyrion, Iron Jaws, Kilnoxx, Captain CrackJack). A Boss Rush option appears in the pause menu: all 4 back to back, HP and MP refill halfway, losing returns you with no penalty, and winning gives a SkrapBook trophy and the title "Boss Rush Champion".
