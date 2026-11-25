@@ -50,6 +50,7 @@ var boss_music_lyrics: bool = false
 var buttons: int = 0
 var inventory: Dictionary = {}
 var key_items: Array[StringName] = []
+var flags: Dictionary = {}
 var _base: Dictionary = {}
 
 
@@ -121,6 +122,36 @@ func skills_for(id: StringName) -> Array[SkillData]:
 		if s.user == id and s.unlock_level <= level:
 			out.append(s)
 	return out
+
+
+func new_game() -> void:
+	party = [&"demari"]
+	flags.clear()
+	defeated_encounters.clear()
+	pending_battle = {}
+	inventory.clear()
+	key_items.clear()
+	buttons = 0
+	exp = 0
+	set_level(1)
+	restore_party()
+	set_member_hp(&"casimir", CASIMIR.max_hp)
+	set_member_mp(&"casimir", CASIMIR.max_mp)
+
+
+func set_flag(id: StringName) -> void:
+	flags[id] = true
+
+
+func has_flag(id: StringName) -> bool:
+	return flags.has(id)
+
+
+func join_party(id: StringName) -> void:
+	if id not in party:
+		party.append(id)
+		set_member_hp(id, member(id).max_hp)
+		set_member_mp(id, member(id).max_mp)
 
 
 func restore_party() -> void:

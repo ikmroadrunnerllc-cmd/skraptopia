@@ -1,6 +1,6 @@
 # Chapter 1: Wake-up
 
-**Branch:** `chapter-1-wake-up` · **Target:** Nov 27, 2026 · **Status:** building
+**Branch:** `chapter-1-wake-up` · **Target:** Nov 27, 2026 · **Status:** waiting for the user test
 
 The first chapter of Level 1, playable from start to end: from the title screen to Casimir joining the party. The story doc (`level1_toy_box_kingdom.md`) wins if anything here disagrees.
 
@@ -35,17 +35,18 @@ Every line uses the Animal Crossing–style babble voices (deep for Casimir and 
 ## Art
 
 - Casimir: the Ninja Adventure `Knight` placeholder (until the team's tin soldier art arrives).
+- Demari fights the tutorial battle alone (Casimir is hurt); he joins right after.
 - Clay Sludge: the team's clay photo, as in the woods now.
 - Notebook: a paper sheet from `toyset_32.png`.
 
 ## Gate (checks before Chapter 1 is done)
 
-- [ ] C1.1 Headless import and run: 0 errors.
-- [ ] C1.2 Playtest: the game starts on the title screen; New Game shows the 3 opening screens in order, then the woods.
-- [ ] C1.3 Playtest: walking over the notebook picks it up once (it stays gone after leaving and coming back).
-- [ ] C1.4 Playtest: entering the clearing plays the tutorial scene, then the battle; winning plays the thank-you scene, and Casimir follows Demari, also after changing maps.
-- [ ] C1.5 All old playtest checks still pass.
-- [ ] C1.6 Screenshots: title, an opening screen, the tutorial scene, Casimir following.
+- [x] C1.1 Headless import and run: 0 errors.
+- [x] C1.2 Playtest: the game starts on the title screen; New Game shows the 3 opening screens in order, then the woods.
+- [x] C1.3 Playtest: walking over the notebook picks it up once (it stays gone after leaving and coming back).
+- [x] C1.4 Playtest: entering the clearing plays the tutorial scene, then the battle; winning plays the thank-you scene, and Casimir follows Demari, also after changing maps.
+- [x] C1.5 All old playtest checks still pass (266/266 PASS).
+- [x] C1.6 Screenshots: title, an opening screen, the tutorial scene, Casimir following.
 - [ ] C1.7 The user played from New Game to Casimir joining and said OK.
 
 ## Not in this chapter

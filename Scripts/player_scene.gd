@@ -18,6 +18,16 @@ var _idle_tween: Tween
 func _ready() -> void:
 	add_to_group("player")
 	_apply_camera_limits()
+	if GameState.has_flag(&"casimir_joined"):
+		spawn_follower()
+
+
+func spawn_follower() -> void:
+	if get_parent() == null or get_parent().has_node("CasimirFollower"):
+		return
+	var f := Follower.new()
+	f.target = self
+	get_parent().add_child.call_deferred(f)
 
 
 func _start_idle() -> void:
