@@ -239,7 +239,8 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 - **Status icons** float above whoever has the effect, from Ninja Adventure `Skill Icon/`: poison `Spell/OrbPlant`, sleep `Meteo/Moon`, Defense down `Spell/Downgrade`, Defense up `Spell/DefenseUpgrade`, Attack up `Spell/AttackUpgrade`. Sounds from the user's `RPG_Essentials_Free.zip` (Poison, Sleep, Debuff, Def buff, Heal).
 
 - **Money is Buttons.** Enemies drop them, and Asmara gives some at the start of the quest.
-- **Shop (Block Town):** Glue Stick (30 HP), Juice Box (15 MP), Bandage Tape (full heal, one ally, expensive).
+- **Shop (Block Town):** Glue Stick (30 HP, 15 Buttons), Juice Box (15 MP, 20), Bandage Tape (full heal, one ally, can revive, 60). The village merchant sells the same three for now.
+- **Leveling (built 2026-11-25):** Demari and Casimir share one level. EXP to reach each level: 20, 50, 100, 170, 260, 380, 530, 720, 950 (level 10). Each level: Demari HP+8 MP+3 ATK+3 DEF+2 SPD+1; Casimir HP+10 MP+2 ATK+3 DEF+2 SPD+1. Poison does 10% of max HP per turn; Defense down = +30% damage taken; Defense up = -30%.
 
 | Move | Effect |
 |---|---|

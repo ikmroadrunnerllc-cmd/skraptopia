@@ -13,7 +13,28 @@ const SKILLS: Array[SkillData] = [
 	preload("res://data/skills/tin_shield.tres"),
 	preload("res://data/skills/march_order.tres"),
 	preload("res://data/skills/wind_up_charge.tres"),
+	preload("res://data/skills/ink_splash.tres"),
+	preload("res://data/skills/lullaby_doodle.tres"),
+	preload("res://data/skills/group_patch.tres"),
+	preload("res://data/skills/dent_strike.tres"),
+	preload("res://data/skills/cannon_volley.tres"),
+	preload("res://data/skills/royal_salute.tres"),
 ]
+const EXP_TABLE: Array[int] = [0, 0, 20, 50, 100, 170, 260, 380, 530, 720, 950]
+const MAX_LEVEL := 10
+const ITEMS: Array[ItemData] = [
+	preload("res://data/items/glue_stick.tres"),
+	preload("res://data/items/juice_box.tres"),
+	preload("res://data/items/bandage_tape.tres"),
+]
+const KEY_ITEMS := {
+	&"steel_fang": ["Steel Fang", "The party deals 15% more damage.", "res://assets/ui/kyrise/necklace_03e.png"],
+	&"phoenix_feather": ["Phoenix Feather", "Once per battle, revives the first knocked-out ally at half HP.", "res://assets/items/ninja_adventure/Resource/feather.png"],
+	&"star_medal": ["Star Medal", "The party takes 15% less damage.", "res://assets/ui/kyrise/necklace_02d.png"],
+}
+const BOSS_DROPS := {&"iron_jaws": &"steel_fang", &"kilnoxx": &"phoenix_feather", &"captain_crackjack": &"star_medal"}
+const STATS: Array[String] = ["max_hp", "max_mp", "attack", "defense", "speed"]
+const GROWTH: Array[String] = ["hp_growth", "mp_growth", "attack_growth", "defense_growth", "speed_growth"]
 
 var party: Array[StringName] = [&"demari", &"casimir"]
 var hp: int = HERO.max_hp
@@ -26,9 +47,15 @@ var defeated_encounters: Dictionary = {}
 var pending_battle: Dictionary = {}
 var _locks: Dictionary = {}
 var boss_music_lyrics: bool = false
+var buttons: int = 0
+var inventory: Dictionary = {}
+var key_items: Array[StringName] = []
+var _base: Dictionary = {}
 
 
 func _ready() -> void:
+	for m: CharacterData in [HERO, CASIMIR]:
+		_base[m.id] = STATS.map(func(s: String) -> int: return m.get(s))
 	var cfg := ConfigFile.new()
 	if cfg.load(SETTINGS_PATH) == OK:
 		boss_music_lyrics = cfg.get_value("audio", "boss_music_lyrics", false)
@@ -55,12 +82,13 @@ func is_locked() -> bool:
 
 
 func set_hp(value: int) -> void:
-	hp = clampi(value, 0, HERO.max_hp)
+	hp = clampi(value, 0, member(&"demari").max_hp)
 	stats_changed.emit()
 
 
 func member(id: StringName) -> CharacterData:
-	return CASIMIR if id == &"casimir" else HERO
+	var m: CharacterData = CASIMIR if id == &"casimir" else HERO
+	return m
 
 
 func get_hp(id: StringName) -> int:
@@ -73,7 +101,7 @@ func get_mp(id: StringName) -> int:
 
 func set_member_hp(id: StringName, value: int) -> void:
 	if id == &"casimir":
-		casimir_hp = clampi(value, 0, CASIMIR.max_hp)
+		casimir_hp = clampi(value, 0, member(&"casimir").max_hp)
 		stats_changed.emit()
 	else:
 		set_hp(value)
@@ -81,9 +109,9 @@ func set_member_hp(id: StringName, value: int) -> void:
 
 func set_member_mp(id: StringName, value: int) -> void:
 	if id == &"casimir":
-		casimir_mp = clampi(value, 0, CASIMIR.max_mp)
+		casimir_mp = clampi(value, 0, member(&"casimir").max_mp)
 	else:
-		mp = clampi(value, 0, HERO.max_mp)
+		mp = clampi(value, 0, member(&"demari").max_mp)
 	stats_changed.emit()
 
 
@@ -101,9 +129,113 @@ func restore_party() -> void:
 		set_member_mp(id, member(id).max_mp)
 
 
-func add_exp(amount: int) -> void:
+func add_exp(amount: int) -> Dictionary:
 	exp += maxi(amount, 0)
+	var from := level
+	var to := level
+	while to < MAX_LEVEL and exp >= EXP_TABLE[to + 1]:
+		to += 1
+	if to == from:
+		stats_changed.emit()
+		return {}
+	var before := {}
+	for id in party:
+		before[id] = STATS.map(func(s: String) -> int: return member(id).get(s))
+	set_level(to)
+	var gains := {}
+	for id in party:
+		var m := member(id)
+		gains[id] = []
+		for k in STATS.size():
+			gains[id].append(m.get(STATS[k]) - before[id][k])
+		set_member_hp(id, get_hp(id) + gains[id][0])
+		set_member_mp(id, get_mp(id) + gains[id][1])
+	var learned: Array[SkillData] = []
+	for s in SKILLS:
+		if s.unlock_level > from and s.unlock_level <= to:
+			learned.append(s)
+	return {"from": from, "to": to, "gains": gains, "skills": learned}
+
+
+func exp_to_next() -> int:
+	return 0 if level >= MAX_LEVEL else EXP_TABLE[level + 1] - exp
+
+
+func set_level(value: int) -> void:
+	level = clampi(value, 1, MAX_LEVEL)
+	refresh_stats()
+
+
+func refresh_stats() -> void:
+	for m: CharacterData in [HERO, CASIMIR]:
+		for k in STATS.size():
+			m.set(STATS[k], _base[m.id][k] + m.get(GROWTH[k]) * (level - 1))
+	set_member_hp(&"demari", hp)
+	set_member_hp(&"casimir", casimir_hp)
+	set_member_mp(&"demari", mp)
+	set_member_mp(&"casimir", casimir_mp)
+
+
+func add_buttons(amount: int) -> void:
+	buttons = maxi(buttons + amount, 0)
 	stats_changed.emit()
+
+
+func add_item(id: StringName, count := 1) -> void:
+	inventory[id] = inventory.get(id, 0) + count
+	if inventory[id] <= 0:
+		inventory.erase(id)
+	stats_changed.emit()
+
+
+func item(id: StringName) -> ItemData:
+	for i in ITEMS:
+		if i.id == id:
+			return i
+	return null
+
+
+func buy(id: StringName) -> bool:
+	var i := item(id)
+	if i == null or buttons < i.price:
+		return false
+	add_buttons(-i.price)
+	add_item(id)
+	return true
+
+
+func use_item(id: StringName, target: StringName) -> String:
+	var i := item(id)
+	if i == null or inventory.get(id, 0) <= 0:
+		return ""
+	var m := member(target)
+	var hp0 := get_hp(target)
+	var mp0 := get_mp(target)
+	if i.full_heal:
+		set_member_hp(target, m.max_hp)
+	set_member_hp(target, get_hp(target) + i.heal_hp)
+	set_member_mp(target, get_mp(target) + i.heal_mp)
+	add_item(id, -1)
+	var parts: Array[String] = []
+	if get_hp(target) > hp0:
+		parts.append("%d HP" % (get_hp(target) - hp0))
+	if get_mp(target) > mp0:
+		parts.append("%d MP" % (get_mp(target) - mp0))
+	if parts.is_empty():
+		return "%s uses the %s. Nothing happens." % [m.display_name, i.display_name]
+	return "%s uses the %s and recovers %s." % [m.display_name, i.display_name, " and ".join(PackedStringArray(parts))]
+
+
+func has_key_item(id: StringName) -> bool:
+	return id in key_items
+
+
+func give_key_item(id: StringName) -> bool:
+	if id in key_items:
+		return false
+	key_items.append(id)
+	stats_changed.emit()
+	return true
 
 
 func mark_defeated(encounter_id: String, enemy_id: StringName) -> void:

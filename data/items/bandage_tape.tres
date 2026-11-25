@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ItemData" format=3]
 
 [ext_resource type="Script" path="res://resources/item_data.gd" id="1_0wgr3"]
+[ext_resource type="Texture2D" path="res://assets/items/ninja_adventure/Potion/Medipack.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_0wgr3")
@@ -9,3 +10,4 @@ display_name = "Bandage Tape"
 description = "Fully heals one ally."
 price = 60
 full_heal = true
+icon = ExtResource("2_icon")

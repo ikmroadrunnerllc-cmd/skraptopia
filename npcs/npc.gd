@@ -31,6 +31,9 @@ func interact(player: Node2D) -> void:
 	var quest := data.quest
 	if quest == null:
 		await Dialogue.play(data.dialogue, data.display_name)
+		if not data.sells.is_empty():
+			await _after_close()
+			await Shop.open(self, data.sells)
 	else:
 		match QuestManager.get_state(quest.id):
 			QuestManager.State.NOT_STARTED:

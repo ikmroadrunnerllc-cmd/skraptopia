@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = &"cannon_volley"
+display_name = "Cannon Volley"
+description = "Fires the toy cannons. Hits every enemy."
+user = &"casimir"
+unlock_level = 7
+mp_cost = 7
+power = 1.2
+hits_all = true
+effect = &"sp_explosion"

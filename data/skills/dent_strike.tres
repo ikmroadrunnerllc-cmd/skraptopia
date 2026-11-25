@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = &"dent_strike"
+display_name = "Dent Strike"
+description = "A hard bash that dents the enemy. Lowers its Defense for 3 turns."
+user = &"casimir"
+unlock_level = 2
+mp_cost = 3
+turns = 3
+effect = &"na_cut_x"
+status = &"def_down"

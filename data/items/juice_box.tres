@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ItemData" format=3]
 
 [ext_resource type="Script" path="res://resources/item_data.gd" id="1_m1qdp"]
+[ext_resource type="Texture2D" path="res://assets/items/ninja_adventure/Potion/WaterPot.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_m1qdp")
@@ -9,3 +10,4 @@ display_name = "Juice Box"
 description = "A sugary boost. Restores 15 MP."
 price = 20
 heal_mp = 15
+icon = ExtResource("2_icon")

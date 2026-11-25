@@ -11,3 +11,5 @@ max_mp = 8
 attack = 7
 defense = 5
 speed = 4
+hp_growth = 10
+mp_growth = 2

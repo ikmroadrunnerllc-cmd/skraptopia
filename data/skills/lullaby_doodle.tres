@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = &"lullaby_doodle"
+display_name = "Lullaby Doodle"
+description = "Doodles a sleepy little moon. Puts an enemy to sleep for up to 2 turns. Bosses stay awake."
+unlock_level = 7
+mp_cost = 5
+kind = "status"
+turns = 2
+effect = &"sp_symbol_up"
+status = &"sleep"

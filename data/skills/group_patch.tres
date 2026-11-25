@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_skill"]
+
+[resource]
+script = ExtResource("1_skill")
+id = &"group_patch"
+display_name = "Group Patch"
+description = "Tape for everyone! Heals the whole party 30 HP."
+unlock_level = 9
+mp_cost = 8
+kind = "heal"
+power = 30.0
+hits_all = true
+effect = &"sp_magic_burst_green"

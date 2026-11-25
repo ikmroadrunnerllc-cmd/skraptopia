@@ -5,7 +5,6 @@ const VILLAGE_SCENE := "res://Scenes/main.tscn"
 
 var busy: bool = false
 var _fade: ColorRect
-var _base_stats: Dictionary = {}
 
 
 func _ready() -> void:
@@ -56,12 +55,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _set_test_stats(attack: int, defense: int) -> void:
+	GameState.refresh_stats()
+	if attack <= 0:
+		return
 	for id in GameState.party:
-		var m := GameState.member(id)
-		if not _base_stats.has(id):
-			_base_stats[id] = [m.attack, m.defense]
-		m.attack = attack if attack > 0 else _base_stats[id][0]
-		m.defense = defense if defense > 0 else _base_stats[id][1]
+		GameState.member(id).attack = attack
+		GameState.member(id).defense = defense
 
 
 func change_to(scene_path: String, spawn: String = "", position: Variant = null) -> void:
@@ -104,8 +103,8 @@ func return_from_battle() -> void:
 
 
 func retry_battle() -> void:
-	GameState.set_hp(GameState.pending_battle.get("start_hp", GameState.HERO.max_hp))
-	GameState.set_member_hp(&"casimir", GameState.pending_battle.get("start_casimir_hp", GameState.CASIMIR.max_hp))
+	GameState.set_hp(GameState.pending_battle.get("start_hp", GameState.member(&"demari").max_hp))
+	GameState.set_member_hp(&"casimir", GameState.pending_battle.get("start_casimir_hp", GameState.member(&"casimir").max_hp))
 	change_to(BATTLE_SCENE)
 
 

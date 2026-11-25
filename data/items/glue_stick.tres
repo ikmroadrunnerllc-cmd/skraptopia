@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ItemData" format=3]
 
 [ext_resource type="Script" path="res://resources/item_data.gd" id="1_fo2ar"]
+[ext_resource type="Texture2D" path="res://assets/items/ninja_adventure/Potion/LifePot.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_fo2ar")
@@ -9,3 +10,4 @@ display_name = "Glue Stick"
 description = "Sticks you back together. Heals 30 HP."
 price = 15
 heal_hp = 30
+icon = ExtResource("2_icon")

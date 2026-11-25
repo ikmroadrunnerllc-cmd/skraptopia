@@ -7,3 +7,4 @@ extends Resource
 @export_range(0, 3) var facing: int = 0
 @export var dialogue: DialogueData
 @export var quest: QuestData
+@export var sells: Array[ItemData] = []

@@ -8,3 +8,4 @@ extends Resource
 @export var heal_hp: int = 0
 @export var heal_mp: int = 0
 @export var full_heal: bool = false
+@export var icon: Texture2D

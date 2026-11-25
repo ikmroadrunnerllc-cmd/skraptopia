@@ -101,7 +101,7 @@ Gate 2d:
 - [ ] G2d.4 Screenshots: the pause menu and Settings with keyboard and controller hints; a front-view clay fight and a side-view boss fight with the new HUD.
 - [ ] G2d.5 The user tried the menu with keyboard and controller and said OK.
 
-## Phase 3: RPG systems  (target: Nov 28)  status: todo
+## Phase 3: RPG systems  (target: Nov 28)  status: gate-check
 Goal: growing stronger feels good.
 Needs: Phase 2
 Builds:
@@ -114,11 +114,11 @@ Builds:
 - The bonus bosses' Buttons rewards.
 - Item and inventory screens in the Retro Inventory style; the 3 key items (Steel Fang, Phoenix Feather, Star Medal) shown with their icons (Kyrise `necklace_03e`, Ninja Adventure feather, Kyrise `necklace_02d`).
 Gate 3:
-- [ ] G3.1 Headless import and run: 0 errors.
-- [ ] G3.2 Playtest: enough EXP gives a level-up with higher stats, and level 3 unlocks Patch Up and March Order.
-- [ ] G3.2b Playtest: poison deals damage each turn then wears off; a sleeping enemy skips its turn and wakes when hit; bosses can't sleep; Defense down/up change damage; each effect shows its icon and the icon goes away when it ends; Cannon Volley and Group Patch hit everyone.
-- [ ] G3.3 Playtest: buying an item spends Buttons, and using it heals the right amount.
-- [ ] G3.4 Screenshots: the level-up screen and the shop.
+- [x] G3.1 Headless import and run: 0 errors.
+- [x] G3.2 Playtest: enough EXP gives a level-up with higher stats, and level 3 unlocks Patch Up and March Order.
+- [x] G3.2b Playtest: poison deals damage each turn then wears off; a sleeping enemy skips its turn and wakes when hit; bosses can't sleep; Defense down/up change damage; each effect shows its icon and the icon goes away when it ends; Cannon Volley and Group Patch hit everyone.
+- [x] G3.3 Playtest: buying an item spends Buttons, and using it heals the right amount.
+- [x] G3.4 Screenshots: the level-up screen and the shop (`../skraptopia_dev_tools/screenshots/p3_*.png`). Full playtest 227/227 PASS.
 - [ ] G3.5 The user leveled up, shopped, and said OK.
 
 ## Phase 4a: Playroom Woods  (target: Nov 24)  status: done

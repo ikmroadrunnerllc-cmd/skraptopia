@@ -68,6 +68,17 @@ const HP_FILL: Texture2D = preload("res://assets/ui/retro_inventory/Health_01_Ba
 const MP_FILL: Texture2D = preload("res://assets/ui/retro_inventory/Health_01_Bar03.png")
 const HINT_KEYS := ["res://assets/ui/ninja_adventure/Input/Keyboard/KeyE.png", "res://assets/ui/ninja_adventure/Input/Keyboard/KeyEscape.png"]
 const HINT_PADS := ["res://assets/ui/ninja_adventure/Input/Gamepad/ButtonA/Idle.png", "res://assets/ui/ninja_adventure/Input/Gamepad/ButtonB/Idle.png"]
+const STATUS_ICONS := {
+	&"poison": "res://assets/ui/ninja_adventure/Skill Icon/Spell/OrbPlant.png",
+	&"sleep": "res://assets/ui/ninja_adventure/Skill Icon/Meteo/Moon.png",
+	&"def_down": "res://assets/ui/ninja_adventure/Skill Icon/Spell/Downgrade.png",
+	&"def_up": "res://assets/ui/ninja_adventure/Skill Icon/Spell/DefenseUpgrade.png",
+	&"atk_up": "res://assets/ui/ninja_adventure/Skill Icon/Spell/AttackUpgrade.png",
+}
+const STATUS_SFX := {&"poison": "poison", &"sleep": "sleep", &"def_down": "debuff", &"def_up": "def_buff", &"atk_up": "march_order"}
+const SFX_PATH := "res://assets/audio/game/sfx/%s.wav"
+const DEF_DOWN := 1.3
+const DEF_UP := 0.7
 const GOLD := Color(1, 0.84, 0.35)
 const FX_SIZE := 72.0
 const STEP_FORWARD := 28.0
@@ -91,6 +102,7 @@ var foes: Array[Dictionary] = []
 var actor: StringName = &""
 var shield_up: bool = false
 var buff_turns: int = 0
+var guard_turns: int = 0
 var charging: bool = false
 var charge_target: int = 0
 var guarding: Dictionary = {}
@@ -106,6 +118,11 @@ var _rows: Dictionary = {}
 var _rng := RandomNumberGenerator.new()
 var _front: bool = false
 var _pad: bool = false
+var _feather_used: bool = false
+var _pages: Array = []
+var _items: Array[StringName] = []
+var _item_pick: StringName = &""
+var _party_icons: Dictionary = {}
 
 
 func _ready() -> void:
@@ -141,6 +158,10 @@ func _setup_view() -> void:
 		var id := GameState.party[i]
 		_rows[id] = _make_row(id, 292 + i * 28)
 	_set_hints(false)
+	for id: StringName in _sprites:
+		var spr: AnimatedSprite2D = _sprites[id]
+		var h := spr.sprite_frames.get_frame_texture(spr.animation, 0).get_height() * spr.scale.y
+		_party_icons[id] = _icon_box(spr.position + Vector2(-60, -h - 14))
 	var counts := {}
 	for e: EnemyData in list:
 		counts[e.display_name] = counts.get(e.display_name, 0) + 1
@@ -176,7 +197,7 @@ func _make_row(id: StringName, y: float) -> Dictionary:
 	name_label.text = GameState.member(id).display_name
 	name_label.position = Vector2(52, y + 11)
 	_party_rows.add_child(name_label)
-	return {"name": name_label, "hp": _make_heart_bar(Vector2(100, y + 8), HP_FILL), "mp": _make_heart_bar(Vector2(210, y + 8), MP_FILL)}
+	return {"name": name_label, "hp": _make_heart_bar(Vector2(100, y + 8), HP_FILL), "mp": _make_heart_bar(Vector2(228, y + 8), MP_FILL)}
 
 
 func _portrait(id: StringName) -> Texture2D:
@@ -232,7 +253,7 @@ func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> vo
 	var spr := AnimatedSprite2D.new()
 	spr.position = at
 	%Stage.add_child(spr)
-	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar, "raging": false, "rage_turns": 0, "rest": &"idle"}
+	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar, "raging": false, "rage_turns": 0, "rest": &"idle", "status": {}}
 	foes.append(foe)
 	var sf := e.frames
 	if sf == null:
@@ -262,6 +283,52 @@ func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> vo
 	spr.play(&"idle")
 	_align_enemy(spr)
 	row.position = at + Vector2(-60, -first.get_height() * k - 22)
+	foe.icons = _icon_box(row.position + Vector2(0, -14))
+
+
+func _icon_box(at: Vector2) -> HBoxContainer:
+	var box := HBoxContainer.new()
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.add_theme_constant_override("separation", 1)
+	box.position = at
+	box.size = Vector2(120, 12)
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_enemy_info.add_child(box)
+	return box
+
+
+func _set_icons(box: HBoxContainer, keys: Array) -> void:
+	for c in box.get_children():
+		box.remove_child(c)
+		c.queue_free()
+	for k: StringName in keys:
+		var r := TextureRect.new()
+		r.texture = load(STATUS_ICONS[k])
+		r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		r.custom_minimum_size = Vector2(12, 12)
+		r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		box.add_child(r)
+
+
+func _party_status_keys() -> Array:
+	var keys := []
+	if buff_turns > 0:
+		keys.append(&"atk_up")
+	if guard_turns > 0:
+		keys.append(&"def_up")
+	return keys
+
+
+func _sfx(id: String) -> void:
+	var path := SFX_PATH % id
+	if not ResourceLoader.exists(path):
+		return
+	var p := AudioStreamPlayer.new()
+	p.stream = load(path)
+	add_child(p)
+	p.finished.connect(p.queue_free)
+	p.play()
 
 
 func _align_enemy(spr: AnimatedSprite2D) -> void:
@@ -301,6 +368,9 @@ func _refresh() -> void:
 		f.bar.max_value = f.data.max_hp
 		f.bar.value = f.hp
 		f.name.modulate = Color(1.3, 1.3, 1.3) if state == State.TARGETING and i == _target else Color.WHITE
+		_set_icons(f.icons, f.status.keys() if f.hp > 0 else [])
+	for id: StringName in _party_icons:
+		_set_icons(_party_icons[id], _party_status_keys() if GameState.get_hp(id) > 0 and id in GameState.party else [])
 	for id: StringName in _rows:
 		var m := GameState.member(id)
 		_set_heart_bar(_rows[id].hp, GameState.get_hp(id), m.max_hp)
@@ -334,7 +404,7 @@ func _start() -> void:
 	var fastest := 0
 	for f in foes:
 		fastest = maxi(fastest, f.data.speed)
-	if fastest > GameState.HERO.speed:
+	if fastest > GameState.member(&"demari").speed:
 		await _enemy_turn()
 	else:
 		_begin_round()
@@ -383,7 +453,9 @@ func _next_actor() -> void:
 func _show_main_menu() -> void:
 	state = State.PLAYER_TURN
 	_menu = "main"
-	var disabled: Array[int] = [Command.ITEMS]
+	var disabled: Array[int] = []
+	if GameState.inventory.is_empty():
+		disabled.append(Command.ITEMS)
 	if GameState.skills_for(actor).is_empty():
 		disabled.append(Command.SKILLS)
 	if actor != &"demari" or not _can_run():
@@ -444,8 +516,64 @@ func _show_skill_menu() -> void:
 	_refresh()
 
 
+func _show_item_menu() -> void:
+	state = State.PLAYER_TURN
+	_menu = "items"
+	_items.clear()
+	var names: Array[String] = []
+	for i in GameState.ITEMS:
+		if GameState.inventory.get(i.id, 0) > 0:
+			_items.append(i.id)
+			names.append("%s  x%d" % [i.display_name, GameState.inventory[i.id]])
+	names.append("Back")
+	_message.text = GameState.item(_items[0]).description if not _items.is_empty() else ""
+	_commands.disarm()
+	_skill_list.set_choices(names)
+	_skill_panel.show()
+	_skill_list.focus_first()
+	_refresh()
+
+
+func _show_item_targets() -> void:
+	_menu = "item_target"
+	var names: Array[String] = []
+	for id in GameState.party:
+		var m := GameState.member(id)
+		names.append("%s  %d/%d HP  %d/%d MP" % [m.display_name, GameState.get_hp(id), m.max_hp, GameState.get_mp(id), m.max_mp])
+	names.append("Back")
+	_message.text = "Use the %s on who?" % GameState.item(_item_pick).display_name
+	_skill_list.set_choices(names)
+	_skill_list.focus_first()
+
+
 func _on_command(index: int) -> void:
 	if state != State.PLAYER_TURN:
+		return
+	if _menu == "items":
+		if index >= _items.size():
+			_show_main_menu()
+			return
+		_item_pick = _items[index]
+		_show_item_targets()
+		return
+	if _menu == "item_target":
+		if index >= GameState.party.size():
+			_show_item_menu()
+			return
+		var who := GameState.party[index]
+		if GameState.get_hp(who) <= 0 and not GameState.item(_item_pick).full_heal:
+			_show_item_targets()
+			_message.text = "%s is knocked out. Only Bandage Tape can help." % GameState.member(who).display_name
+			return
+		state = State.ACTION_RESOLUTION
+		_skill_panel.hide()
+		await _step(actor)
+		var text := GameState.use_item(_item_pick, who)
+		_sfx("ui/use_item")
+		_play_fx(&"sp_magic_burst_green", _center_of(who))
+		_refresh()
+		await _say(text)
+		_end_action()
 		return
 	if _menu == "skills":
 		if index >= _menu_skills.size():
@@ -453,7 +581,7 @@ func _on_command(index: int) -> void:
 			return
 		var s := _menu_skills[index]
 		var t := -1
-		if s.kind in ["damage", "charge"] and not s.hits_all:
+		if s.kind in ["damage", "charge", "status"] and not s.hits_all:
 			t = await _choose_target()
 			if t < 0:
 				_show_skill_menu()
@@ -473,6 +601,8 @@ func _on_command(index: int) -> void:
 			_end_action()
 		Command.SKILLS:
 			_show_skill_menu()
+		Command.ITEMS:
+			_show_item_menu()
 		Command.DEFEND:
 			state = State.ACTION_RESOLUTION
 			guarding[actor] = true
@@ -570,8 +700,18 @@ func _attack_power(id: StringName) -> int:
 	return int(a * 1.5) if buff_turns > 0 else a
 
 
+func _foe_damage(i: int, power: float) -> int:
+	var dmg := _damage(int(_attack_power(actor) * power), foes[i].data.defense)
+	if foes[i].status.has(&"def_down"):
+		dmg = int(dmg * DEF_DOWN)
+	if GameState.has_key_item(&"steel_fang"):
+		dmg = int(dmg * 1.15)
+	return maxi(dmg, 1)
+
+
 func _hit_enemy(i: int, dmg: int, fx: StringName) -> void:
 	var f: Dictionary = foes[i]
+	f.status.erase(&"sleep")
 	f.hp = maxi(f.hp - dmg, 0)
 	_play_fx(fx, _enemy_center(i))
 	_enemy_anim(i, &"damage")
@@ -585,7 +725,7 @@ func _hit_enemy(i: int, dmg: int, fx: StringName) -> void:
 
 func _attack(t: int) -> void:
 	await _step(actor)
-	var dmg := _damage(_attack_power(actor), foes[t].data.defense)
+	var dmg := _foe_damage(t, 1.0)
 	_hit_enemy(t, dmg, &"na_cut")
 	await _say("%s attacks! %s takes %d damage." % [GameState.member(actor).display_name, foes[t].label, dmg])
 
@@ -600,14 +740,29 @@ func _use_skill(s: SkillData, t: int) -> void:
 			if s.hits_all:
 				var total := 0
 				for i in _living():
-					var d := _damage(int(_attack_power(actor) * s.power), foes[i].data.defense)
+					var d := _foe_damage(i, s.power)
 					total += d
 					_hit_enemy(i, d, s.effect)
 				await _say("%s uses %s! It hits every enemy for %d damage in total." % [who, s.display_name, total])
 			else:
-				var dmg := _damage(int(_attack_power(actor) * s.power), foes[t].data.defense)
+				var dmg := _foe_damage(t, s.power)
 				_hit_enemy(t, dmg, s.effect)
 				await _say("%s uses %s! %s takes %d damage." % [who, s.display_name, foes[t].label, dmg])
+				if s.status != &"" and foes[t].hp > 0:
+					await _inflict(t, s)
+		"status":
+			_play_fx(s.effect, _enemy_center(t))
+			await _inflict(t, s, "%s uses %s! " % [who, s.display_name])
+		"heal" when s.hits_all:
+			var parts: Array[String] = []
+			for id in _alive():
+				var before := GameState.get_hp(id)
+				GameState.set_member_hp(id, before + int(s.power))
+				_play_fx(s.effect, _center_of(id))
+				parts.append("%s +%d" % [GameState.member(id).display_name, GameState.get_hp(id) - before])
+			_sfx("battle/patch_up")
+			_refresh()
+			await _say("%s uses %s! The party recovers HP (%s)." % [who, s.display_name, ", ".join(PackedStringArray(parts))])
 		"heal":
 			var target := _most_hurt()
 			var before := GameState.get_hp(target)
@@ -620,15 +775,83 @@ func _use_skill(s: SkillData, t: int) -> void:
 			_play_fx(s.effect, _center_of(actor))
 			await _say("%s raises his Tin Shield to protect Demari!" % who)
 		"buff":
-			buff_turns = s.turns
 			for id in _alive():
 				_play_fx(s.effect, _center_of(id))
-			await _say("%s calls a March Order! The party's Attack rises." % who)
+			if s.status == &"def_up":
+				guard_turns = s.turns
+				_sfx("battle/def_buff")
+				_refresh()
+				await _say("%s gives a Royal Salute! The party's Defense rises." % who)
+			else:
+				buff_turns = s.turns
+				_sfx("battle/march_order")
+				_refresh()
+				await _say("%s calls a March Order! The party's Attack rises." % who)
 		"charge":
 			charging = true
 			charge_target = t
 			_play_fx(&"sp_windup", _center_of(actor))
 			await _say("%s starts winding his key..." % who)
+
+
+func _inflict(t: int, s: SkillData, lead := "") -> void:
+	var f: Dictionary = foes[t]
+	if s.status == &"sleep" and BOSS_MUSIC.has(f.data.id):
+		await _say("%s%s won't fall asleep!" % [lead, f.label])
+		return
+	f.status[s.status] = s.turns
+	_sfx("battle/" + STATUS_SFX[s.status])
+	_refresh()
+	var text: String = {&"poison": "%s is poisoned!", &"sleep": "%s falls asleep!", &"def_down": "%s's Defense drops!"}[s.status]
+	await _say(lead + text % f.label)
+
+
+func _foe_status_turn(i: int) -> bool:
+	var f: Dictionary = foes[i]
+	if f.status.has(&"sleep"):
+		f.status[&"sleep"] -= 1
+		if f.status[&"sleep"] <= 0:
+			f.status.erase(&"sleep")
+			_refresh()
+			await _say("%s wakes up!" % f.label)
+		else:
+			await _say("%s is fast asleep." % f.label)
+			return false
+	return true
+
+
+func _foe_status_end(i: int) -> void:
+	var f: Dictionary = foes[i]
+	if f.hp > 0 and f.status.has(&"poison"):
+		var dmg := maxi(2, int(f.data.max_hp / 10.0))
+		f.hp = maxi(f.hp - dmg, 0)
+		_flash(f.sprite)
+		_sfx("battle/poison")
+		_refresh()
+		await _say("%s takes %d poison damage." % [f.label, dmg])
+		if f.hp <= 0:
+			var t := create_tween()
+			t.tween_property(f.sprite, "modulate:a", 0.0, 0.6)
+			f.name.modulate = Color(0.5, 0.5, 0.5)
+	for k: StringName in [&"poison", &"def_down"]:
+		if f.status.has(k):
+			f.status[k] -= 1
+			if f.status[k] <= 0:
+				f.status.erase(k)
+	_refresh()
+
+
+func _phoenix_check() -> void:
+	if _feather_used or not GameState.has_key_item(&"phoenix_feather"):
+		return
+	for id in GameState.party:
+		if GameState.get_hp(id) <= 0:
+			_feather_used = true
+			GameState.set_member_hp(id, GameState.member(id).max_hp / 2)
+			_play_fx(&"sp_magic_burst_green", _center_of(id))
+			_refresh()
+			await _say("The Phoenix Feather glows! %s is back on their feet!" % GameState.member(id).display_name)
+			return
 
 
 func _unleash_charge() -> void:
@@ -639,7 +862,8 @@ func _unleash_charge() -> void:
 			s = k
 	var t := charge_target if foes[charge_target].hp > 0 else _living()[0]
 	await _step(&"casimir")
-	var dmg := _damage(int(_attack_power(&"casimir") * s.power), foes[t].data.defense)
+	actor = &"casimir"
+	var dmg := _foe_damage(t, s.power)
 	_hit_enemy(t, dmg, s.effect)
 	await _say("Casimir unleashes the Wind-Up Charge! %s takes %d damage." % [foes[t].label, dmg])
 
@@ -672,12 +896,18 @@ func _enemy_turn() -> void:
 	for i in _living():
 		if _alive().is_empty():
 			break
-		await _foe_attacks(i)
+		if await _foe_status_turn(i):
+			await _foe_attacks(i)
+		await _phoenix_check()
+		await _foe_status_end(i)
 	if _alive().is_empty():
 		_defeat()
 		return
 	if buff_turns > 0:
 		buff_turns -= 1
+	if guard_turns > 0:
+		guard_turns -= 1
+	_refresh()
 	_begin_round()
 
 
@@ -718,6 +948,10 @@ func _hit_member(i: int, target: StringName, fx: StringName) -> int:
 	var dmg := _damage(_foe_attack_power(i), GameState.member(target).defense)
 	if guarding.get(target, false):
 		dmg = maxi(1, int(dmg / 2.0))
+	if guard_turns > 0:
+		dmg = maxi(1, int(dmg * DEF_UP))
+	if GameState.has_key_item(&"star_medal"):
+		dmg = maxi(1, int(dmg * 0.85))
 	GameState.set_member_hp(target, GameState.get_hp(target) - dmg)
 	_play_fx(fx, _center_of(target))
 	_flash(_sprites[target])
@@ -805,13 +1039,34 @@ func _victory() -> void:
 		if GameState.get_hp(id) <= 0:
 			GameState.set_member_hp(id, 1)
 	var total := 0
+	var coins := 0
+	_pages.clear()
 	for f in foes:
 		total += f.data.exp_reward
+		coins += f.data.buttons_reward
 		GameState.mark_defeated(GameState.pending_battle.get("encounter_id", ""), f.data.id)
-	GameState.add_exp(total)
+		var drop: StringName = GameState.BOSS_DROPS.get(f.data.id, &"")
+		if drop != &"" and GameState.give_key_item(drop):
+			var info: Array = GameState.KEY_ITEMS[drop]
+			_pages.append(["Key item!", "You got the %s!\n%s" % [info[0], info[1]]])
+	GameState.add_buttons(coins)
+	var up := GameState.add_exp(total)
+	if not up.is_empty():
+		_pages.append(["Level up!", _level_up_text(up)])
 	_refresh()
 	var who: String = "%s was defeated." % foes[0].label if foes.size() == 1 else "All enemies were defeated."
-	_show_result("Victory!", "%s\nThe party gained %d EXP." % [who, total], ["Continue"])
+	_sfx("ui/buttons_coin")
+	_show_result("Victory!", "%s\nThe party gained %d EXP and %d Buttons." % [who, total, coins], ["Continue"])
+
+
+func _level_up_text(up: Dictionary) -> String:
+	var lines: Array[String] = ["The party reached level %d!" % up.to]
+	for id: StringName in up.gains:
+		var g: Array = up.gains[id]
+		lines.append("%s  HP+%d MP+%d ATK+%d DEF+%d SPD+%d" % [GameState.member(id).display_name, g[0], g[1], g[2], g[3], g[4]])
+	if not up.skills.is_empty():
+		lines.append("New skills learned: %s" % ", ".join(PackedStringArray(up.skills.map(func(s: SkillData) -> String: return s.display_name))))
+	return "\n".join(PackedStringArray(lines))
 
 
 func _defeat() -> void:
@@ -832,6 +1087,13 @@ func _show_result(title: String, text: String, choices: Array[String]) -> void:
 
 
 func _on_result_choice(index: int) -> void:
+	if state == State.VICTORY and not _pages.is_empty():
+		var page: Array = _pages.pop_front()
+		if page[0] == "Level up!":
+			_sfx("battle/level_up")
+			_result.custom_minimum_size.x = 470
+		_show_result(page[0], page[1], ["Continue"])
+		return
 	GameState.unlock(&"battle")
 	if state == State.VICTORY:
 		SceneManager.return_from_battle()
