@@ -228,6 +228,16 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 | 3 | Patch Up: heals one ally (4 MP) | March Order: party Attack up for 3 turns (4 MP) |
 | 5 | Eraser Blast: big damage (6 MP) | Wind-Up Charge: winds up for a turn, then deals huge damage (5 MP) |
 
+- **More skills (settled 2026-11-25):** 6 per hero. New skills are learned on level-up (shown on the "Level up!" screen), never found in chests.
+
+| Level | Demari | Casimir |
+|---|---|---|
+| 2 | Ink Splash: poisons one enemy for 3 turns | Dent Strike: a hit that lowers the enemy's Defense for 3 turns |
+| 7 | Lullaby Doodle: puts one enemy to sleep for up to 2 turns (bosses can't sleep) | Cannon Volley: hits all enemies |
+| 9 | Group Patch: heals the whole party | Royal Salute: party Defense up for 3 turns |
+
+- **Status icons** float above whoever has the effect, from Ninja Adventure `Skill Icon/`: poison `Spell/OrbPlant`, sleep `Meteo/Moon`, Defense down `Spell/Downgrade`, Defense up `Spell/DefenseUpgrade`, Attack up `Spell/AttackUpgrade`. Sounds from the user's `RPG_Essentials_Free.zip` (Poison, Sleep, Debuff, Def buff, Heal).
+
 - **Money is Buttons.** Enemies drop them, and Asmara gives some at the start of the quest.
 - **Shop (Block Town):** Glue Stick (30 HP), Juice Box (15 MP), Bandage Tape (full heal, one ally, expensive).
 
