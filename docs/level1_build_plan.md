@@ -101,7 +101,7 @@ Gate 2d:
 - [ ] G2d.4 Screenshots: the pause menu and Settings with keyboard and controller hints; a front-view clay fight and a side-view boss fight with the new HUD.
 - [ ] G2d.5 The user tried the menu with keyboard and controller and said OK.
 
-## Phase 3: RPG systems  (target: Nov 28)  status: gate-check
+## Phase 3: RPG systems  (target: Nov 28)  status: done
 Goal: growing stronger feels good.
 Needs: Phase 2
 Builds:
@@ -119,7 +119,7 @@ Gate 3:
 - [x] G3.2b Playtest: poison deals damage each turn then wears off; a sleeping enemy skips its turn and wakes when hit; bosses can't sleep; Defense down/up change damage; each effect shows its icon and the icon goes away when it ends; Cannon Volley and Group Patch hit everyone.
 - [x] G3.3 Playtest: buying an item spends Buttons, and using it heals the right amount.
 - [x] G3.4 Screenshots: the level-up screen and the shop (`../skraptopia_dev_tools/screenshots/p3_*.png`). Full playtest 227/227 PASS.
-- [ ] G3.5 The user leveled up, shopped, and said OK.
+- [x] G3.5 The user leveled up, shopped, and said OK (Nov 25).
 
 ## Phase 4a: Playroom Woods  (target: Nov 24)  status: done
 Goal: the first area of the game: a 40×30 forest with toys, where new games start (design in the story doc, "Playroom Woods map").
