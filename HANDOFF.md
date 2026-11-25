@@ -1,8 +1,8 @@
 # Handoff: Level 1 build (Toy Box Kingdom)
 
-**Last updated:** Nov 23, 2026. **Deadline:** Dec 7, 2026 (presentation).
+**Last updated:** Nov 25, 2026. **Deadline:** Dec 7, 2026 (presentation).
 Godot 4.7.2. Screen 640×360, scaled to a 1280×720 window. World camera zoom 2.
-**`phase-2c-bosses` was pushed to GitHub on Nov 23 at the user's request.** `main` is untouched.
+**Current branch: `phase-3-rpg-systems`** (stacks on `phase-4a-playroom-woods`). Only `phase-2c-bosses` is on GitHub (pushed Nov 23). The user said **not to push** the woods/Phase 3 work yet (Nov 25): ask again before pushing. `main` is untouched.
 
 ## Start here
 
@@ -19,36 +19,30 @@ Godot 4.7.2. Screen 640×360, scaled to a 1280×720 window. World camera zoom 2.
 | 1. Foundations | **done** | `phase-1-foundations` |
 | 2. Party battle | **done** | `phase-2-party-battle` |
 | 2b. Enemy groups | **done** | `phase-2b-enemy-groups` |
-| 2c. Secret bonus bosses | **mostly done:** art, data, music, test keys, rage phase + specials, lyrics setting. Still open: CrackJack −30% damage while raging, Kilnoxx white-gold palette, the 3 drops, temporary field spots | `phase-2c-bosses` (current) |
-| 2d. Menus, button hints, new battle layout | **battle layout done early**; boss-music switch in the pause menu done. Still open: Pocket Inventory restyle, Settings (volumes), Restart, button hints outside battle | — (work so far is on `phase-2c-bosses`) |
-| 3. RPG systems | level-ups, Buttons, shop, items, inventory screens | — |
-| 4a. Playroom Woods | **built, waiting for the user to try it** (G4a.4) | `phase-4a-playroom-woods` (off `phase-2c-bosses`) |
-| 4. Open world | map, rustling bushes, alphabet block puzzle, the 3 boss hiding spots, entering buildings | — |
-| 5. Story | cutscenes, clues, boss, notebook → SkrapBook (Paper UI), shrines (save) | — |
-| 6. Polish | balance, Controls rebinding, Boss Rush, credits, merge to `main` | — |
+| 2c. Secret bonus bosses | **done** (user said OK Nov 25). Key item drops now built in Phase 3. Small leftovers: CrackJack -30% damage while raging, Kilnoxx white-gold palette | `phase-2c-bosses` (pushed) |
+| 2d. Menus, button hints | battle layout + boss-music switch done. Still open: Pocket Inventory restyle, Settings (volumes), Restart, button hints outside battle | - |
+| 4a. Playroom Woods | **done** (user said OK Nov 25) | `phase-4a-playroom-woods` |
+| 3. RPG systems | **done** (user said OK Nov 25) | `phase-3-rpg-systems` (current) |
+| 4. Open world | **next**: Road Carpet, Block Town, block puzzle, Kilnoxx/CrackJack spots | - |
+| 5. Story | cutscenes (incl. Princess Asmara, Zephyrion = "the ogre"), clues, notebook -> SkrapBook, shrines | - |
+| 6. Polish | balance, Controls rebinding, Boss Rush, credits, merge to `main` | - |
 
-**The branches stack:** `main` → `level1-story` → `phase-1-foundations` → `phase-2-party-battle` → `phase-2b-enemy-groups` → `phase-2c-bosses`. Nothing is merged to `main` or pushed.
+**The branches stack:** `main` -> `level1-story` -> `phase-1-foundations` -> `phase-2-party-battle` -> `phase-2b-enemy-groups` -> `phase-2c-bosses` -> `phase-4a-playroom-woods` -> `phase-3-rpg-systems`.
 
-**Playtest:** 171/171 PASS. Screenshots are in `../skraptopia_dev_tools/screenshots/`.
+**Playtest:** 227/227 PASS (backup of the previous version: `playtest.gd.bak_phase3`). Screenshots: `../skraptopia_dev_tools/screenshots/` (`p4a_*` woods, `p3_*` shop, status icons, level-up).
 
-## Done this session (Nov 22, on `phase-2c-bosses`)
+## Done Nov 23-25
 
-- **Boss rage** (`Scenes/battle/battle.gd`, `BOSS_RAGE`): at half HP the boss plays `rage`, the screen shakes, its rage line appears big with shaking letters (RichTextLabel `[shake]`) in its own font and color, then Demari and Casimir quip. After that: Attack +30%, special every other turn (`smash` anim). CrackJack switches to his `hover` loop. Specials: Clockwork Frenzy (one hero twice), Inferno Wings and Liberty Dash (both heroes).
-  - Fonts (user's picks, all SIL OFL, license files next to them) in `assets/ui/fonts/bosses/`: New Rocker = Iron Jaws, WDXL Lubrifont TC = Kilnoxx (line is in Japanese on purpose, the party jokes about it), Ewert = CrackJack, Creepster = saved for the ogre cutscene.
-  - Quips and fonts are written in the story doc (bonus bosses section).
-- **New battle layout** (`Scenes/battle/battle.tscn` `Hud` node + `battle.gd`), matching mockup v3:
-  - Front view for clay monster fights **and Zephyrion** (bigger, centered). Party seen from behind (`Walking_Up`): Demari bottom left (scale 2), Casimir bottom right (scale 4). The actor steps up.
-  - Side view only for the 3 bonus bosses (`_front = not any foe in BOSS_RAGE`).
-  - Slim HUD: message strip at top, Retro Inventory gold bar with portraits, heart HP/MP bars, Kyrise icon commands with the name below, skill list pops up above the bar, E/Esc hints that switch to A/B on controller input. HUD font PixelOperator8 size 8 (sub-theme `Theme_hud`).
-  - `ui/components/choice_list.gd` now `extends BoxContainer` (works as a row when `vertical` is false).
-  - Art copied in: `assets/ui/retro_inventory/` (credit ElvGames), `assets/ui/kyrise/` (CC BY 4.0, credit Kyrise); licenses in `assets/licenses/`.
-- **F7 test key** = Mecha Orc Knight, assumed to be "the ogre" (the user never confirmed; they also once called Zephyrion the ogre). Ask.
-- **Pause menu "Boss music: Instrumental/Lyrics"**: `GameState.set_boss_music_lyrics()` saves to `user://settings.cfg`; battle plays `boss_<id>_lyrics.mp3` when on.
-- **Milestone 1 deliverables** (outside the repo, `../skraptopia_dev_tools/milestone1/`):
-  - `boss_demo.mp4` (1:31, instrumental): the 3 bonus bosses raging, then Zephyrion. Re-record with `../skraptopia_dev_tools/boss_demo.gd` (Movie Maker: `--write-movie out.avi --fixed-fps 30 --script ...`), then convert with ffmpeg. There's no system ffmpeg; a portable one was installed to the session scratchpad via `pip install --target <dir> imageio-ffmpeg` (redo if gone). The demo raises the party's attack/defense only while it runs (level-ups don't exist yet).
-  - `SkrapTopia_Milestone1_Update.docx`: credits, checklist status table, 12 captioned screenshots.
-  - Credits the user wants: **Jason Appling** made the clay models and animation frames; **Steven Tran** made Demari and Princess Asmara. The team checklist lists Paris for the Zephyrion model; the user said to credit Jason.
-
+- **Playroom Woods** (`Scenes/woods/playroom_woods.tscn`, built by `../skraptopia_dev_tools/build_woods.gd`, safe to rerun): new games start here. Tutorial Clay Sludge, frog-statue shrine spot, 6 rustling bushes that refill after 60 s, hidden gap to Iron Jaws' pond with auto-hop rocks (`systems/stepping_stones.gd`), readable signs (`npcs/signpost.tscn`), left path to the village, top path ends at a "still being built" sign.
+- **Phase 3** (all in the story doc and plan):
+  - Shared level 1-10 (`GameState.EXP_TABLE`, growth fields on `CharacterData`); `add_exp()` returns the level-up report; `set_level()` / `refresh_stats()`.
+  - **Gotcha:** `HERO.max_hp` inside `game_state.gd` is folded to a constant at compile time. Always read stats through `GameState.member(id)`.
+  - 6 skills each (new: Ink Splash, Lullaby Doodle, Group Patch, Dent Strike, Cannon Volley, Royal Salute). `SkillData.kind` gained `"status"` and a `status` field.
+  - Battle: status effects (poison, sleep, def_down on foes; `buff_turns` = Attack up, `guard_turns` = Defense up for the party) with Ninja Adventure `Skill Icon` icons above whoever has them, RPG Essentials sounds, Items command, Buttons, key item drops + effects (Steel Fang, Star Medal, Phoenix Feather), "Key item!" and "Level up!" pages after Victory.
+  - Pause menu: Status shows both heroes + Buttons; new Items page (use items, see key items).
+  - `ui/shop/shop.gd` (`Shop.open(host, items)`), opened by any NPC whose `NPCData.sells` is set (the village merchant now sells Glue Stick 15, Juice Box 20, Bandage Tape 60).
+- **Decisions:** the ogre is **Zephyrion** (his rage line will use Creepster green). New skills come from level-ups, not chests.
+- **Music:** new Kilnoxx songs (instrumental + lyrics) and new Captain CrackJack songs ("Bow to the Iron Nutcracker... Metal Mix", user confirmed it's their own Suno song) are in the game. Iron Jaws unchanged. **Zephyrion still has the old song**; a gritty dark hip-hop prompt was given to the user. The user now has **Suno Pro** (songs made on Pro can be used commercially; older free-plan songs are non-commercial).
 ## Testing the fights (debug runs only)
 
 Press F5 in Godot, then in the village or field press:
@@ -60,17 +54,21 @@ Press F5 in Godot, then in the village or field press:
 | F3 | Captain CrackJack |
 | F4 | Zephyrion |
 | F6 | A random group of 1–3 of the team's 9 clay monsters |
-| F7 | Mecha Orc Knight ("the ogre") |
+| F7 | Mecha Orc Knight (not the ogre; the ogre is Zephyrion) |
 
-The keys refill the party first. F1–F4 also give the party boss-ready stats (the `boss_demo.gd` values, about level 8) so each boss reaches rage; F6/F7 put the base stats back (`_set_test_stats`). The README has these instructions for the team. The keys live in `systems/scene_manager.gd` (`TEST_BOSSES`, `TEST_MONSTERS`).
+The keys refill the party first. F1-F4 also give the party boss-ready Attack/Defense so each boss reaches rage; F6/F7 put the level's normal stats back (`_set_test_stats` calls `GameState.refresh_stats()`). The README has these instructions for the team. The keys live in `systems/scene_manager.gd` (`TEST_BOSSES`, `TEST_MONSTERS`).
 
 ## Next steps
 
-1. **Playroom Woods design is settled** (story doc, "Playroom Woods map"): own map per area, 40×30, forest + toys, route bottom to top, village as a side area on the left after the tutorial, Iron Jaws pond with rocks to hop across. Still to ask: anything else about the woods, then extend the Phase 4 plan and build. Proof screenshots for the team checklist are in `../skraptopia_dev_tools/milestone1/proof/` (concept art still missing).
-2. **Ogre cutscene** (requested earlier): a dialogue-box cutscene with the ogre before its fight, using the existing `ui/dialogue/dialogue_box.gd` (`play(DialogueData)`). Ogre rage line in Creepster green: *"The ogre roars with rage!"* / Demari *"I think we made it mad."* / Casimir *"You think?!"*. Confirm which enemy is the ogre first.
-3. Finish the open 2c items (above) and the rest of 2d.
-4. Phase 3 as planned. Also rename `GameState.exp` (the only warning) and fix Zephyrion floating about 10px above the ground.
-
+1. **Phase 4: Road Carpet first.** Last open question to the user: what should Road Carpet look like?
+   - **A (recommended):** a giant woven rug winding across the forest floor, 40x30 like the woods, toys along the edges (thread spools, a sock, giant buttons), bushes with Pipe Spider / Paper-Dactyl / Magma Sludge, Kilnoxx's scorched clearing behind an easy-to-miss gap ("Turn back. The kiln is lit.").
+   - **B:** indoors (giant bedroom floor, furniture legs as trees).
+   - **C:** woods on the sides, a carpet road through the middle that widens near town.
+   Then: write the decisions into the story doc, extend the Phase 4 plan, build like the woods (a builder script in `../skraptopia_dev_tools/`), connect the woods' top exit.
+2. Then **Block Town** (castle, shop with `NPCData.sells`, train station with CrackJack's closed platform, market, tavern, 3 clues, A-B-C-D block puzzle).
+3. **Phase 5:** cutscenes (opening, tutorial, castle talk with the guard, tavern + Zephyrion's rage, knighting, ending), Princess Asmara (placeholder sprite until Steven's sheet arrives), notebook -> SkrapBook, shrines.
+4. Unanswered: should Captain CrackJack's backstory go in the story doc? (abandoned Christmas nutcracker, memories taken by Yalboa, guards a train platform; late-game twist: the SkrapBook gives his memory back). Recommended yes.
+5. Small leftovers: rename `GameState.exp` (warning), Zephyrion floats ~10px above the ground, 2c leftovers, 2d menus.
 ## The bonus bosses
 
 All 3 are the user's own designs, animated with PixelLab: 256×160 frames facing left, `00`–`08` per animation.
@@ -78,8 +76,8 @@ All 3 are the user's own designs, animated with PixelLab: 256×160 frames facing
 | Boss | Id | Animations | Level | Song |
 |---|---|---|---|---|
 | Iron Jaws (wind-up piranha) | `iron_jaws` | idle, attack, rage, smash | 7 | Fish (Suno) |
-| Kilnoxx, the Kiln Phoenix | `kilnoxx` | idle, attack, rage, smash | 9–10 | Japanese taiko (Suno) |
-| Captain CrackJack (nutcracker) | `captain_crackjack` | idle, attack, rage (lift-off), hover, smash | 8 | Americana (Suno) |
+| Kilnoxx, the Kiln Phoenix | `kilnoxx` | idle, attack, rage, smash | 9–10 | Enka rock "The Phonix" (Suno, Nov 25) |
+| Captain CrackJack (nutcracker) | `captain_crackjack` | idle, attack, rage (lift-off), hover, smash | 8 | "Bow to the Iron Nutcracker" metal mix (Suno, Nov 25) |
 
 - **SpriteFrames** (`assets/characters/bosses/<id>/<id>_frames.tres`): `idle` loops; `cast`, `rage` and `smash` play forward, then backward. No uid headers (written by a script).
 - **Source art and previews:** `../skraptopia_dev_tools/` (`fish_boss_art/`, `nutcracker_art/`, `kilnoxx_art/`, `bosses_preview.html`, `kilnoxx_preview.html`).
@@ -100,10 +98,12 @@ All 3 are the user's own designs, animated with PixelLab: 256×160 frames facing
 | `assets/characters/clay_enemies/<id>/` | The team's clay photos: `idle/`, `cast/`, `damage/` plus `<id>_frames.tres` |
 | `assets/characters/bosses/<id>/` | The 3 bonus bosses |
 | `data/enemies/` | 13 enemies (5 base, 4 color versions, Zephyrion, 3 bonus bosses; all bosses `can_run = false`) plus the old `slime.tres` |
-| `systems/game_state.gd` | Party HP/MP, `member()`, `skills_for()`, `restore_party()`, `boss_music_lyrics` + settings file |
+| `systems/game_state.gd` | Party HP/MP, level/EXP, Buttons, `inventory`, `key_items`, `use_item()`, `buy()`, `member()`, `skills_for()`, `restore_party()`, `boss_music_lyrics` + settings file |
 | `systems/scene_manager.gd` | `start_battle(enemies, encounter_id, backdrop)` plus the F-key test fights |
 | `Scenes/battle/` | Front/side view battle, slim HUD, 1–3 enemies, target arrow, rage phases, boss music |
-| `ui/menus/pause_menu.gd` | Status, Quests, Boss music, Resume. Phase 2d restyles it. |
+| `ui/menus/pause_menu.gd` | Status, Quests, Boss music, Items, Resume. Phase 2d restyles it. |
+| `ui/shop/shop.gd` | Shop window (Retro Inventory frame) |
+| `Scenes/woods/` | Playroom Woods (start of the game) |
 | `ui/dialogue/dialogue_box.gd` | Dialogue box with nameplate, typing text and choices (use for cutscenes) |
 
 ## New asset packs (downloaded Nov 21)
@@ -124,7 +124,8 @@ Unpacked copies are in `../skraptopia_dev_tools/downloads/new_ui_2026-11-21/`.
 - Import: `--headless --path . --import` (ignore `super_pixel_*` long-path noise)
 - Playtest: `--headless --path . --script ../skraptopia_dev_tools/playtest.gd` (wrap in `timeout 500`; a stuck run blocks the shell). Helpers: `wait_turn(b, id)`, `seed_for(callable)`, `rage_checks(b, id)`. Backups of older versions: `playtest.gd.bak_*`.
 - Screenshots: the same command without `--headless`, plus `-- shots "dir=<folder>"`
-- In tests, raising `max_hp` on the character resources doesn't work (the HP clamp uses the const preload); raise `defense` instead.
+- Stats: read them through `GameState.member(id)`, never `GameState.HERO.x` (const folding). In tests use `gs.set_level(n)`.
+- The playtest script can't name autoload-dependent classes like `Shop` (it compiles before autoloads); match by script path instead.
 - **PixelLab MCP:** trial used up; small daily bonus only.
 - **The dev tools live outside the repo:** `../skraptopia_dev_tools/`.
 - One-off scripts go in the session scratchpad. Very long heredocs in the Bash tool can fail to parse; use the Edit tool or a script file instead.
