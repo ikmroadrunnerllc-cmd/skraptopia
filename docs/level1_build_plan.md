@@ -119,7 +119,7 @@ Gate 3:
 - [ ] G3.4 Screenshots: the level-up screen and the shop.
 - [ ] G3.5 The user leveled up, shopped, and said OK.
 
-## Phase 4a: Playroom Woods  (target: Nov 24)  status: gate-check
+## Phase 4a: Playroom Woods  (target: Nov 24)  status: done
 Goal: the first area of the game: a 40×30 forest with toys, where new games start (design in the story doc, "Playroom Woods map").
 Needs: Phase 2b
 Builds:
@@ -134,7 +134,7 @@ Gate 4a:
 - [x] G4a.1 Headless import and run: 0 errors.
 - [x] G4a.2 Playtest: start spot, tutorial fight, bushes start fights and refill, hops there and back, Iron Jaws fight, sign, village link (193/193 PASS).
 - [x] G4a.3 Screenshots: `../skraptopia_dev_tools/screenshots/p4a_*.png`.
-- [ ] G4a.4 The user walked the woods and said OK.
+- [x] G4a.4 The user walked the woods and said OK (Nov 25).
 
 ## Phase 4: Open world  (target: Dec 1)  status: todo
 Goal: the whole kingdom to walk through, with enemies in the bushes.
