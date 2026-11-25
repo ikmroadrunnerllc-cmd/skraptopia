@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" format=3]
+
+[ext_resource type="Script" path="res://resources/dialogue_data.gd" id="1_gfcby"]
+[ext_resource type="Script" path="res://resources/npc_data.gd" id="2_mpo5y"]
+[ext_resource type="Script" path="res://resources/item_data.gd" id="3_xo3xp"]
+[ext_resource type="Texture2D" path="res://assets/characters/ninja_adventure/Character/CamouflageGreen/SpriteSheet.png" id="4_apukq"]
+
+[sub_resource type="Resource" id="Resource_vi430"]
+script = ExtResource("1_gfcby")
+lines = Array[String](["Another shift swap at the castle? Third one this week...", "Somebody up there is getting lazy."])
+
+[resource]
+script = ExtResource("2_mpo5y")
+id = &"battalion_guard_b"
+display_name = "Battalion Guard"
+sprite_sheet = ExtResource("4_apukq")
+dialogue = SubResource("Resource_vi430")

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" format=3]
+
+[ext_resource type="Script" path="res://resources/dialogue_data.gd" id="1_nvxhi"]
+[ext_resource type="Script" path="res://resources/npc_data.gd" id="2_jyugt"]
+[ext_resource type="Script" path="res://resources/item_data.gd" id="3_b6wrn"]
+[ext_resource type="Texture2D" path="res://assets/characters/ninja_adventure/Character/CamouflageGreen/SpriteSheet.png" id="4_m41wl"]
+
+[sub_resource type="Resource" id="Resource_nypok"]
+script = ExtResource("1_nvxhi")
+lines = Array[String](["Royal Toy Battalion, standing guard!", "Oh, it's you, Casimir. Go right ahead."])
+
+[resource]
+script = ExtResource("2_jyugt")
+id = &"battalion_guard_a"
+display_name = "Battalion Guard"
+sprite_sheet = ExtResource("4_m41wl")
+dialogue = SubResource("Resource_nypok")

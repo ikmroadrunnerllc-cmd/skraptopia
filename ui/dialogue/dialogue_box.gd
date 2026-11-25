@@ -4,6 +4,10 @@ signal _step(value: int)
 
 const CHARS_PER_SECOND := 45.0
 const INPUT_GRACE_MS := 150
+const VOICE_DIR := "res://assets/audio/game/sfx/voices/"
+const VOWELS := "aeiou"
+const DEEP_VOICES := ["Casimir", "Royal Guard", "Battalion Guard", "Zephyrion", "Clay Sludge", "Village Elder"]
+const SILENT_SPEAKERS := ["", "Sign"]
 
 @onready var _root: Control = %DialogueRoot
 @onready var _nameplate: PanelContainer = %Nameplate
@@ -17,11 +21,20 @@ var _active: bool = false
 var _typing: bool = false
 var _opened_ms: int = 0
 var _blink: float = 0.0
+var _voice: AudioStreamPlayer
+var _voice_set: String = ""
+var _voice_pitch: float = 1.0
+var _voiced_chars: int = 0
+var voice_count: int = 0
 
 
 func _ready() -> void:
 	layer = 10
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_voice = AudioStreamPlayer.new()
+	_voice.name = "Voice"
+	_voice.volume_db = -8.0
+	add_child(_voice)
 	_root.hide()
 	_choice_panel.hide()
 	_choices.chosen.connect(func(i: int) -> void: _step.emit(i))
@@ -40,6 +53,7 @@ func play(data: DialogueData, default_speaker: String = "") -> int:
 	var speaker := data.speaker if data.speaker != "" else default_speaker
 	_name.text = speaker
 	_nameplate.visible = speaker != ""
+	_set_voice(speaker)
 	_root.show()
 	var result := -1
 	for i in data.lines.size():
@@ -87,8 +101,31 @@ func _close() -> void:
 func _show_line(text: String) -> void:
 	_text.text = text
 	_text.visible_characters = 0
+	_voiced_chars = 0
 	_typing = true
 	_more.hide()
+
+
+func _set_voice(speaker: String) -> void:
+	if speaker in SILENT_SPEAKERS:
+		_voice_set = ""
+		return
+	_voice_set = "deep" if speaker in DEEP_VOICES else "light"
+	_voice_pitch = 0.9 + float(absi(speaker.hash()) % 30) / 100.0
+
+
+func _babble(upto: int) -> void:
+	var plain := _text.get_parsed_text()
+	while _voiced_chars < upto and _voiced_chars < plain.length():
+		var ch := plain[_voiced_chars].to_lower()
+		_voiced_chars += 1
+		if _voice_set == "" or _voiced_chars % 2 == 0 or not (ch >= "a" and ch <= "z"):
+			continue
+		var v := ch if VOWELS.contains(ch) else VOWELS[ch.unicode_at(0) % 5]
+		_voice.stream = load(VOICE_DIR + "%s_%s.ogg" % [_voice_set, v])
+		_voice.pitch_scale = _voice_pitch + randf_range(-0.05, 0.05)
+		_voice.play()
+		voice_count += 1
 
 
 func _process(delta: float) -> void:
@@ -97,6 +134,7 @@ func _process(delta: float) -> void:
 	if _typing:
 		var total := _text.get_total_character_count()
 		_text.visible_characters = mini(_text.visible_characters + maxi(1, int(CHARS_PER_SECOND * delta + 0.5)), total)
+		_babble(_text.visible_characters)
 		if _text.visible_characters >= total:
 			_typing = false
 	elif not _choice_panel.visible:
