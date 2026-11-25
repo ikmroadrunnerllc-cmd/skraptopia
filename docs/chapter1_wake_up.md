@@ -1,6 +1,6 @@
 # Chapter 1: Wake-up
 
-**Branch:** `chapter-1-wake-up` · **Target:** Nov 27, 2026 · **Status:** waiting for the user test
+**Branch:** `chapter-1-wake-up` · **Target:** Nov 27, 2026 · **Status:** done (user tested Nov 25)
 
 The first chapter of Level 1, playable from start to end: from the title screen to Casimir joining the party. The story doc (`level1_toy_box_kingdom.md`) wins if anything here disagrees.
 
@@ -47,7 +47,7 @@ Every line uses the Animal Crossing–style babble voices (deep for Casimir and 
 - [x] C1.4 Playtest: entering the clearing plays the tutorial scene, then the battle; winning plays the thank-you scene, and Casimir follows Demari, also after changing maps.
 - [x] C1.5 All old playtest checks still pass (266/266 PASS).
 - [x] C1.6 Screenshots: title, an opening screen, the tutorial scene, Casimir following.
-- [ ] C1.7 The user played from New Game to Casimir joining and said OK.
+- [x] C1.7 The user played from New Game to Casimir joining and said OK.
 
 ## Not in this chapter
 
