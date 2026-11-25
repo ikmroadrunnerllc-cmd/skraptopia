@@ -155,6 +155,16 @@ Gate 4b:
 - [x] G4b.3 Screenshots: `../skraptopia_dev_tools/screenshots/p4b_*.png` (the rug path, the guard post, the Kilnoxx clearing).
 - [x] G4b.4 The user walked Road Carpet and said OK (Nov 25).
 
+## Story chapters (settled Nov 25)
+The rest of Phases 4 and 5 is built **by story chapter**, not by system. Each chapter is playable from start to end, gets its own branch, gate and one user test. The Phase 4 and 5 lists below stay as the checklist of what must exist by the end.
+
+| Chapter | What it covers | Target |
+|---|---|---|
+| Ch1 Wake-up | Title screen, opening text screens, Demari wakes in the woods and finds the notebook, the tutorial scene (the script in the story doc), Casimir joins and follows | Nov 27 |
+| Ch2 The castle | Block Town map (castle, shop, train station, market, tavern), Road Carpet's top exit leads there, Asmara talk, the guard's interruption, the quest, starting Buttons | Nov 29 |
+| Ch3 Investigation | Clues 1 and 2, the A-B-C-D block puzzle, clue 3, shrines (save/load), townsfolk (Super Retro World), Captain CrackJack's platform | Dec 1 |
+| Ch4 Climax | Tavern, the thief and the badge, Zephyrion's dialogue and fight, notebook pages fly into the SkrapBook, the knighting, the ending | Dec 3 |
+
 ## Phase 4: Open world  (target: Dec 1)  status: todo
 Goal: the whole kingdom to walk through, with enemies in the bushes.
 Needs: Phase 1 (can run alongside Phase 3 if needed)
