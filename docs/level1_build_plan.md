@@ -138,7 +138,7 @@ Gate 4a:
 - [x] G4a.3 Screenshots: `../skraptopia_dev_tools/screenshots/p4a_*.png`.
 - [x] G4a.4 The user walked the woods and said OK (Nov 25).
 
-## Phase 4b: Road Carpet  (target: Nov 27)  status: gate-check
+## Phase 4b: Road Carpet  (target: Nov 27)  status: done
 Goal: the second area: a woven rug path through the forest between Playroom Woods and Block Town (design in the story doc, "Road Carpet map").
 Needs: Phase 4a
 Builds:
@@ -153,7 +153,7 @@ Gate 4b:
 - [x] G4b.1 Headless import and run: 0 errors.
 - [x] G4b.2 Playtest: woods → Road Carpet → back to the woods; a bush starts a fight with an enemy from the Road Carpet list and refills; the hidden gap reaches Kilnoxx and starts his fight; talking to a guard shows the shift-swap line and plays a deep voice; you can't walk through trees. All old checks still pass (248/248 PASS).
 - [x] G4b.3 Screenshots: `../skraptopia_dev_tools/screenshots/p4b_*.png` (the rug path, the guard post, the Kilnoxx clearing).
-- [ ] G4b.4 The user walked Road Carpet and said OK.
+- [x] G4b.4 The user walked Road Carpet and said OK (Nov 25).
 
 ## Phase 4: Open world  (target: Dec 1)  status: todo
 Goal: the whole kingdom to walk through, with enemies in the bushes.
