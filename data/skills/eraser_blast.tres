@@ -12,3 +12,4 @@ mp_cost = 6
 power = 2.6
 hits_all = true
 effect = &"sp_explosion"
+doodle = Array[PackedVector2Array]([PackedVector2Array(0, 0, 4, 0.4, 0, 0.8, 4, 1.2, 0, 1.6, 4, 2)])

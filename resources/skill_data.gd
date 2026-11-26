@@ -13,3 +13,4 @@ extends Resource
 @export var hits_all: bool = false
 @export var effect: StringName = &""
 @export var status: StringName = &""
+@export var doodle: Array[PackedVector2Array] = []

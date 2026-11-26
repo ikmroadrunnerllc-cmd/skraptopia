@@ -10,3 +10,4 @@ description = "A fast, messy strike that hits harder than a normal attack."
 mp_cost = 3
 power = 1.6
 effect = &"na_cut_x"
+doodle = Array[PackedVector2Array]([PackedVector2Array(0, 0, 1, 2, 2, 0, 3, 2, 4, 0)])

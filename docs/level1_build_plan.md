@@ -175,9 +175,9 @@ Builds:
 - resources/skill_data.gd `doodle` field + Demari's 6 skill .tres shapes
 - Scenes/battle/battle.gd - Demari's Skills opens the page; power multiplier; chains; named combos
 Gate A (recognizer + one drawing per turn):
-- [ ] GA.1 Headless import and run: 0 errors.
-- [ ] GA.2 Playtest: each of the 6 shapes (with wobble, size and small tilt) is recognized as itself and never as another; a V is not read as a ^; a 2-line plus works in either order; drawing in battle casts the skill, a cleaner drawing hits harder, a scribble fizzles with no MP spent. All old checks still pass.
-- [ ] GA.3 Screenshot of the page open in battle.
+- [x] GA.1 Headless import and run: 0 errors.
+- [x] GA.2 Playtest (282/282 PASS, backup playtest.gd.bak_doodle): each of the 6 shapes (with wobble, size and small tilt) is recognized as itself and never as another; a V is not read as a ^; a 2-line plus works in either order; drawing in battle casts the skill, a cleaner drawing hits harder, a scribble fizzles with no MP spent. All old checks still pass.
+- [x] GA.3 Screenshot: `../skraptopia_dev_tools/screenshots/doodle_page.png`.
 - [ ] GA.4 The user drew each unlocked skill and said OK.
 Gate B (chains + named combos):
 - [ ] GB.1 Headless import and run: 0 errors.

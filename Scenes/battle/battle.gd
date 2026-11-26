@@ -82,6 +82,9 @@ const DEF_UP := 0.7
 const GOLD := Color(1, 0.84, 0.35)
 const FX_SIZE := 72.0
 const STEP_FORWARD := 28.0
+const FIZZLE := 0.7
+const FAST_TIME := 1.2
+const FAST_BONUS := 1.1
 
 @onready var _backdrop: TextureRect = %Backdrop
 @onready var _enemy_info: Control = %EnemyInfo
@@ -123,6 +126,7 @@ var _pages: Array = []
 var _items: Array[StringName] = []
 var _item_pick: StringName = &""
 var _party_icons: Dictionary = {}
+var _page: DoodlePage
 
 
 func _ready() -> void:
@@ -600,7 +604,10 @@ func _on_command(index: int) -> void:
 			await _attack(t)
 			_end_action()
 		Command.SKILLS:
-			_show_skill_menu()
+			if _doodle_skills().is_empty():
+				_show_skill_menu()
+			else:
+				_open_doodle()
 		Command.ITEMS:
 			_show_item_menu()
 		Command.DEFEND:
@@ -730,22 +737,78 @@ func _attack(t: int) -> void:
 	await _say("%s attacks! %s takes %d damage." % [GameState.member(actor).display_name, foes[t].label, dmg])
 
 
-func _use_skill(s: SkillData, t: int) -> void:
+func _doodle_skills() -> Array[SkillData]:
+	return GameState.skills_for(actor).filter(func(s: SkillData) -> bool: return not s.doodle.is_empty())
+
+
+func _doodle_mult(score: float, seconds: float) -> float:
+	var m := lerpf(0.8, 1.2, clampf((score - FIZZLE) / (1.0 - FIZZLE), 0.0, 1.0))
+	return m * (FAST_BONUS if seconds < FAST_TIME else 1.0)
+
+
+func _open_doodle() -> void:
+	var skills := _doodle_skills()
+	var t := -1
+	if skills.any(func(s: SkillData) -> bool: return s.kind in ["damage", "status"] and not s.hits_all):
+		t = await _choose_target()
+		if t < 0:
+			_show_main_menu()
+			return
+	state = State.PLAYER_TURN
+	_menu = "doodle"
+	_commands.disarm()
+	get_viewport().gui_release_focus()
+	_page = DoodlePage.new()
+	add_child(_page)
+	_page.setup(skills, GameState.get_mp(actor))
+	_message.text = "Draw a skill! (Esc: back)"
+	while true:
+		var r: Dictionary = await _page.finished
+		if r.is_empty():
+			_page.close()
+			_page = null
+			_show_main_menu()
+			return
+		var s: SkillData = null
+		for k in skills:
+			if k.id == r.id:
+				s = k
+		if r.score < FIZZLE:
+			_sfx("ui/denied")
+			_message.text = "Fizzle... (closest: %s %d%%) Try again!" % [s.display_name, int(r.score * 100)]
+			continue
+		if s.mp_cost > GameState.get_mp(actor):
+			_sfx("ui/denied")
+			_message.text = "Not enough MP for %s! Try another." % s.display_name
+			continue
+		_page.close()
+		_page = null
+		state = State.ACTION_RESOLUTION
+		var fast: bool = r.seconds < FAST_TIME
+		await _say("%s! %d%%%s" % [s.display_name, int(r.score * 100), " Fast!" if fast else ""], 0.6)
+		var target := t if t >= 0 and foes[t].hp > 0 else (_living()[0] if s.kind in ["damage", "status"] else -1)
+		await _use_skill(s, target, _doodle_mult(r.score, r.seconds))
+		_end_action()
+		return
+
+
+func _use_skill(s: SkillData, t: int, mult := 1.0) -> void:
 	var who := GameState.member(actor).display_name
 	GameState.set_member_mp(actor, GameState.get_mp(actor) - s.mp_cost)
 	_refresh()
 	await _step(actor)
+	var power := s.power * mult
 	match s.kind:
 		"damage":
 			if s.hits_all:
 				var total := 0
 				for i in _living():
-					var d := _foe_damage(i, s.power)
+					var d := _foe_damage(i, power)
 					total += d
 					_hit_enemy(i, d, s.effect)
 				await _say("%s uses %s! It hits every enemy for %d damage in total." % [who, s.display_name, total])
 			else:
-				var dmg := _foe_damage(t, s.power)
+				var dmg := _foe_damage(t, power)
 				_hit_enemy(t, dmg, s.effect)
 				await _say("%s uses %s! %s takes %d damage." % [who, s.display_name, foes[t].label, dmg])
 				if s.status != &"" and foes[t].hp > 0:
@@ -757,7 +820,7 @@ func _use_skill(s: SkillData, t: int) -> void:
 			var parts: Array[String] = []
 			for id in _alive():
 				var before := GameState.get_hp(id)
-				GameState.set_member_hp(id, before + int(s.power))
+				GameState.set_member_hp(id, before + int(power))
 				_play_fx(s.effect, _center_of(id))
 				parts.append("%s +%d" % [GameState.member(id).display_name, GameState.get_hp(id) - before])
 			_sfx("battle/patch_up")
@@ -766,7 +829,7 @@ func _use_skill(s: SkillData, t: int) -> void:
 		"heal":
 			var target := _most_hurt()
 			var before := GameState.get_hp(target)
-			GameState.set_member_hp(target, before + int(s.power))
+			GameState.set_member_hp(target, before + int(power))
 			_play_fx(s.effect, _center_of(target))
 			_refresh()
 			await _say("%s uses %s! %s recovers %d HP." % [who, s.display_name, GameState.member(target).display_name, GameState.get_hp(target) - before])
