@@ -49,7 +49,7 @@ Gate B1:
 - [x] G B1.3 Threat bars are visible on the party cards - how: screenshot
 - [x] G B1.4 The user played it and said OK
 
-## Phase B2: Steal / Inspect + Monster Atlas (the notebook)  (target: Nov 29)  status: gate-check
+## Phase B2: Steal / Inspect + Monster Atlas (the notebook)  (target: Nov 29)  status: done (user said "ok", then asked to move on to the story)
 Goal: two new battle commands, plus a journal of every monster you've met.
 Needs: B1 done
 Builds:
@@ -61,9 +61,9 @@ Gate B2:
 - [x] G B2.1 No errors on import or a game run
 - [x] G B2.2 Steal gives the item (once, and it can miss), Inspect fills the entry, a win counts and rolls drops, and all old checks pass - how: playtest
 - [x] G B2.3 Atlas page - how: screenshot
-- [ ] G B2.4 The user played it and said OK
+- [x] G B2.4 The user played it and said OK
 
-## Phase B3: Jobs, sub-job and passives + party menu  (target: Dec 1)  status: todo
+## Phase B3: Jobs, sub-job and passives + party menu  (moved to after Level 1, Dec 4+)  status: todo
 Goal: each fighter picks a main job and a sub-job that add skills, and equips passives within 10 PP.
 Needs: B2 done
 Builds:

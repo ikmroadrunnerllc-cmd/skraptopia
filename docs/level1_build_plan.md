@@ -15,7 +15,7 @@ Built with the `skraptopia-gated-build` workflow. Each phase ends in a gate: eve
 
 ---
 
-**Battle Lab port (added 2026-11-26):** phases B0–B5 are in `battle_lab_port.md`. They run before Chapter 2.
+**Battle Lab port (added 2026-11-26):** phases B0–B5 are in `battle_lab_port.md`. B0–B2 are done; B3–B5 wait until after Level 1. **Chapters 2–4 (finishing Level 1) are planned in `level1_chapters_2_4.md`.**
 
 ## Phase 1: Foundations  (target: Nov 23)  status: done
 Goal: the new characters and all the game data are in, so later phases just use them.
