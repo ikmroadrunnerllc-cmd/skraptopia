@@ -42,7 +42,7 @@ static func Measure(textFont: Font, value: String) -> float:
 static func FontSize(textFont: Font) -> int:
 	if textFont is FontFile and textFont.fixed_size > 0:
 		return textFont.fixed_size
-	return 16
+	return 8  # PixelOperator8 is drawn at its native 8px
 
 
 func _draw() -> void:
@@ -57,12 +57,13 @@ func _draw() -> void:
 	var origin := Vector2(x, font.get_ascent(fontSize))
 	match render:
 		Render.SHADOWED:
-			DrawAt(origin + Vector2(2, 2), Color(BattleStyle.SHADOW_COLOR, color.a), fontSize)
+			DrawAt(origin + Vector2(1, 1), Color(BattleStyle.SHADOW_COLOR, color.a), fontSize)
 		Render.OUTLINED:
-			var outline := Color(BattleStyle.SHADOW_COLOR, color.a if color.a >= 1.0 else color.a / 20.0)
-			for i in range(-2, 3):
-				for j in range(-2, 3):
-					if (i != 0 or j != 0) and ((i + 2) % 4 != 0 or (j + 2) % 4 != 0):
+			# 1px outline at 640x360 (all 8 neighbours).
+			var outline := Color(BattleStyle.SHADOW_COLOR, color.a if color.a >= 1.0 else color.a / 8.0)
+			for i in range(-1, 2):
+				for j in range(-1, 2):
+					if i != 0 or j != 0:
 						DrawAt(origin + Vector2(i, j), outline, fontSize)
 	DrawAt(origin, color, fontSize)
 

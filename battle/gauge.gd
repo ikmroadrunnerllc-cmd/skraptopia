@@ -27,27 +27,25 @@ func _ready() -> void:
 
 
 func ApplyLayout() -> void:
-	# Bar overhangs the text by 8px each side and sits 2px lower.
-	background.position = Vector2(-8, 2)
-	background.size = Vector2(gaugeWidth + 16, 32)
-	bar.position = background.position
-	bar.size = background.size
+	# 640x360: an 8px text row, with a 4px bar underneath (1px frame, 2px fill).
+	background.position = Vector2(0, 9)
+	background.size = Vector2(gaugeWidth, 4)
+	bar.position = Vector2(1, 10)
+	bar.size = Vector2(gaugeWidth - 2, 2)
 	captionText.text = caption
-	captionText.position = Vector2(0, -2)
+	captionText.position = Vector2.ZERO
 	slashText.visible = showMax
 	maxText.visible = showMax
 	if showMax:
-		var digits := UiText.Measure(BattleStyle.FONT_BOLD, "9999")
+		var digits := UiText.Measure(BattleStyle.FONT_BOLD, "999")
 		var slashWidth := UiText.Measure(BattleStyle.FONT_STANDARD, "/")
-		var slashX := gaugeWidth - digits - floorf(slashWidth / 2) - 8
-		var currentX := slashX - floorf(slashWidth / 2) - 8
-		slashX -= 2    # nudge for the pixel font
-		currentX -= 4
-		currentText.position = Vector2(currentX, -2)
-		slashText.position = Vector2(slashX, -2)
-		maxText.position = Vector2(gaugeWidth, -2)
+		var slashX := gaugeWidth - digits - floorf(slashWidth / 2) - 2
+		var currentX := slashX - floorf(slashWidth / 2) - 2
+		currentText.position = Vector2(currentX, 0)
+		slashText.position = Vector2(slashX, 0)
+		maxText.position = Vector2(gaugeWidth, 0)
 	else:
-		currentText.position = Vector2(gaugeWidth, -2)
+		currentText.position = Vector2(gaugeWidth, 0)
 	Refresh()
 
 
