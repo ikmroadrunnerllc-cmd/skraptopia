@@ -162,8 +162,28 @@ The rest of Phases 4 and 5 is built **by story chapter**, not by system. Each ch
 |---|---|---|
 | Ch1 Wake-up | Title screen, opening text screens, Demari wakes in the woods and finds the notebook, the tutorial scene (the script in the story doc), Casimir joins and follows | Nov 27 |
 | Ch2 The castle | Block Town map (castle, shop, train station, market, tavern), Road Carpet's top exit leads there, Asmara talk, the guard's interruption, the quest, starting Buttons | Nov 29 |
+| Doodle Casting | Draw skills on a notebook page in battle (story doc, "Doodle Casting"); its own phase and gate, details settled before building | Dec 1 (pushes Ch3 and Ch4 back about a day each) |
 | Ch3 Investigation | Clues 1 and 2, the A-B-C-D block puzzle, clue 3, shrines (save/load), townsfolk (Super Retro World), Captain CrackJack's platform | Dec 1 |
 | Ch4 Climax | Tavern, the thief and the badge, Zephyrion's dialogue and fight, notebook pages fly into the SkrapBook, the knighting, the ending | Dec 3 |
+
+## Doodle Casting  (target: Dec 1)  status: building
+Goal: Demari casts skills by drawing them on a notebook page, and can chain up to 3 drawings into combos.
+Needs: Phase 3 battle (done)
+Builds:
+- systems/doodle_recognizer.gd - matches a drawing to a shape (from the user's own SpellDrawing prototype: $1 recognizer, no rotation, joined strokes)
+- ui/battle/doodle_page.gd - the notebook page: ink line, shape guides, ink timer, mouse or stick drawing
+- resources/skill_data.gd `doodle` field + Demari's 6 skill .tres shapes
+- Scenes/battle/battle.gd - Demari's Skills opens the page; power multiplier; chains; named combos
+Gate A (recognizer + one drawing per turn):
+- [ ] GA.1 Headless import and run: 0 errors.
+- [ ] GA.2 Playtest: each of the 6 shapes (with wobble, size and small tilt) is recognized as itself and never as another; a V is not read as a ^; a 2-line plus works in either order; drawing in battle casts the skill, a cleaner drawing hits harder, a scribble fizzles with no MP spent. All old checks still pass.
+- [ ] GA.3 Screenshot of the page open in battle.
+- [ ] GA.4 The user drew each unlocked skill and said OK.
+Gate B (chains + named combos):
+- [ ] GB.1 Headless import and run: 0 errors.
+- [ ] GB.2 Playtest: 3 links in one turn with +15%/+30%; the timer and a fizzle end the chain; each named combo shows its banner and bonus.
+- [ ] GB.3 Screenshot of a combo banner.
+- [ ] GB.4 The user chained a combo and said OK.
 
 ## Phase 4: Open world  (target: Dec 1)  status: todo
 Goal: the whole kingdom to walk through, with enemies in the bushes.
