@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://resources/character_data.gd" id="1_asmara"]
+
+[resource]
+script = ExtResource("1_asmara")
+id = &"asmara"
+display_name = "Asmara"
+max_hp = 34
+max_mp = 16
+attack = 6
+defense = 3
+speed = 5
+hp_growth = 6
+mp_growth = 4
+attack_growth = 2
+defense_growth = 1
+speed_growth = 1

@@ -92,6 +92,7 @@ func start_battle(enemies: Variant, encounter_id: String, backdrop: String = "wo
 		"return_position": player.global_position if player else Vector2.ZERO,
 		"start_hp": GameState.hp,
 		"start_casimir_hp": GameState.casimir_hp,
+		"start_asmara_hp": GameState.asmara_hp,
 		"backdrop": backdrop,
 	}
 	change_to(BATTLE_SCENE)
@@ -105,6 +106,7 @@ func return_from_battle() -> void:
 func retry_battle() -> void:
 	GameState.set_hp(GameState.pending_battle.get("start_hp", GameState.member(&"demari").max_hp))
 	GameState.set_member_hp(&"casimir", GameState.pending_battle.get("start_casimir_hp", GameState.member(&"casimir").max_hp))
+	GameState.set_member_hp(&"asmara", GameState.pending_battle.get("start_asmara_hp", GameState.member(&"asmara").max_hp))
 	change_to(BATTLE_SCENE)
 
 

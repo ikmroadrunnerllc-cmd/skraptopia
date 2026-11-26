@@ -5,6 +5,7 @@ signal enemy_defeated(enemy_id: StringName)
 
 const HERO: CharacterData = preload("res://data/characters/hero.tres")
 const CASIMIR: CharacterData = preload("res://data/characters/casimir.tres")
+const ASMARA: CharacterData = preload("res://data/characters/asmara.tres")
 const SETTINGS_PATH := "user://settings.cfg"
 const SKILLS: Array[SkillData] = [
 	preload("res://data/skills/scribble_strike.tres"),
@@ -19,6 +20,9 @@ const SKILLS: Array[SkillData] = [
 	preload("res://data/skills/dent_strike.tres"),
 	preload("res://data/skills/cannon_volley.tres"),
 	preload("res://data/skills/royal_salute.tres"),
+	preload("res://data/skills/royal_mend.tres"),
+	preload("res://data/skills/spark_wand.tres"),
+	preload("res://data/skills/crown_light.tres"),
 ]
 const EXP_TABLE: Array[int] = [0, 0, 20, 50, 100, 170, 260, 380, 530, 720, 950]
 const MAX_LEVEL := 10
@@ -36,11 +40,13 @@ const BOSS_DROPS := {&"iron_jaws": &"steel_fang", &"kilnoxx": &"phoenix_feather"
 const STATS: Array[String] = ["max_hp", "max_mp", "attack", "defense", "speed"]
 const GROWTH: Array[String] = ["hp_growth", "mp_growth", "attack_growth", "defense_growth", "speed_growth"]
 
-var party: Array[StringName] = [&"demari", &"casimir"]
+var party: Array[StringName] = [&"demari", &"casimir", &"asmara"]
 var hp: int = HERO.max_hp
 var mp: int = HERO.max_mp
 var casimir_hp: int = CASIMIR.max_hp
 var casimir_mp: int = CASIMIR.max_mp
+var asmara_hp: int = ASMARA.max_hp
+var asmara_mp: int = ASMARA.max_mp
 var exp: int = 0
 var level: int = HERO.level
 var defeated_encounters: Dictionary = {}
@@ -55,7 +61,7 @@ var _base: Dictionary = {}
 
 
 func _ready() -> void:
-	for m: CharacterData in [HERO, CASIMIR]:
+	for m: CharacterData in [HERO, CASIMIR, ASMARA]:
 		_base[m.id] = STATS.map(func(s: String) -> int: return m.get(s))
 	var cfg := ConfigFile.new()
 	if cfg.load(SETTINGS_PATH) == OK:
@@ -88,31 +94,53 @@ func set_hp(value: int) -> void:
 
 
 func member(id: StringName) -> CharacterData:
-	var m: CharacterData = CASIMIR if id == &"casimir" else HERO
-	return m
+	match id:
+		&"casimir":
+			return CASIMIR
+		&"asmara":
+			return ASMARA
+	return HERO
 
 
 func get_hp(id: StringName) -> int:
-	return casimir_hp if id == &"casimir" else hp
+	match id:
+		&"casimir":
+			return casimir_hp
+		&"asmara":
+			return asmara_hp
+	return hp
 
 
 func get_mp(id: StringName) -> int:
-	return casimir_mp if id == &"casimir" else mp
+	match id:
+		&"casimir":
+			return casimir_mp
+		&"asmara":
+			return asmara_mp
+	return mp
 
 
 func set_member_hp(id: StringName, value: int) -> void:
-	if id == &"casimir":
-		casimir_hp = clampi(value, 0, member(&"casimir").max_hp)
-		stats_changed.emit()
-	else:
-		set_hp(value)
+	var v := clampi(value, 0, member(id).max_hp)
+	match id:
+		&"casimir":
+			casimir_hp = v
+		&"asmara":
+			asmara_hp = v
+		_:
+			hp = v
+	stats_changed.emit()
 
 
 func set_member_mp(id: StringName, value: int) -> void:
-	if id == &"casimir":
-		casimir_mp = clampi(value, 0, member(&"casimir").max_mp)
-	else:
-		mp = clampi(value, 0, member(&"demari").max_mp)
+	var v := clampi(value, 0, member(id).max_mp)
+	match id:
+		&"casimir":
+			casimir_mp = v
+		&"asmara":
+			asmara_mp = v
+		_:
+			mp = v
 	stats_changed.emit()
 
 
@@ -137,6 +165,8 @@ func new_game() -> void:
 	restore_party()
 	set_member_hp(&"casimir", CASIMIR.max_hp)
 	set_member_mp(&"casimir", CASIMIR.max_mp)
+	set_member_hp(&"asmara", ASMARA.max_hp)
+	set_member_mp(&"asmara", ASMARA.max_mp)
 
 
 func set_flag(id: StringName) -> void:
@@ -198,13 +228,12 @@ func set_level(value: int) -> void:
 
 
 func refresh_stats() -> void:
-	for m: CharacterData in [HERO, CASIMIR]:
+	for m: CharacterData in [HERO, CASIMIR, ASMARA]:
 		for k in STATS.size():
 			m.set(STATS[k], _base[m.id][k] + m.get(GROWTH[k]) * (level - 1))
-	set_member_hp(&"demari", hp)
-	set_member_hp(&"casimir", casimir_hp)
-	set_member_mp(&"demari", mp)
-	set_member_mp(&"casimir", casimir_mp)
+	for id: StringName in [&"demari", &"casimir", &"asmara"]:
+		set_member_hp(id, get_hp(id))
+		set_member_mp(id, get_mp(id))
 
 
 func add_buttons(amount: int) -> void:

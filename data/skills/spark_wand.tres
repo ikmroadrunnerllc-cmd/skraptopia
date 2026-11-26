@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_spark_wand"]
+
+[resource]
+script = ExtResource("1_spark_wand")
+id = &"spark_wand"
+display_name = "Spark Wand"
+description = "A burst of flame from her toy wand."
+user = &"asmara"
+mp_cost = 4
+power = 1.8
+effect = &"sp_explosion"

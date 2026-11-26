@@ -53,8 +53,9 @@ const FRONT_SLOTS := [
 	[Vector2(250, 215), Vector2(390, 215)],
 	[Vector2(200, 215), Vector2(320, 215), Vector2(440, 215)],
 ]
-const SIDE_PARTY := {&"demari": Vector2(175, 272), &"casimir": Vector2(105, 276)}
-const FRONT_PARTY := {&"demari": [Vector2(128, 272), 2.0], &"casimir": [Vector2(512, 278), 4.0]}
+const SIDE_PARTY := {&"demari": Vector2(175, 272), &"casimir": Vector2(105, 276), &"asmara": Vector2(58, 244)}
+const FRONT_PARTY := {&"demari": [Vector2(128, 272), 2.0], &"casimir": [Vector2(512, 278), 4.0], &"asmara": [Vector2(320, 282), 3.5]}
+const ASMARA_FRAMES: SpriteFrames = preload("res://assets/characters/party/asmara/asmara_frames.tres")
 const COMMAND_ICONS: Array[Texture2D] = [
 	preload("res://assets/ui/kyrise/sword_01a.png"),
 	preload("res://assets/ui/kyrise/spellbook_01a.png"),
@@ -150,7 +151,12 @@ func _ready() -> void:
 	_commands.chosen.connect(_on_command)
 	_skill_list.chosen.connect(_on_command)
 	_result_choices.chosen.connect(_on_result_choice)
-	_sprites = {&"demari": %Demari, &"casimir": %Casimir}
+	var asmara: AnimatedSprite2D = %Casimir.duplicate()
+	asmara.name = "Asmara"
+	asmara.unique_name_in_owner = false
+	asmara.sprite_frames = ASMARA_FRAMES
+	%Stage.add_child(asmara)
+	_sprites = {&"demari": %Demari, &"casimir": %Casimir, &"asmara": asmara}
 	_setup_view()
 	_play_music()
 	_refresh()

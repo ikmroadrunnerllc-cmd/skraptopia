@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_crown_light"]
+
+[resource]
+script = ExtResource("1_crown_light")
+id = &"crown_light"
+display_name = "Crown Light"
+description = "Her crown glows. Heals the whole party 15 HP."
+user = &"asmara"
+unlock_level = 5
+mp_cost = 7
+kind = "heal"
+power = 15.0
+hits_all = true
+effect = &"sp_magic_burst_green"
