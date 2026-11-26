@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://battle/command_menu_test.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://battle/command_window.tscn" id="2_cmd"]
+[ext_resource type="FontFile" path="res://assets/ui/brackeys/fonts/PixelOperator8.ttf" id="3_font"]
+
+[node name="CommandMenuTest" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_test")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.215686, 0.254902, 0.290196, 1)
+
+[node name="Message" type="Label" parent="."]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 230.0
+offset_right = 330.0
+offset_bottom = 242.0
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 8
+text = "Up/Down to move, Enter to choose"
+
+[node name="CommandWindow" parent="." instance=ExtResource("2_cmd")]

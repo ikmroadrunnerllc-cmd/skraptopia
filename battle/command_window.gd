@@ -1,26 +1,26 @@
 class_name BattleCommandWindow
 extends Control
-## Battle command menu: framed window, four rows with icons, and an animated pointer cursor.
-## Node origin is the content corner of a 260 x 168 window (four 42px rows).
+## Battle command menu: framed window, five rows with icons, and an animated pointer cursor.
+## Laid out for 640x360. Node origin is the content corner of an 80 x 70 window (five 14px rows).
 
 signal commandChosen(index: int)
 signal enemyInfoRequested
 signal turnOrderRequested
 
-const LINE_HEIGHT := 42
-const ROW_COUNT := 4
+const LINE_HEIGHT := 14
+const ROW_COUNT := 5
 
 @onready var frame: NinePatchRect = $Frame
 @onready var rows: Control = $Rows
 @onready var cursor: TextureRect = $Cursor
 
-var items: Array = []  ## [{icon: Texture2D, iconIndex: int, text: String, enabled: bool}]
+var items: Array = []  ## [{icon: Texture2D, text: String, enabled: bool}]
 var selectedIndex := 0
 var isOpen := false
 var visibility := 0.0     ## open/close fade
 var cursorY := 0.0
 var cursorOpacity := 0.0
-var highlights: Array[float] = [0.0, 0.0, 0.0, 0.0]  ## per-row highlight amount
+var highlights: Array[float] = [0.0, 0.0, 0.0, 0.0, 0.0]  ## per-row highlight amount
 var homeY := 0.0
 var tweens := {}
 
@@ -33,7 +33,9 @@ func _ready() -> void:
 		row.name = "Row%d" % i
 		row.position.y = LINE_HEIGHT * i
 		rows.add_child(row)
-	BattleStyle.FitSkin(frame, BattleStyle.SKIN_STANDARD, Vector2.ZERO, size.x, LINE_HEIGHT * ROW_COUNT)
+	# Frame covers the rows plus a 6px / 5px border.
+	frame.position = Vector2(-6, -5)
+	frame.size = Vector2(size.x + 12, LINE_HEIGHT * ROW_COUNT + 10)
 	_process(0)
 
 
@@ -42,13 +44,7 @@ func Setup(commandItems: Array) -> void:
 	for i in ROW_COUNT:
 		var row := rows.get_child(i)
 		var item: Dictionary = items[i] if i < items.size() else {}
-		var icon: Texture2D = null
-		if item.get("icon") != null:
-			var atlas := AtlasTexture.new()
-			atlas.atlas = item.icon
-			var index: int = item.iconIndex
-			atlas.region = Rect2(index % 7 * 34 + 2, index / 7 * 34 + 2, 32, 32)  # 7-column icon sheet, 34px cells
-			icon = atlas
+		var icon: Texture2D = item.get("icon")
 		row.get_node("Icon").texture = icon
 		row.get_node("IconShadow").texture = icon
 		var label: UiText = row.get_node("Text")
@@ -119,11 +115,11 @@ func TweenTo(property: String, target: float, duration: float) -> void:
 
 func _process(_delta: float) -> void:
 	modulate.a = visibility
-	position.y = homeY + int(10.0 * (1.0 - visibility))  # windows rise 10px while fading in
+	position.y = homeY + int(4.0 * (1.0 - visibility))  # windows rise 4px while fading in
 	for i in ROW_COUNT:
 		var row := rows.get_child(i)
-		row.position.x = int(highlights[i] * 8.0)
+		row.position.x = int(highlights[i] * 3.0)
 		row.get_node("Highlight").modulate.a = highlights[i]
 	# Cursor sits left of the row, vertically centred, bobbing horizontally.
-	cursor.position = Vector2(int(-cursor.size.x + BattleStyle.MenuAnimOffset()), int(cursorY + LINE_HEIGHT * 0.5 - 27))
+	cursor.position = Vector2(int(-cursor.size.x - 4 + BattleStyle.MenuAnimOffset() / 4.0), int(cursorY + (LINE_HEIGHT - cursor.size.y) / 2.0))
 	cursor.modulate.a = cursorOpacity

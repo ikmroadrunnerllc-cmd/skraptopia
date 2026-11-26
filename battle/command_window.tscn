@@ -1,36 +1,30 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://battle/command_window.gd" id="1_cmd"]
-[ext_resource type="Texture2D" path="res://GameAssets/UI/BattleCommandPanel.png" id="2_panel"]
-[ext_resource type="Texture2D" path="res://GameAssets/UI/BattleCommandRows.png" id="3_rows"]
-[ext_resource type="Texture2D" path="res://GameAssets/UI/MenuCursor.png" id="4_cursor"]
+[ext_resource type="Texture2D" path="res://assets/ui/ninja_adventure/Theme/Theme Wood/nine_path_bg.png" id="2_panel"]
+[ext_resource type="Texture2D" path="res://assets/ui/ninja_adventure/Theme/Theme Wood/arrow_right.png" id="4_cursor"]
 [ext_resource type="Script" path="res://battle/ui_text.gd" id="5_text"]
-[ext_resource type="FontFile" path="res://GameAssets/UI/Fonts/FontStandard.fnt" id="6_std"]
+[ext_resource type="FontFile" path="res://assets/ui/brackeys/fonts/PixelOperator8.ttf" id="6_std"]
 
 [node name="CommandWindow" type="Control"]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 0
-offset_left = 390.0
-offset_top = 775.0
-offset_right = 650.0
-offset_bottom = 943.0
+offset_left = 130.0
+offset_top = 258.0
+offset_right = 210.0
+offset_bottom = 328.0
 mouse_filter = 2
 script = ExtResource("1_cmd")
 
 [node name="Frame" type="NinePatchRect" parent="."]
 layout_mode = 0
-offset_left = -48.0
-offset_top = -74.0
-offset_right = 308.0
-offset_bottom = 198.0
 mouse_filter = 2
 texture = ExtResource("2_panel")
-patch_margin_left = 32
-patch_margin_top = 74
-patch_margin_right = 32
-patch_margin_bottom = 32
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="Rows" type="Control" parent="."]
 anchors_preset = 0
@@ -38,63 +32,52 @@ mouse_filter = 2
 
 [node name="Row0" type="Control" parent="Rows"]
 anchors_preset = 0
-offset_right = 260.0
-offset_bottom = 42.0
+offset_right = 80.0
+offset_bottom = 14.0
 mouse_filter = 2
 
-[node name="RowBg" type="NinePatchRect" parent="Rows/Row0"]
-layout_mode = 0
-offset_left = -24.0
-offset_right = 284.0
-offset_bottom = 42.0
-mouse_filter = 2
-texture = ExtResource("3_rows")
-region_rect = Rect2(0, 0, 328, 42)
-patch_margin_left = 24
-patch_margin_right = 24
-axis_stretch_horizontal = 1
-
-[node name="Highlight" type="NinePatchRect" parent="Rows/Row0"]
+[node name="Highlight" type="ColorRect" parent="Rows/Row0"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 0
-offset_left = -24.0
-offset_right = 284.0
-offset_bottom = 42.0
+offset_left = -3.0
+offset_right = 77.0
+offset_bottom = 14.0
 mouse_filter = 2
-texture = ExtResource("3_rows")
-region_rect = Rect2(0, 42, 328, 42)
-patch_margin_left = 24
-patch_margin_right = 24
-axis_stretch_horizontal = 1
+color = Color(1, 0.85, 0.35, 0.25)
 
 [node name="IconShadow" type="TextureRect" parent="Rows/Row0"]
 self_modulate = Color(0.0784314, 0.0823529, 0.160784, 1)
 layout_mode = 0
-offset_left = 2.0
-offset_top = 6.0
-offset_right = 34.0
-offset_bottom = 38.0
+offset_left = 1.0
+offset_top = 2.0
+offset_right = 13.0
+offset_bottom = 14.0
 mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Icon" type="TextureRect" parent="Rows/Row0"]
 layout_mode = 0
-offset_top = 4.0
-offset_right = 32.0
-offset_bottom = 36.0
+offset_top = 1.0
+offset_right = 12.0
+offset_bottom = 13.0
 mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Text" type="Control" parent="Rows/Row0"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 40.0
-offset_right = 40.0
+offset_left = 16.0
+offset_top = 3.0
+offset_right = 16.0
+offset_bottom = 3.0
 script = ExtResource("5_text")
 font = ExtResource("6_std")
 
 [node name="Cursor" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = -64.0
-offset_top = -6.0
-offset_bottom = 58.0
+offset_right = 16.0
+offset_bottom = 16.0
 mouse_filter = 2
 texture = ExtResource("4_cursor")
