@@ -171,7 +171,7 @@ func _setup_view() -> void:
 	_front = not list.any(func(e: EnemyData) -> bool: return BOSS_RAGE.has(e.id))
 	for id: StringName in _sprites:
 		var spr: AnimatedSprite2D = _sprites[id]
-		spr.visible = id in GameState.party
+		spr.visible = id in GameState.party and GameState.show_party_in_battle
 		if _front:
 			spr.position = FRONT_PARTY[id][0]
 			spr.scale = Vector2.ONE * FRONT_PARTY[id][1]

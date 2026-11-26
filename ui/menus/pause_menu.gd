@@ -1,6 +1,6 @@
 extends Control
 
-const ITEMS: Array[String] = ["Status", "Quests", "Boss music", "Items", "Notebook", "Resume"]
+const ITEMS: Array[String] = ["Status", "Quests", "Boss music", "Party in battle", "Items", "Notebook", "Resume"]
 
 @onready var _list: ChoiceList = %MenuList
 @onready var _info_panel: PanelContainer = %InfoPanel
@@ -61,6 +61,7 @@ func _back_to_list() -> void:
 func _items() -> Array[String]:
 	var out := ITEMS.duplicate()
 	out[2] = "Boss music: %s" % ("Lyrics" if GameState.boss_music_lyrics else "Instrumental")
+	out[3] = "Party in battle: %s" % ("On" if GameState.show_party_in_battle else "Off")
 	return out
 
 
@@ -105,10 +106,14 @@ func _on_chosen(index: int) -> void:
 			_list.set_choices(_items())
 			(_list.get_child(2) as Button).grab_focus()
 		3:
-			_show_bag()
+			GameState.set_show_party_in_battle(not GameState.show_party_in_battle)
+			_list.set_choices(_items())
+			(_list.get_child(3) as Button).grab_focus()
 		4:
-			_show_notebook()
+			_show_bag()
 		5:
+			_show_notebook()
+		6:
 			_close_menu()
 
 

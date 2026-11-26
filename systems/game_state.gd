@@ -55,6 +55,7 @@ var defeated_encounters: Dictionary = {}
 var pending_battle: Dictionary = {}
 var _locks: Dictionary = {}
 var boss_music_lyrics: bool = false
+var show_party_in_battle: bool = true
 var buttons: int = 0
 var inventory: Dictionary = {}
 var key_items: Array[StringName] = []
@@ -69,6 +70,7 @@ func _ready() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(SETTINGS_PATH) == OK:
 		boss_music_lyrics = cfg.get_value("audio", "boss_music_lyrics", false)
+		show_party_in_battle = cfg.get_value("battle", "show_party", true)
 
 
 func set_boss_music_lyrics(on: bool) -> void:
@@ -76,6 +78,14 @@ func set_boss_music_lyrics(on: bool) -> void:
 	var cfg := ConfigFile.new()
 	cfg.load(SETTINGS_PATH)
 	cfg.set_value("audio", "boss_music_lyrics", on)
+	cfg.save(SETTINGS_PATH)
+
+
+func set_show_party_in_battle(on: bool) -> void:
+	show_party_in_battle = on
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS_PATH)
+	cfg.set_value("battle", "show_party", on)
 	cfg.save(SETTINGS_PATH)
 
 
