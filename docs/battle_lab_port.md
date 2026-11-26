@@ -34,7 +34,7 @@ Gate B0:
 - [x] G B0.3 Three fighters and three cards fit at 640×360 with nothing overlapping - how: screenshot
 - [x] G B0.4 The user played a fight with all three and said OK
 
-## Phase B1: Threat + enemy AI rules  (target: Nov 28)  status: building
+## Phase B1: Threat + enemy AI rules  (target: Nov 28)  status: gate-check
 Goal: monsters go after whoever annoyed them most, and bosses follow simple rules instead of picking at random.
 Needs: B0 done
 Builds:
@@ -44,9 +44,9 @@ Builds:
 - `Scenes/battle/battle.gd`: `_foe_attacks` picks targets from threat and rules. Boss rage and Casimir's shield block keep working.
 - Rules for 2–3 existing enemies (`.tres`).
 Gate B1:
-- [ ] G B1.1 No errors on import or a game run
-- [ ] G B1.2 Whoever deals the most damage gets targeted most, healing adds threat, the rules fire, and all old checks pass - how: playtest
-- [ ] G B1.3 Threat bars are visible on the party cards - how: screenshot
+- [x] G B1.1 No errors on import or a game run
+- [x] G B1.2 Whoever deals the most damage gets targeted most, healing adds threat, the rules fire, and all old checks pass - how: playtest
+- [x] G B1.3 Threat bars are visible on the party cards - how: screenshot
 - [ ] G B1.4 The user played it and said OK
 
 ## Phase B2: Steal / Inspect + Monster Atlas  (target: Nov 29)  status: todo
