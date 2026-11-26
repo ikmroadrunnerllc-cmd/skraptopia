@@ -53,11 +53,12 @@ func SetOrder(entries: Array) -> void:
 	Retarget()
 
 
-## Front battler finished its turn: drop it and queue its next turn at the back.
-func Advance() -> void:
+## Front battler finished its turn: drop it and queue its next turn at the back
+## (or nextEntry, when the battle knows who comes after the last slot).
+func Advance(nextEntry: Dictionary = {}) -> void:
 	var done: Dictionary = views.pop_front()
 	done.node.queue_free()
-	views.append(CreateView(done.entry))
+	views.append(CreateView(done.entry if nextEntry.is_empty() else nextEntry))
 	Retarget()
 
 

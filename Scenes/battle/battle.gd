@@ -85,6 +85,12 @@ const STEP_FORWARD := 28.0
 const FIZZLE := 0.7
 const FAST_TIME := 1.2
 const FAST_BONUS := 1.1
+const PANEL_SCENE := preload("res://battle/battler_panel.tscn")
+const COMMAND_WINDOW := preload("res://battle/command_window.tscn")
+const TURN_STRIP: Texture2D = preload("res://assets/ui/ninja_adventure/Theme/Theme Wood/nine_path_bg.png")
+const HUD_FONT: FontFile = preload("res://assets/ui/brackeys/fonts/PixelOperator8.ttf")
+const OLD_HUD := ["HudBar", "HudShade", "PartyRows", "Commands", "CommandName", "Hints", "EnemyInfo"]
+const TURN_SLOTS := 12
 
 @onready var _backdrop: TextureRect = %Backdrop
 @onready var _enemy_info: Control = %EnemyInfo
@@ -127,6 +133,15 @@ var _items: Array[StringName] = []
 var _item_pick: StringName = &""
 var _party_icons: Dictionary = {}
 var _page: DoodlePage
+var _cmd: BattleCommandWindow
+var _cmd_disabled: Array[int] = []
+var _turn_bar: TurnOrderBar
+var _turn_seq: Array[String] = []
+var _turn_who: Dictionary = {}   # "p:<id>" / "f:<index>" -> battler dict for the turn strip
+var _cards: Dictionary = {}      # same keys -> BattlerPanel
+var _card_state: Dictionary = {} # last value sent to each card, so tweens only restart on change
+var _foe_turn: int = -1
+var _member_input: bool = false
 
 
 func _ready() -> void:
@@ -185,6 +200,220 @@ func _setup_view() -> void:
 	_arrow.color = Color(1, 0.9, 0.3)
 	_arrow.hide()
 	%Stage.add_child(_arrow)
+	_build_hud()
+
+
+## New HUD (res://battle/): party + enemy cards, command menu, turn-order strip.
+## The old HUD nodes stay in battle.tscn but are hidden.
+func _build_hud() -> void:
+	for n: String in OLD_HUD:
+		get_node("Hud/" + n).hide()
+	var layer := Control.new()
+	layer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$Hud.add_child(layer)
+	for i in GameState.party.size():
+		var id: StringName = GameState.party[i]
+		var m := GameState.member(id)
+		var key := "p:%s" % id
+		_cards[key] = _card(layer, {"name": m.display_name, "hp": GameState.get_hp(id), "hpMax": m.max_hp,
+			"mp": GameState.get_mp(id), "mpMax": m.max_mp}, true, Vector2(532, 30 + 62 * i))
+		_turn_who[key] = {"portrait": _portrait(id), "isMember": true}
+	for i in foes.size():
+		var f: Dictionary = foes[i]
+		var key := "f:%d" % i
+		_cards[key] = _card(layer, {"name": f.label, "hp": f.hp, "hpMax": f.data.max_hp}, false, Vector2(12, 30 + 46 * i))
+		var portrait: Texture2D = f.data.portrait if f.data.portrait else f.sprite.sprite_frames.get_frame_texture(&"idle", 0)
+		_turn_who[key] = {"portrait": portrait, "isMember": false}
+	_turn_bar = TurnOrderBar.new()
+	_turn_bar.position = Vector2(150, 338)  # leaves the bottom-left corner for the command menu
+	var strip := NinePatchRect.new()
+	strip.name = "Strip"
+	strip.texture = TURN_STRIP
+	strip.patch_margin_left = 4
+	strip.patch_margin_top = 4
+	strip.patch_margin_right = 4
+	strip.patch_margin_bottom = 4
+	strip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var next := Label.new()
+	next.name = "NextLabel"
+	next.text = "NEXT"
+	next.add_theme_font_override("font", HUD_FONT)
+	next.add_theme_font_size_override("font_size", 8)
+	var items := Control.new()
+	items.name = "Items"
+	items.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for n: Control in [strip, next, items]:
+		_turn_bar.add_child(n)
+	layer.add_child(_turn_bar)
+	_turn_bar.Open()
+	_cmd = COMMAND_WINDOW.instantiate()
+	_cmd.position = Vector2(26, 282)
+	layer.add_child(_cmd)
+	_cmd.commandChosen.connect(func(i: int) -> void:
+		_cmd.Close()
+		_on_command(i))
+	# Skill / item lists open in the command menu's corner (the menu closes), growing upward, drawn on top.
+	_skill_panel.offset_left = 10
+	_skill_panel.offset_right = 190
+	_skill_panel.offset_top = 356
+	_skill_panel.offset_bottom = 356
+	$Hud.move_child(_skill_panel, -1)
+
+
+func _card(layer: Control, data: Dictionary, member: bool, at: Vector2) -> BattlerPanel:
+	var c: BattlerPanel = PANEL_SCENE.instantiate()
+	layer.add_child(c)
+	c.position = at
+	c.Setup(data, member)
+	c.SetBackdrop(true)
+	return c
+
+
+func _update_hud() -> void:
+	if _turn_bar == null:
+		return
+	var choosing := state in [State.PLAYER_TURN, State.TARGETING]
+	for id: StringName in GameState.party:
+		var key := "p:%s" % id
+		var c: BattlerPanel = _cards[key]
+		var m := GameState.member(id)
+		var hp := GameState.get_hp(id)
+		_gauge(c.hpGauge, hp, m.max_hp)
+		_gauge(c.mpGauge, GameState.get_mp(id), m.max_mp)
+		c.nameText.color = BattleStyle.HpColor(hp, m.max_hp, BattleStyle.COLOR_BASE)
+		var marks := []
+		if hp > 0 and buff_turns > 0:
+			marks.append([&"atk_up", buff_turns])
+		if hp > 0 and guard_turns > 0:
+			marks.append([&"def_up", guard_turns])
+		_card_statuses(key, c, marks, 1)
+		_card_flag(key + ":input", choosing and id == actor, c.SetInputActive)
+	for i in foes.size():
+		var key := "f:%d" % i
+		var f: Dictionary = foes[i]
+		var c: BattlerPanel = _cards[key]
+		_gauge(c.hpGauge, f.hp, f.data.max_hp)
+		c.nameText.color = BattleStyle.HpColor(f.hp, f.data.max_hp, BattleStyle.COLOR_BASE)
+		c.modulate.a = 1.0 if f.hp > 0 else 0.4
+		var marks := []
+		if f.hp > 0:
+			for k: StringName in f.status:
+				marks.append([k, f.status[k]])
+		_card_statuses(key, c, marks, 2)
+		_card_flag(key + ":target", state == State.TARGETING and i == _target, c.SetSelected)
+	_sync_turns()
+
+
+func _gauge(g: BattleGauge, value: int, maximum: int) -> void:
+	if g.maxValue != maxi(maximum, 1):
+		g.SetValues(value, maximum)
+	elif g.currentValue != value:
+		g.AnimateTo(value)
+
+
+func _card_flag(key: String, on: bool, apply: Callable) -> void:
+	if _card_state.get(key, false) != on:
+		_card_state[key] = on
+		apply.call(on)
+
+
+## marks: [[status key, turns left], ...]; category 1 = buff, 2 = debuff.
+func _card_statuses(key: String, c: BattlerPanel, marks: Array, category: int) -> void:
+	if _card_state.get(key + ":status") == marks:
+		return
+	_card_state[key + ":status"] = marks.duplicate(true)
+	var list := []
+	for mark: Array in marks:
+		if STATUS_ICONS.has(mark[0]):
+			list.append({"icon": load(STATUS_ICONS[mark[0]]), "category": category, "count": int(mark[1])})
+	c.SetStatuses(list)
+
+
+## Who acts next, as turn-strip keys: the rest of this round, then whole rounds (party, then enemies).
+## "*" marks Casimir's charged attack; "!" marks an enemy whose next move is its rage special.
+func _turn_keys() -> Array[String]:
+	var seq: Array[String] = []
+	var party := _alive()
+	var living := _living()
+	if state in [State.VICTORY, State.DEFEAT] or party.is_empty() or living.is_empty():
+		return seq
+	if state == State.ENEMY_TURN:
+		for i in living:
+			if i >= _foe_turn:
+				seq.append("f:%d" % i)
+	else:
+		for k in range(_index, _order.size()):
+			if GameState.get_hp(_order[k]) > 0:
+				seq.append("p:%s" % _order[k])
+		for i in living:
+			seq.append("f:%d" % i)
+	while seq.size() < TURN_SLOTS:
+		for id in party:
+			seq.append("p:%s" % id)
+		for i in living:
+			seq.append("f:%d" % i)
+	seq.resize(TURN_SLOTS)
+	var marked := {}
+	for n in seq.size():
+		var key := seq[n]
+		if marked.has(key):
+			continue
+		marked[key] = true
+		if key == "p:casimir" and charging:
+			seq[n] = key + "*"
+		elif key.begins_with("f:") and _rage_next(int(key.substr(2))):
+			seq[n] = key + "!"
+	return seq
+
+
+func _rage_next(i: int) -> bool:
+	var f: Dictionary = foes[i]
+	if not BOSS_RAGE.has(f.data.id):
+		return false
+	return f.rage_turns % 2 == 0 if f.raging else f.hp * 2 <= f.data.max_hp
+
+
+func _turn_entry(key: String) -> Dictionary:
+	var entry := {"battler": _turn_who[key.trim_suffix("*").trim_suffix("!")]}
+	if key.ends_with("*"):
+		entry.charge = {"icon": COMMAND_ICONS[Command.ATTACK]}
+	if key.ends_with("!"):
+		entry.intent = true
+	return entry
+
+
+func _sync_turns() -> void:
+	if _turn_bar == null:
+		return
+	var input := state in [State.PLAYER_TURN, State.TARGETING]
+	if not input and _member_input:
+		_member_input = false
+		_turn_bar.SetMemberInput(false)
+	var seq := _turn_keys()
+	if seq != _turn_seq:
+		if seq.size() == TURN_SLOTS and _turn_seq.size() == TURN_SLOTS and seq.slice(0, TURN_SLOTS - 1) == _turn_seq.slice(1):
+			_turn_bar.Advance(_turn_entry(seq[-1]))
+		else:
+			_turn_bar.SetOrder(seq.map(_turn_entry))
+		_turn_seq = seq
+	_turn_bar.visible = not seq.is_empty()
+	if input and not _member_input:
+		_member_input = true
+		_turn_bar.SetMemberInput(true)
+
+
+func _disarm_commands() -> void:
+	_commands.disarm()
+	if _cmd and _cmd.isOpen:
+		_cmd.Close()
+
+
+func _cmd_items() -> Array:
+	var items := []
+	for j in COMMANDS.size():
+		items.append({"icon": COMMAND_ICONS[j], "text": COMMANDS[j], "enabled": not j in _cmd_disabled})
+	return items
 
 
 func _make_row(id: StringName, y: float) -> Dictionary:
@@ -382,6 +611,7 @@ func _refresh() -> void:
 		_rows[id].name.modulate = GOLD if id == actor and state in [State.PLAYER_TURN, State.TARGETING] else Color.WHITE
 		var spr: AnimatedSprite2D = _sprites[id]
 		spr.modulate = Color(0.45, 0.45, 0.45) if GameState.get_hp(id) <= 0 else Color.WHITE
+	_update_hud()
 
 
 func _alive() -> Array[StringName]:
@@ -403,7 +633,7 @@ func _living() -> Array[int]:
 func _start() -> void:
 	_skill_panel.hide()
 	_set_commands([0, 1, 2, 3, 4])
-	_commands.disarm()
+	_disarm_commands()
 	await _say(_intro_text())
 	var fastest := 0
 	for f in foes:
@@ -467,11 +697,12 @@ func _show_main_menu() -> void:
 	_message.text = "What will %s do?" % GameState.member(actor).display_name
 	_skill_panel.hide()
 	_set_commands(disabled)
-	_commands.focus_first()
+	_cmd.Setup(_cmd_items())
 	_refresh()
 
 
 func _set_commands(disabled: Array[int]) -> void:
+	_cmd_disabled = disabled
 	_commands.set_choices(COMMANDS, disabled)
 	var slot := StyleBoxTexture.new()
 	slot.texture = SLOT_TEX
@@ -513,7 +744,7 @@ func _show_skill_menu() -> void:
 			disabled.append(i)
 	names.append("Back")
 	_message.text = _menu_skills[0].description if not _menu_skills.is_empty() else ""
-	_commands.disarm()
+	_disarm_commands()
 	_skill_list.set_choices(names, disabled)
 	_skill_panel.show()
 	_skill_list.focus_first()
@@ -531,7 +762,7 @@ func _show_item_menu() -> void:
 			names.append("%s  x%d" % [i.display_name, GameState.inventory[i.id]])
 	names.append("Back")
 	_message.text = GameState.item(_items[0]).description if not _items.is_empty() else ""
-	_commands.disarm()
+	_disarm_commands()
 	_skill_list.set_choices(names)
 	_skill_panel.show()
 	_skill_list.focus_first()
@@ -627,7 +858,7 @@ func _choose_target() -> int:
 	if not alive.has(_target):
 		_target = alive[0]
 	state = State.TARGETING
-	_commands.disarm()
+	_disarm_commands()
 	get_viewport().gui_release_focus()
 	_show_target()
 	var pick: int = await target_picked
@@ -756,7 +987,7 @@ func _open_doodle() -> void:
 			return
 	state = State.PLAYER_TURN
 	_menu = "doodle"
-	_commands.disarm()
+	_disarm_commands()
 	get_viewport().gui_release_focus()
 	_page = DoodlePage.new()
 	add_child(_page)
@@ -955,10 +1186,13 @@ func _try_run() -> void:
 func _enemy_turn() -> void:
 	state = State.ENEMY_TURN
 	actor = &""
+	_foe_turn = -1
 	_refresh()
 	for i in _living():
 		if _alive().is_empty():
 			break
+		_foe_turn = i
+		_sync_turns()
 		if await _foe_status_turn(i):
 			await _foe_attacks(i)
 		await _phoenix_check()
@@ -1141,7 +1375,7 @@ func _defeat() -> void:
 func _show_result(title: String, text: String, choices: Array[String]) -> void:
 	_skill_panel.hide()
 	_set_commands([0, 1, 2, 3, 4])
-	_commands.disarm()
+	_disarm_commands()
 	_result_title.text = title
 	_result_text.text = text
 	_result_choices.set_choices(choices)

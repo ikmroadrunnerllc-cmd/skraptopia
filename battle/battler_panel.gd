@@ -50,10 +50,14 @@ func Setup(data: Dictionary, member: bool) -> void:
 	hpGauge.ApplyLayout()
 	hpGauge.SetValues(data.hp, data.hpMax)
 	mpGauge.visible = member
-	apGauge.visible = member
+	apGauge.visible = member and data.has("ap")
 	if member:
+		# Without AP, the MP bar takes the full width.
+		mpGauge.gaugeWidth = 58 if apGauge.visible else int(contentSize.x)
+		mpGauge.ApplyLayout()
 		mpGauge.SetValues(data.mp, data.mpMax)
-		apGauge.SetValues(data.ap, data.apMax)
+		if apGauge.visible:
+			apGauge.SetValues(data.ap, data.apMax)
 	statusText.position.y = 38 if member else 24
 	statusIcons.position.y = statusText.position.y
 	SetStatuses(data.get("statuses", []))

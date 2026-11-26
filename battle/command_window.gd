@@ -72,7 +72,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		MoveCursor(1)
 	elif event.is_action_pressed("ui_up"):
 		MoveCursor(-1)
-	elif event.is_action_pressed("ui_accept"):
+	elif event.is_action_pressed("ui_accept") or event.is_action_pressed("interact"):
 		if items[selectedIndex].get("enabled", false):
 			commandChosen.emit(selectedIndex)
 	elif event.is_action_pressed("ui_left"):
