@@ -18,7 +18,7 @@ Chapters 2–4 are still open, and the deadline is Dec 7. B0–B2 are the core. 
 
 ---
 
-## Phase B0: Asmara joins the party  (target: Nov 27)  status: gate-check
+## Phase B0: Asmara joins the party  (target: Nov 27)  status: done
 Goal: Asmara fights next to Demari and Casimir in every battle, with her own skills.
 Needs: none (branch `phase-b0-asmara` off `battle-hud`)
 Builds:
@@ -32,9 +32,9 @@ Gate B0:
 - [x] G B0.1 No errors on import or a game run - how: headless import + MCP run
 - [x] G B0.2 Asmara has a turn, her skills work, and the 282 old checks still pass - how: playtest
 - [x] G B0.3 Three fighters and three cards fit at 640×360 with nothing overlapping - how: screenshot
-- [ ] G B0.4 The user played a fight with all three and said OK
+- [x] G B0.4 The user played a fight with all three and said OK
 
-## Phase B1: Threat + enemy AI rules  (target: Nov 28)  status: todo
+## Phase B1: Threat + enemy AI rules  (target: Nov 28)  status: building
 Goal: monsters go after whoever annoyed them most, and bosses follow simple rules instead of picking at random.
 Needs: B0 done
 Builds:
