@@ -293,7 +293,7 @@ These override anything above that disagrees with them. Deadline: **about Dec 7,
 
 - **Demari:** the real sheet (`Documents/Skraptopia Sprites Sheet/demari.png`, 4×4 of 32×48).
 - **Placeholders until the real art arrives:**
-  - Asmara: Ninja Adventure `Princess`. The team's princess file was a duplicate of Demari's, so we're waiting on the real one.
+  - ~~Asmara: Ninja Adventure `Princess`.~~ **Replaced 2026-11-26** by the team's real sheet (`Princess Asmara.png`, 4×4 of 32×48, same layout as Demari's), used in battle and for her throne-room NPC.
   - Casimir: Ninja Adventure `Knight`.
   - Guards (the Royal Toy Battalion): Ninja Adventure `CamouflageGreen`.
 

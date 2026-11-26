@@ -12,6 +12,9 @@ func _ready() -> void:
 	_prompt.hide()
 	if data and data.sprite_sheet:
 		_sprite.texture = data.sprite_sheet
+		if data.row_per_direction:
+			_sprite.vframes = 4
+			_sprite.position.y = -20
 		_face(data.facing)
 	else:
 		_sprite.hide()
@@ -70,4 +73,5 @@ func _face_towards(target: Vector2) -> void:
 
 
 func _face(direction: int) -> void:
-	_sprite.frame = clampi(direction, 0, 3)
+	var d := clampi(direction, 0, 3)
+	_sprite.frame = d * 4 if data and data.row_per_direction else d
