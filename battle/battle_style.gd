@@ -13,9 +13,9 @@ const COLOR_AP := Color8(255, 166, 0)
 const COLOR_GUI_SELECTED := Color8(32, 107, 156)
 const SHADOW_COLOR := Color8(20, 21, 41)
 
-const FONT_STANDARD: Font = preload("res://GameAssets/UI/Fonts/FontStandard.fnt")
-const FONT_BOLD: Font = preload("res://GameAssets/UI/Fonts/FontStandardBold.fnt")
-const FONT_SMALL: Font = preload("res://GameAssets/UI/Fonts/FontStandardSmall.fnt")
+const FONT_STANDARD: Font = preload("res://assets/ui/brackeys/fonts/PixelOperator8.ttf")
+const FONT_BOLD: Font = preload("res://assets/ui/brackeys/fonts/PixelOperator8-Bold.ttf")
+const FONT_SMALL: Font = preload("res://assets/ui/brackeys/fonts/PixelOperator8.ttf")
 
 ## Letter spacing per font (baked into xadvance, so trailing spacing is removed when measuring).
 const FONT_SPACING := {"FontStandard": 2, "FontStandardBold": 3, "FontStandardSmall": 1, "FontStandardSmallBold": 1}

@@ -1,0 +1,55 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://battle/turn_order_test.gd" id="1_test"]
+[ext_resource type="Script" path="res://battle/turn_order_bar.gd" id="2_order"]
+[ext_resource type="Texture2D" path="res://assets/ui/ninja_adventure/Theme/Theme Wood/nine_path_bg.png" id="3_strip"]
+[ext_resource type="FontFile" path="res://assets/ui/brackeys/fonts/PixelOperator8.ttf" id="4_font"]
+
+[node name="TurnOrderTest" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_test")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.215686, 0.254902, 0.290196, 1)
+
+[node name="TurnOrder" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 336.0
+offset_right = 120.0
+offset_bottom = 336.0
+mouse_filter = 2
+script = ExtResource("2_order")
+
+[node name="Strip" type="NinePatchRect" parent="TurnOrder"]
+layout_mode = 0
+mouse_filter = 2
+texture = ExtResource("3_strip")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="NextLabel" type="Label" parent="TurnOrder"]
+layout_mode = 0
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 8
+text = "NEXT"
+
+[node name="Items" type="Control" parent="TurnOrder"]
+anchors_preset = 0
+mouse_filter = 2
