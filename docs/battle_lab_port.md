@@ -18,20 +18,20 @@ Chapters 2–4 are still open, and the deadline is Dec 7. B0–B2 are the core. 
 
 ---
 
-## Phase B0: Asmara joins the party  (target: Nov 27)  status: todo
+## Phase B0: Asmara joins the party  (target: Nov 27)  status: gate-check
 Goal: Asmara fights next to Demari and Casimir in every battle, with her own skills.
 Needs: none (branch `phase-b0-asmara` off `battle-hud`)
 Builds:
 - `data/characters/asmara.tres`: her `CharacterData`, with stats from the lab's cleric job.
-- `data/skills/`: her skills as `SkillData` with `user = asmara`: Heal, Fire, Bless, Group Heal (numbers from the lab).
+- `data/skills/`: her skills as `SkillData` with `user = asmara`: Royal Mend (heal), Spark Wand (fire), Crown Light (group heal, level 5). Bless was dropped, because the battle only has party-wide buffs and Casimir's March Order already covers that.
 - `systems/game_state.gd`: Asmara added to the party (HP/MP, levels, save).
 - `Scenes/battle/battle.gd`: a third place in the side and front layouts, a third HUD card, her turn in the speed order, and the turn strip.
 - Ninja Adventure `Princess` battle `SpriteFrames` (idle, attack, cast, hurt, KO).
 - `docs/level1_toy_box_kingdom.md`: note that she's in the party from the start, and that the Ch2 scene needs adjusting.
 Gate B0:
-- [ ] G B0.1 No errors on import or a game run - how: headless import + MCP run
-- [ ] G B0.2 Asmara has a turn, her skills work, and the 282 old checks still pass - how: playtest
-- [ ] G B0.3 Three fighters and three cards fit at 640×360 with nothing overlapping - how: screenshot
+- [x] G B0.1 No errors on import or a game run - how: headless import + MCP run
+- [x] G B0.2 Asmara has a turn, her skills work, and the 282 old checks still pass - how: playtest
+- [x] G B0.3 Three fighters and three cards fit at 640×360 with nothing overlapping - how: screenshot
 - [ ] G B0.4 The user played a fight with all three and said OK
 
 ## Phase B1: Threat + enemy AI rules  (target: Nov 28)  status: todo
@@ -77,12 +77,12 @@ Gate B3:
 - [ ] G B3.3 Party menu - how: screenshot
 - [ ] G B3.4 The user played it and said OK
 
-## Phase B4: Assist options  (target: Dec 2, can be cut)  status: todo
+## Phase B4: Assist options  (moved to after Level 1)  status: todo
 Goal: settings for easier enemies, reward multipliers, the timing window and auto-timing.
 Needs: B3 done
 Gate: no errors, playtest checks that the settings change the numbers and are saved, a screenshot, and the user's OK.
 
-## Phase B5: Timing check + camera  (target: Dec 3, can be cut)  status: todo
+## Phase B5: Timing check + camera  (moved to after Level 1)  status: todo
 Goal: a timing press on some skills for bonus damage, plus Phantom Camera framing on hits.
 Needs: B4 done (or B3 if B4 is cut)
 Gate: no errors, playtest checks that the auto-timing path works, a screenshot, and the user's OK.
