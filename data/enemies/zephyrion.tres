@@ -15,3 +15,6 @@ speed = 6
 exp_reward = 120
 buttons_reward = 60
 can_run = false
+description = "The Dirt Clay Dragon. Hired help with a lot of eyes and no wings."
+steal_item = &"bandage_tape"
+steal_chance = 0.25

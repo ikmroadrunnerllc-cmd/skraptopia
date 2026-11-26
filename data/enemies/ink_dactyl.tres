@@ -17,3 +17,7 @@ defense = 5
 speed = 10
 exp_reward = 30
 buttons_reward = 16
+description = "A paper flyer soaked in ink. Its paper cuts really sting."
+drops = Dictionary[StringName, float]({&"juice_box": 0.3})
+steal_item = &"bandage_tape"
+steal_chance = 0.3

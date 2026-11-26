@@ -1,6 +1,6 @@
 extends Control
 
-const ITEMS: Array[String] = ["Status", "Quests", "Boss music", "Items", "Resume"]
+const ITEMS: Array[String] = ["Status", "Quests", "Boss music", "Items", "Notebook", "Resume"]
 
 @onready var _list: ChoiceList = %MenuList
 @onready var _info_panel: PanelContainer = %InfoPanel
@@ -11,6 +11,7 @@ var _in_submenu: bool = false
 var _mode: String = ""
 var _bag: Array[StringName] = []
 var _pick: StringName = &""
+var _monsters: Array[StringName] = []
 
 
 func _ready() -> void:
@@ -73,6 +74,12 @@ func _close_menu() -> void:
 
 
 func _on_chosen(index: int) -> void:
+	if _mode == "notebook":
+		if index >= _monsters.size():
+			_back_to_list()
+		else:
+			_info.text = _page_text(GameState.atlas[_monsters[index]])
+		return
 	if _mode == "bag":
 		if index >= _bag.size():
 			_back_to_list()
@@ -100,6 +107,8 @@ func _on_chosen(index: int) -> void:
 		3:
 			_show_bag()
 		4:
+			_show_notebook()
+		5:
 			_close_menu()
 
 
@@ -165,3 +174,37 @@ func _quest_text() -> String:
 			status = "Complete"
 		out += "%s\n%s\n%s\n\n" % [q.title, q.description, status]
 	return out.strip_edges()
+
+
+func _show_notebook() -> void:
+	if not GameState.has_flag(&"notebook"):
+		_show_info("You don't have a notebook yet.")
+		return
+	_in_submenu = true
+	_mode = "notebook"
+	_monsters.assign(GameState.atlas.keys())
+	var names: Array[String] = []
+	for id in _monsters:
+		names.append(GameState.atlas[id].data.display_name)
+	names.append("Back")
+	_info.text = "Monsters met: %d\n\nPick one to read its page." % _monsters.size() if not _monsters.is_empty() else "No monsters yet.\n\nPages fill in as you meet them."
+	_info_panel.show()
+	_list.set_choices(names)
+	_list.focus_first()
+
+
+func _page_text(entry: Dictionary) -> String:
+	var e: EnemyData = entry.data
+	var full: bool = entry.inspected
+	var lines: Array[String] = [e.display_name, e.description, "", "Defeated: %d" % entry.defeated]
+	lines.append("HP %d  ATK %d  DEF %d  SPD %d" % [e.max_hp, e.attack, e.defense, e.speed] if full else "Stats: ???  (use Inspect)")
+	var drops: Array[String] = []
+	for id: StringName in e.drops:
+		if full or id in entry.drops:
+			drops.append(GameState.item(id).display_name)
+		else:
+			drops.append("???")
+	lines.append("Drops: %s" % (", ".join(PackedStringArray(drops)) if not drops.is_empty() else "nothing"))
+	var steal := GameState.item(e.steal_item)
+	lines.append("Steal: %s" % ((steal.display_name if steal else "nothing") if full or entry.steal else "???"))
+	return "\n".join(PackedStringArray(lines))

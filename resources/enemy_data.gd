@@ -20,3 +20,7 @@ extends Resource
 @export var can_run: bool = true
 @export var behavior: StringName = &"basic_attack"
 @export var ai_rules: Array[AIRule] = []
+@export_multiline var description: String = ""
+@export var drops: Dictionary[StringName, float] = {}
+@export var steal_item: StringName = &""
+@export_range(0.0, 1.0) var steal_chance: float = 0.5

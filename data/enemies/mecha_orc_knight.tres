@@ -13,3 +13,7 @@ attack = 13
 defense = 7
 exp_reward = 30
 buttons_reward = 18
+description = "A wind-up orc in tin armor. Keeps marching until the key runs down."
+drops = Dictionary[StringName, float]({&"glue_stick": 0.3})
+steal_item = &"bandage_tape"
+steal_chance = 0.3

@@ -15,3 +15,7 @@ attack = 9
 defense = 3
 exp_reward = 15
 buttons_reward = 9
+description = "Clay that sat in the toy kiln too long. Still warm to the touch."
+drops = Dictionary[StringName, float]({&"juice_box": 0.25})
+steal_item = &"glue_stick"
+steal_chance = 0.5

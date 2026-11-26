@@ -23,6 +23,8 @@ const SKILLS: Array[SkillData] = [
 	preload("res://data/skills/royal_mend.tres"),
 	preload("res://data/skills/spark_wand.tres"),
 	preload("res://data/skills/crown_light.tres"),
+	preload("res://data/skills/steal.tres"),
+	preload("res://data/skills/inspect.tres"),
 ]
 const EXP_TABLE: Array[int] = [0, 0, 20, 50, 100, 170, 260, 380, 530, 720, 950]
 const MAX_LEVEL := 10
@@ -57,6 +59,7 @@ var buttons: int = 0
 var inventory: Dictionary = {}
 var key_items: Array[StringName] = []
 var flags: Dictionary = {}
+var atlas: Dictionary = {}
 var _base: Dictionary = {}
 
 
@@ -155,6 +158,7 @@ func skills_for(id: StringName) -> Array[SkillData]:
 func new_game() -> void:
 	party = [&"demari"]
 	flags.clear()
+	atlas.clear()
 	defeated_encounters.clear()
 	pending_battle = {}
 	inventory.clear()
@@ -314,3 +318,9 @@ func seconds_since_defeat(encounter_id: String) -> float:
 
 func forget_defeat(encounter_id: String) -> void:
 	defeated_encounters.erase(encounter_id)
+
+
+func atlas_entry(e: EnemyData) -> Dictionary:
+	if not atlas.has(e.id):
+		atlas[e.id] = {"data": e, "defeated": 0, "drops": [], "steal": false, "inspected": false}
+	return atlas[e.id]

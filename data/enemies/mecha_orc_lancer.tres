@@ -14,3 +14,7 @@ defense = 5
 speed = 6
 exp_reward = 30
 buttons_reward = 18
+description = "A wind-up orc with a long tin lance."
+drops = Dictionary[StringName, float]({&"juice_box": 0.3})
+steal_item = &"glue_stick"
+steal_chance = 0.4

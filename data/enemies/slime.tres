@@ -10,3 +10,7 @@ script = ExtResource("2_n28aa")
 frames = ExtResource("4_clay")
 sprite_sheet = ExtResource("3_nl3q0")
 portrait = ExtResource("1_s20qs")
+description = "A wobbly blob of play-dough. Harmless alone, pesky in a crowd."
+drops = Dictionary[StringName, float]({&"glue_stick": 0.25})
+steal_item = &"juice_box"
+steal_chance = 0.6

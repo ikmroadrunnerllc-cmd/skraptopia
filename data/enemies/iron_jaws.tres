@@ -53,3 +53,6 @@ exp_reward = 200
 buttons_reward = 100
 can_run = false
 ai_rules = Array[ExtResource("ai_rule")]([SubResource("AIRule_0"), SubResource("AIRule_1")])
+description = "A wind-up clockwork piranha with a pig snout. Something keeps winding it."
+steal_item = &"bandage_tape"
+steal_chance = 0.25

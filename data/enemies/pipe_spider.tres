@@ -13,3 +13,7 @@ attack = 8
 speed = 7
 exp_reward = 12
 buttons_reward = 7
+description = "Pipe-cleaner legs, button eyes and a bad attitude."
+drops = Dictionary[StringName, float]({&"glue_stick": 0.3})
+steal_item = &"glue_stick"
+steal_chance = 0.5

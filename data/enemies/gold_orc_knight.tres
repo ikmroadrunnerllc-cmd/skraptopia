@@ -17,3 +17,7 @@ defense = 10
 speed = 5
 exp_reward = 60
 buttons_reward = 40
+description = "A gold-plated wind-up orc. Rare, tough and very shiny."
+drops = Dictionary[StringName, float]({&"bandage_tape": 0.35})
+steal_item = &"bandage_tape"
+steal_chance = 0.3

@@ -32,3 +32,7 @@ speed = 9
 exp_reward = 18
 buttons_reward = 10
 ai_rules = Array[ExtResource("ai_rule")]([SubResource("AIRule_0")])
+description = "A folded-paper flyer that dives at whoever looks weakest."
+drops = Dictionary[StringName, float]({&"juice_box": 0.3})
+steal_item = &"juice_box"
+steal_chance = 0.5

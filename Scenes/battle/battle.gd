@@ -497,8 +497,9 @@ func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> vo
 	var spr := AnimatedSprite2D.new()
 	spr.position = at
 	%Stage.add_child(spr)
-	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar, "raging": false, "rage_turns": 0, "rest": &"idle", "status": {}, "threat": ThreatTable.new(), "turns": 0}
+	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar, "raging": false, "rage_turns": 0, "rest": &"idle", "status": {}, "threat": ThreatTable.new(), "turns": 0, "stolen": false}
 	foes.append(foe)
+	GameState.atlas_entry(e)
 	var sf := e.frames
 	if sf == null:
 		sf = SpriteFrames.new()
@@ -829,7 +830,7 @@ func _on_command(index: int) -> void:
 			return
 		var s := _menu_skills[index]
 		var t := -1
-		if s.kind in ["damage", "charge", "status"] and not s.hits_all:
+		if s.kind in ["damage", "charge", "status", "steal", "inspect"] and not s.hits_all:
 			t = await _choose_target()
 			if t < 0:
 				_show_skill_menu()
@@ -1100,11 +1101,41 @@ func _use_skill(s: SkillData, t: int, mult := 1.0) -> void:
 				_sfx("battle/march_order")
 				_refresh()
 				await _say("%s calls a March Order! The party's Attack rises." % who)
+		"steal":
+			await _steal(t, s)
+		"inspect":
+			await _inspect(t, s)
 		"charge":
 			charging = true
 			charge_target = t
 			_play_fx(&"sp_windup", _center_of(actor))
 			await _say("%s starts winding his key..." % who)
+
+
+func _steal(t: int, s: SkillData) -> void:
+	var f: Dictionary = foes[t]
+	var who := GameState.member(actor).display_name
+	var item := GameState.item(f.data.steal_item)
+	_play_fx(s.effect, _enemy_center(t))
+	if item == null or f.stolen:
+		await _say("%s has nothing left to steal." % f.label)
+	elif _rng.randf() < f.data.steal_chance:
+		f.stolen = true
+		GameState.add_item(item.id)
+		GameState.atlas_entry(f.data).steal = true
+		_sfx("ui/use_item")
+		await _say("%s swipes a %s from %s!" % [who, item.display_name, f.label])
+	else:
+		await _say("%s tries to steal from %s, but misses!" % [who, f.label])
+
+
+func _inspect(t: int, s: SkillData) -> void:
+	var f: Dictionary = foes[t]
+	var e: EnemyData = f.data
+	GameState.atlas_entry(e).inspected = true
+	_play_fx(s.effect, _enemy_center(t))
+	await _say("%s: HP %d/%d  ATK %d  DEF %d  SPD %d" % [f.label, f.hp, e.max_hp, e.attack, e.defense, e.speed], STEP_TIME * 2)
+	await _say("Its notebook page is filled in!")
 
 
 func _inflict(t: int, s: SkillData, lead := "") -> void:
@@ -1426,10 +1457,19 @@ func _victory() -> void:
 			GameState.set_member_hp(id, 1)
 	var total := 0
 	var coins := 0
+	var found: Array[String] = []
 	_pages.clear()
 	for f in foes:
 		total += f.data.exp_reward
 		coins += f.data.buttons_reward
+		var entry := GameState.atlas_entry(f.data)
+		entry.defeated += 1
+		for id: StringName in f.data.drops:
+			if _rng.randf() < f.data.drops[id] and GameState.item(id) != null:
+				GameState.add_item(id)
+				found.append(GameState.item(id).display_name)
+				if id not in entry.drops:
+					entry.drops.append(id)
 		GameState.mark_defeated(GameState.pending_battle.get("encounter_id", ""), f.data.id)
 		var drop: StringName = GameState.BOSS_DROPS.get(f.data.id, &"")
 		if drop != &"" and GameState.give_key_item(drop):
@@ -1442,7 +1482,8 @@ func _victory() -> void:
 	_refresh()
 	var who: String = "%s was defeated." % foes[0].label if foes.size() == 1 else "All enemies were defeated."
 	_sfx("ui/buttons_coin")
-	_show_result("Victory!", "%s\nThe party gained %d EXP and %d Buttons." % [who, total, coins], ["Continue"])
+	var loot := "" if found.is_empty() else "\nFound: %s." % ", ".join(PackedStringArray(found))
+	_show_result("Victory!", "%s\nThe party gained %d EXP and %d Buttons.%s" % [who, total, coins, loot], ["Continue"])
 
 
 func _level_up_text(up: Dictionary) -> String:

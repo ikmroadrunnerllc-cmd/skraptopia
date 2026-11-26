@@ -15,3 +15,6 @@ speed = 8
 exp_reward = 350
 buttons_reward = 180
 can_run = false
+description = "The Kiln Phoenix. A patchwork clay dragon that went through the kiln."
+steal_item = &"bandage_tape"
+steal_chance = 0.25

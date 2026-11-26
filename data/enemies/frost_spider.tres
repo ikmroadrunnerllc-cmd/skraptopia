@@ -17,3 +17,7 @@ defense = 3
 speed = 8
 exp_reward = 22
 buttons_reward = 12
+description = "A pipe-cleaner spider someone left in the freezer."
+drops = Dictionary[StringName, float]({&"juice_box": 0.3})
+steal_item = &"juice_box"
+steal_chance = 0.4

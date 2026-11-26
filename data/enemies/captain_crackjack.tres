@@ -15,3 +15,6 @@ speed = 9
 exp_reward = 260
 buttons_reward = 130
 can_run = false
+description = "A nutcracker soldier with jets and an arm cannon."
+steal_item = &"bandage_tape"
+steal_chance = 0.25

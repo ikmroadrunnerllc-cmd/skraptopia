@@ -49,18 +49,18 @@ Gate B1:
 - [x] G B1.3 Threat bars are visible on the party cards - how: screenshot
 - [x] G B1.4 The user played it and said OK
 
-## Phase B2: Steal / Inspect + Monster Atlas  (target: Nov 29)  status: todo
+## Phase B2: Steal / Inspect + Monster Atlas (the notebook)  (target: Nov 29)  status: gate-check
 Goal: two new battle commands, plus a journal of every monster you've met.
 Needs: B1 done
 Builds:
 - `resources/enemy_data.gd`: `description`, `drops`, `steal_item`, `steal_chance`.
-- `Scenes/battle/battle.gd`: Steal and Inspect skills (Asmara's or a shared row).
-- `systems/game_state.gd`: atlas entries (seen, drops known, steal known, fully inspected), saved.
-- Atlas screen in the pause menu.
+- `Scenes/battle/battle.gd`: Steal and Inspect as Asmara's 0 MP skills (user's choice). Item drops are rolled on a win.
+- `systems/game_state.gd`: atlas entries (seen, defeated count, drops known, steal known, fully inspected). They are kept in memory: the game has no save system yet, so they get saved once shrine saves exist.
+- The atlas *is* Demari's notebook from the story: a "Notebook" entry in the pause menu, unlocked by the notebook pickup.
 Gate B2:
-- [ ] G B2.1 No errors on import or a game run
-- [ ] G B2.2 Steal gives the item, Inspect fills the entry, the atlas survives a save and load, and all old checks pass - how: playtest
-- [ ] G B2.3 Atlas page - how: screenshot
+- [x] G B2.1 No errors on import or a game run
+- [x] G B2.2 Steal gives the item (once, and it can miss), Inspect fills the entry, a win counts and rolls drops, and all old checks pass - how: playtest
+- [x] G B2.3 Atlas page - how: screenshot
 - [ ] G B2.4 The user played it and said OK
 
 ## Phase B3: Jobs, sub-job and passives + party menu  (target: Dec 1)  status: todo

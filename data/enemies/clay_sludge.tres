@@ -29,3 +29,7 @@ attack = 6
 speed = 3
 exp_reward = 8
 ai_rules = Array[ExtResource("ai_rule")]([SubResource("AIRule_0")])
+description = "A lump of leftover clay that oozes after travelers."
+drops = Dictionary[StringName, float]({&"glue_stick": 0.3})
+steal_item = &"glue_stick"
+steal_chance = 0.5

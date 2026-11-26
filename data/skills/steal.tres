@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://resources/skill_data.gd" id="1_steal"]
+
+[resource]
+script = ExtResource("1_steal")
+id = &"steal"
+display_name = "Steal"
+description = "Swipe an item from one enemy. Each enemy can be robbed once."
+user = &"asmara"
+kind = "steal"
+effect = &"na_cut"
