@@ -35,7 +35,7 @@ func setup(skills: Array[SkillData], mp: int) -> void:
 	_skills = skills
 	for s in skills:
 		_shapes[s.id] = DoodleRecognizer.templates(s.doodle)
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 6)
