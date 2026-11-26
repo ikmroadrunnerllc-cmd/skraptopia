@@ -9,7 +9,7 @@ Each chapter gets its own branch, a gate, and one test by the user. Battle phase
 - **Ch3:** Asmara stays in the party for the investigation ("It's my book. I'm coming.").
 - **Ch4:** after the knighting, Asmara stays at the castle. Demari leaves the kingdom with Casimir, as the design doc says.
 
-## Chapter 2: The castle  (target: Nov 28)  status: todo
+## Chapter 2: The castle  (target: Nov 28)  status: building
 Goal: walk from Road Carpet into Block Town, enter the castle, and get the quest.
 Builds:
 - **Block Town** map (builder script, Ninja Adventure tiles, the layout already agreed): castle at the top middle, shop and shrine spot at the entrance, market on the left, toy train station on the right, tavern at the top left, and bushes on the edges with the outskirts enemies (Paper-Dactyl, Mecha Orcs, Frost Spider, Ink-Dactyl, rare Gold Orc Knight).
@@ -49,5 +49,6 @@ Gate C4:
 - [ ] C4.3 Screenshots: tavern, boss, knighting, ending
 - [ ] C4.4 The user played Level 1 start to finish and said OK
 
-## After Level 1 (Dec 4–6)
-Polish and balance, then battle phase B3 (jobs + passives) if there's time, then B4 and B5.
+## After the story (Dec 4–6)
+- **Target length: about 1 hour of play for Level 1** (user, 2026-11-26). The story chapters come first. Then add in-between content (side areas, extra fights, townsfolk errands) until a playthrough takes about an hour. Nothing extra goes in before the story is finished.
+- Polish and balance, then battle phase B3 (jobs + passives) if there's time, then B4 and B5.
