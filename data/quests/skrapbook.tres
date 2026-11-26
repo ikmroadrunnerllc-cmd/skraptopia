@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="QuestData" format=3]
+
+[ext_resource type="Script" path="res://resources/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"skrapbook"
+title = "The Stolen SkrapBook"
+description = "Someone stole the SkrapBook from Princess Asmara's chambers. Search Block Town for the thief's trail and bring the book back."
+target_enemy_id = &"zephyrion"

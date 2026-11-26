@@ -1,0 +1,197 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/tiles/ninja_adventure/Tilesets/Interior/TilesetInteriorFloor.png" id="1_ik1u3"]
+[ext_resource type="Script" path="res://systems/scene_exit.gd" id="2_8ylm1"]
+[ext_resource type="PackedScene" path="res://PlayerScene.tscn" id="3_uu1du"]
+[ext_resource type="Script" path="res://Scripts/player_scene.gd" id="4_04fd8"]
+[ext_resource type="PackedScene" path="res://npcs/npc.tscn" id="5_0ow1g"]
+[ext_resource type="Script" path="res://npcs/npc.gd" id="6_pd47d"]
+[ext_resource type="Resource" path="res://data/npcs/asmara.tres" id="7_1nw61"]
+[ext_resource type="Resource" path="res://data/npcs/guard.tres" id="8_0qjgn"]
+[ext_resource type="Script" path="res://Scenes/castle/castle_scene.gd" id="9_bqmse"]
+[ext_resource type="AudioStream" path="res://assets/audio/game/music/area_block_town.ogg" id="10_dse4f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t52rk"]
+atlas = ExtResource("1_ik1u3")
+region = Rect2(240, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtp3s"]
+atlas = ExtResource("1_ik1u3")
+region = Rect2(176, 192, 64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rvv85"]
+size = Vector2(320, 52)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rykny"]
+size = Vector2(16, 224)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_na8o0"]
+size = Vector2(16, 224)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bixj"]
+size = Vector2(144, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mx8rl"]
+size = Vector2(144, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yo50e"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dayj2"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1tomo"]
+size = Vector2(32, 4)
+
+[node name="ThroneRoom" type="Node2D" unique_id=1816777821]
+y_sort_enabled = true
+metadata/camera_limits = Rect2i(0, 0, 320, 224)
+
+[node name="Room" type="Node2D" parent="." unique_id=332071701]
+z_index = -2
+
+[node name="Floor" type="TextureRect" parent="Room" unique_id=1561450388]
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 304.0
+offset_bottom = 208.0
+texture = SubResource("AtlasTexture_t52rk")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="WallTop" type="TextureRect" parent="Room" unique_id=743274926]
+offset_right = 320.0
+offset_bottom = 48.0
+texture = SubResource("AtlasTexture_rtp3s")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="WallLeft" type="TextureRect" parent="Room" unique_id=1981001328]
+offset_right = 16.0
+offset_bottom = 224.0
+texture = SubResource("AtlasTexture_rtp3s")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="WallRight" type="TextureRect" parent="Room" unique_id=1903632795]
+offset_left = 304.0
+offset_right = 320.0
+offset_bottom = 224.0
+texture = SubResource("AtlasTexture_rtp3s")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="WallBottomL" type="TextureRect" parent="Room" unique_id=1666033935]
+offset_top = 208.0
+offset_right = 144.0
+offset_bottom = 224.0
+texture = SubResource("AtlasTexture_rtp3s")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="WallBottomR" type="TextureRect" parent="Room" unique_id=1459202976]
+offset_left = 176.0
+offset_top = 208.0
+offset_right = 320.0
+offset_bottom = 224.0
+texture = SubResource("AtlasTexture_rtp3s")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Carpet" type="ColorRect" parent="Room" unique_id=1383654366]
+offset_left = 144.0
+offset_top = 80.0
+offset_right = 176.0
+offset_bottom = 208.0
+color = Color(0.62, 0.12, 0.16, 1)
+
+[node name="Dais" type="ColorRect" parent="Room" unique_id=235335361]
+offset_left = 120.0
+offset_top = 48.0
+offset_right = 200.0
+offset_bottom = 80.0
+color = Color(0.85, 0.66, 0.25, 1)
+
+[node name="ThroneBack" type="ColorRect" parent="Room" unique_id=1558132951]
+offset_left = 148.0
+offset_top = 32.0
+offset_right = 172.0
+offset_bottom = 60.0
+color = Color(0.55, 0.1, 0.2, 1)
+
+[node name="ThroneTrim" type="ColorRect" parent="Room" unique_id=2033036054]
+offset_left = 146.0
+offset_top = 28.0
+offset_right = 174.0
+offset_bottom = 34.0
+color = Color(1, 0.82, 0.3, 1)
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=1971322822]
+
+[node name="Wall0" type="CollisionShape2D" parent="Walls" unique_id=1786338983]
+position = Vector2(160, 26)
+shape = SubResource("RectangleShape2D_rvv85")
+
+[node name="Wall1" type="CollisionShape2D" parent="Walls" unique_id=1491949878]
+position = Vector2(8, 112)
+shape = SubResource("RectangleShape2D_rykny")
+
+[node name="Wall2" type="CollisionShape2D" parent="Walls" unique_id=128105150]
+position = Vector2(312, 112)
+shape = SubResource("RectangleShape2D_na8o0")
+
+[node name="Wall3" type="CollisionShape2D" parent="Walls" unique_id=1601478534]
+position = Vector2(72, 216)
+shape = SubResource("RectangleShape2D_1bixj")
+
+[node name="Wall4" type="CollisionShape2D" parent="Walls" unique_id=1310069762]
+position = Vector2(248, 216)
+shape = SubResource("RectangleShape2D_mx8rl")
+
+[node name="Wall5" type="CollisionShape2D" parent="Walls" unique_id=384610194]
+position = Vector2(160, 56)
+shape = SubResource("RectangleShape2D_yo50e")
+
+[node name="Wall6" type="CollisionShape2D" parent="Walls" unique_id=987061929]
+position = Vector2(160, 232)
+shape = SubResource("RectangleShape2D_dayj2")
+
+[node name="ExitToTown" type="Area2D" parent="." unique_id=1033312491]
+position = Vector2(160, 222)
+collision_layer = 0
+script = ExtResource("2_8ylm1")
+target_scene = "res://Scenes/block_town/block_town.tscn"
+target_spawn = "FromCastle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitToTown" unique_id=1919713433]
+shape = SubResource("RectangleShape2D_1tomo")
+
+[node name="FromTown" type="Marker2D" parent="." unique_id=1359415673 groups=["spawn"]]
+position = Vector2(160, 192)
+
+[node name="player" type="CharacterBody2D" parent="." unique_id=1030520602 instance=ExtResource("3_uu1du")]
+position = Vector2(160, 192)
+script = ExtResource("4_04fd8")
+
+[node name="Asmara" type="CharacterBody2D" parent="." unique_id=834891758 instance=ExtResource("5_0ow1g")]
+position = Vector2(136, 176)
+script = ExtResource("6_pd47d")
+data = ExtResource("7_1nw61")
+
+[node name="RoyalGuard" type="CharacterBody2D" parent="." unique_id=1562200265 instance=ExtResource("5_0ow1g")]
+position = Vector2(160, 208)
+script = ExtResource("6_pd47d")
+data = ExtResource("8_0qjgn")
+
+[node name="CastleScene" type="Node" parent="." unique_id=2129375556]
+script = ExtResource("9_bqmse")
+asmara_path = NodePath("../Asmara")
+guard_path = NodePath("../RoyalGuard")
+throne_spot = Vector2(160, 70)
+door_spot = Vector2(160, 216)
+guard_stop = Vector2(180, 160)
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1958406038]
+stream = ExtResource("10_dse4f")
+volume_db = -10.0
+autoplay = true
