@@ -2,6 +2,23 @@
 
 [ext_resource type="SpriteFrames" path="res://assets/characters/clay_enemies/clay_sludge/clay_sludge_frames.tres" id="1_03twg"]
 [ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_x7fmy"]
+[ext_resource type="Script" path="res://resources/ai_rule.gd" id="ai_rule"]
+[ext_resource type="Script" path="res://resources/ai_condition.gd" id="ai_cond"]
+
+[sub_resource type="Resource" id="AICondition_0_0"]
+script = ExtResource("ai_cond")
+check = 4
+value = 35
+
+[sub_resource type="Resource" id="AIRule_0"]
+script = ExtResource("ai_rule")
+move_name = "Mud Toss"
+power = 1.0
+priority = 1
+weight = 10
+pick = 1
+effect = &"na_rock"
+conditions = Array[ExtResource("ai_cond")]([SubResource("AICondition_0_0")])
 
 [resource]
 script = ExtResource("2_x7fmy")
@@ -11,3 +28,4 @@ frames = ExtResource("1_03twg")
 attack = 6
 speed = 3
 exp_reward = 8
+ai_rules = Array[ExtResource("ai_rule")]([SubResource("AIRule_0")])

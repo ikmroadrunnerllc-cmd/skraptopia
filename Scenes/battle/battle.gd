@@ -223,7 +223,7 @@ func _build_hud() -> void:
 		var m := GameState.member(id)
 		var key := "p:%s" % id
 		_cards[key] = _card(layer, {"name": m.display_name, "hp": GameState.get_hp(id), "hpMax": m.max_hp,
-			"mp": GameState.get_mp(id), "mpMax": m.max_mp}, true, Vector2(532, 30 + 62 * i))
+			"mp": GameState.get_mp(id), "mpMax": m.max_mp, "ap": 0, "apMax": 100}, true, Vector2(532, 30 + 62 * i))
 		_turn_who[key] = {"portrait": _portrait(id), "isMember": true}
 	for i in foes.size():
 		var f: Dictionary = foes[i]
@@ -271,6 +271,10 @@ func _card(layer: Control, data: Dictionary, member: bool, at: Vector2) -> Battl
 	var c: BattlerPanel = PANEL_SCENE.instantiate()
 	layer.add_child(c)
 	c.position = at
+	if member:
+		c.apGauge.caption = "THR"
+		c.apGauge.ApplyLayout()
+		c.apGauge.currentText.hide()
 	c.Setup(data, member)
 	c.SetBackdrop(true)
 	return c
@@ -287,6 +291,7 @@ func _update_hud() -> void:
 		var hp := GameState.get_hp(id)
 		_gauge(c.hpGauge, hp, m.max_hp)
 		_gauge(c.mpGauge, GameState.get_mp(id), m.max_mp)
+		_gauge(c.apGauge, roundi(_threat_share(id) * 100.0), 100)
 		c.nameText.color = BattleStyle.HpColor(hp, m.max_hp, BattleStyle.COLOR_BASE)
 		var marks := []
 		if hp > 0 and buff_turns > 0:
@@ -492,7 +497,7 @@ func _add_foe(e: EnemyData, label: String, at: Vector2, max_size: Vector2) -> vo
 	var spr := AnimatedSprite2D.new()
 	spr.position = at
 	%Stage.add_child(spr)
-	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar, "raging": false, "rage_turns": 0, "rest": &"idle", "status": {}}
+	var foe := {"data": e, "hp": e.max_hp, "label": label, "sprite": spr, "name": name_label, "bar": bar, "raging": false, "rage_turns": 0, "rest": &"idle", "status": {}, "threat": ThreatTable.new(), "turns": 0}
 	foes.append(foe)
 	var sf := e.frames
 	if sf == null:
@@ -809,7 +814,9 @@ func _on_command(index: int) -> void:
 		state = State.ACTION_RESOLUTION
 		_skill_panel.hide()
 		await _step(actor)
+		var hp_before := GameState.get_hp(who)
 		var text := GameState.use_item(_item_pick, who)
+		_heal_threat(who, GameState.get_hp(who) - hp_before)
 		_sfx("ui/use_item")
 		_play_fx(&"sp_magic_burst_green", _center_of(who))
 		_refresh()
@@ -957,6 +964,8 @@ func _hit_enemy(i: int, dmg: int, fx: StringName) -> void:
 	var f: Dictionary = foes[i]
 	f.status.erase(&"sleep")
 	f.hp = maxi(f.hp - dmg, 0)
+	if actor != &"":
+		f.threat.add(actor, dmg)
 	_play_fx(fx, _enemy_center(i))
 	_enemy_anim(i, &"damage")
 	_flash(f.sprite)
@@ -1058,6 +1067,7 @@ func _use_skill(s: SkillData, t: int, mult := 1.0) -> void:
 			for id in _alive():
 				var before := GameState.get_hp(id)
 				GameState.set_member_hp(id, before + int(power))
+				_heal_threat(id, GameState.get_hp(id) - before)
 				_play_fx(s.effect, _center_of(id))
 				parts.append("%s +%d" % [GameState.member(id).display_name, GameState.get_hp(id) - before])
 			_sfx("battle/patch_up")
@@ -1067,11 +1077,14 @@ func _use_skill(s: SkillData, t: int, mult := 1.0) -> void:
 			var target := _most_hurt()
 			var before := GameState.get_hp(target)
 			GameState.set_member_hp(target, before + int(power))
+			_heal_threat(target, GameState.get_hp(target) - before)
 			_play_fx(s.effect, _center_of(target))
 			_refresh()
 			await _say("%s uses %s! %s recovers %d HP." % [who, s.display_name, GameState.member(target).display_name, GameState.get_hp(target) - before])
 		"shield":
 			shield_up = true
+			for f in foes:
+				f.threat.add(actor, ThreatTable.TAUNT)
 			_play_fx(s.effect, _center_of(actor))
 			await _say("%s raises his Tin Shield to protect Demari!" % who)
 		"buff":
@@ -1194,6 +1207,9 @@ func _enemy_turn() -> void:
 	actor = &""
 	_foe_turn = -1
 	_refresh()
+	for f in foes:
+		for id in _alive():
+			f.threat.add_low_hp(id, GameState.get_hp(id), GameState.member(id).max_hp)
 	for i in _living():
 		if _alive().is_empty():
 			break
@@ -1206,6 +1222,8 @@ func _enemy_turn() -> void:
 	if _alive().is_empty():
 		_defeat()
 		return
+	for f in foes:
+		f.threat.decay()
 	if buff_turns > 0:
 		buff_turns -= 1
 	if guard_turns > 0:
@@ -1224,22 +1242,88 @@ func _foe_attacks(i: int) -> void:
 		if f.rage_turns % 2 == 1:
 			await _special(i, rage)
 			return
-	var targets := _alive()
-	var target: StringName = targets[_rng.randi_range(0, targets.size() - 1)]
+	var rule := AIRule.choose(f.data.ai_rules, _ai_context(i), _rng)
+	f.turns += 1
+	var targets := _rule_targets(i, rule)
+	var power := rule.power if rule else 1.0
+	var fx: StringName = rule.effect if rule else (&"na_rock" if f.data.id == &"zephyrion" else &"na_claw")
 	var blocked := false
-	if target == &"demari" and shield_up and GameState.get_hp(&"casimir") > 0:
-		target = &"casimir"
+	if targets == [&"demari"] and shield_up and GameState.get_hp(&"casimir") > 0:
+		targets = [&"casimir"]
 		shield_up = false
 		blocked = true
 	_enemy_anim(i, &"cast")
-	var dmg := _hit_member(i, target, &"na_rock" if f.data.id == &"zephyrion" else &"na_claw")
-	var tname := GameState.member(target).display_name
-	if blocked:
-		await _say("Casimir blocks the hit for Demari! He takes %d damage." % dmg)
+	if targets.size() > 1:
+		var parts: Array[String] = []
+		for id in targets:
+			parts.append("%s takes %d" % [GameState.member(id).display_name, _hit_member(i, id, fx, power)])
+		await _say("%s uses %s! %s damage." % [f.label, rule.move_name, ", ".join(PackedStringArray(parts))])
 	else:
-		await _say("%s attacks! %s takes %d damage." % [f.label, tname, dmg])
-	if GameState.get_hp(target) <= 0:
-		await _say("%s is knocked out!" % tname)
+		var target := targets[0]
+		var dmg := _hit_member(i, target, fx, power)
+		var tname := GameState.member(target).display_name
+		if blocked:
+			await _say("Casimir blocks the hit for Demari! He takes %d damage." % dmg)
+		elif rule:
+			await _say("%s uses %s! %s takes %d damage." % [f.label, rule.move_name, tname, dmg])
+		else:
+			await _say("%s attacks! %s takes %d damage." % [f.label, tname, dmg])
+	for id in targets:
+		if GameState.get_hp(id) <= 0:
+			await _say("%s is knocked out!" % GameState.member(id).display_name)
+
+
+func _ai_context(i: int) -> Dictionary:
+	var f: Dictionary = foes[i]
+	return {
+		"self_hp_percent": int(f.hp * 100.0 / f.data.max_hp),
+		"member_hp_percents": _alive().map(func(id: StringName) -> int: return int(GameState.get_hp(id) * 100.0 / GameState.member(id).max_hp)),
+		"turns": f.turns,
+		"rng": _rng,
+		"ally_down": foes.any(func(o: Dictionary) -> bool: return o.hp <= 0),
+		"party_buffed": buff_turns > 0 or guard_turns > 0,
+	}
+
+
+func _rule_targets(i: int, rule: AIRule) -> Array[StringName]:
+	var alive := _alive()
+	if rule == null:
+		return [_threat_target(i)]
+	match rule.pick:
+		AIRule.Pick.ALL:
+			return alive
+		AIRule.Pick.RANDOM:
+			return [alive[_rng.randi_range(0, alive.size() - 1)]]
+		AIRule.Pick.LOWEST_HP:
+			var low := alive[0]
+			for id in alive:
+				if GameState.get_hp(id) * GameState.member(low).max_hp < GameState.get_hp(low) * GameState.member(id).max_hp:
+					low = id
+			return [low]
+	return [_threat_target(i)]
+
+
+func _threat_target(i: int) -> StringName:
+	var alive := _alive()
+	var top: StringName = foes[i].threat.top(alive)
+	return top if top != &"" else alive[_rng.randi_range(0, alive.size() - 1)]
+
+
+func _threat_share(id: StringName) -> float:
+	var alive := _alive()
+	var best := 0.0
+	for f in foes:
+		if f.hp > 0:
+			best = maxf(best, f.threat.share(id, alive))
+	return best
+
+
+func _heal_threat(target: StringName, amount: int) -> void:
+	if amount <= 0 or actor == &"":
+		return
+	for f in foes:
+		if f.hp > 0:
+			f.threat.add_healing(actor, target, amount, GameState.member(target).max_hp)
 
 
 func _foe_attack_power(i: int) -> int:
@@ -1247,8 +1331,8 @@ func _foe_attack_power(i: int) -> int:
 	return int(f.data.attack * RAGE_ATTACK) if f.raging else f.data.attack
 
 
-func _hit_member(i: int, target: StringName, fx: StringName) -> int:
-	var dmg := _damage(_foe_attack_power(i), GameState.member(target).defense)
+func _hit_member(i: int, target: StringName, fx: StringName, power := 1.0) -> int:
+	var dmg := _damage(roundi(_foe_attack_power(i) * power), GameState.member(target).defense)
 	if guarding.get(target, false):
 		dmg = maxi(1, int(dmg / 2.0))
 	if guard_turns > 0:
@@ -1312,8 +1396,7 @@ func _special(i: int, rage: Dictionary) -> void:
 			parts.append("%s takes %d" % [GameState.member(id).display_name, _hit_member(i, id, &"na_claw")])
 		await _say("%s uses %s! %s damage." % [f.label, rage.special, ", ".join(PackedStringArray(parts))])
 	else:
-		var targets := _alive()
-		var target: StringName = targets[_rng.randi_range(0, targets.size() - 1)]
+		var target := _threat_target(i)
 		hit.append(target)
 		var total := _hit_member(i, target, &"na_claw")
 		if GameState.get_hp(target) > 0:

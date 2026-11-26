@@ -2,6 +2,43 @@
 
 [ext_resource type="SpriteFrames" path="res://assets/characters/bosses/iron_jaws/iron_jaws_frames.tres" id="1_frames"]
 [ext_resource type="Script" path="res://resources/enemy_data.gd" id="2_script"]
+[ext_resource type="Script" path="res://resources/ai_rule.gd" id="ai_rule"]
+[ext_resource type="Script" path="res://resources/ai_condition.gd" id="ai_cond"]
+
+[sub_resource type="Resource" id="AICondition_0_0"]
+script = ExtResource("ai_cond")
+check = 3
+value = 3
+
+[sub_resource type="Resource" id="AIRule_0"]
+script = ExtResource("ai_rule")
+move_name = "Crunch"
+power = 1.5
+priority = 2
+weight = 10
+pick = 0
+effect = &"na_claw"
+conditions = Array[ExtResource("ai_cond")]([SubResource("AICondition_0_0")])
+
+[sub_resource type="Resource" id="AICondition_1_0"]
+script = ExtResource("ai_cond")
+check = 0
+value = 75
+
+[sub_resource type="Resource" id="AICondition_1_1"]
+script = ExtResource("ai_cond")
+check = 4
+value = 30
+
+[sub_resource type="Resource" id="AIRule_1"]
+script = ExtResource("ai_rule")
+move_name = "Tidal Thrash"
+power = 0.6
+priority = 1
+weight = 10
+pick = 3
+effect = &"sp_impact"
+conditions = Array[ExtResource("ai_cond")]([SubResource("AICondition_1_0"), SubResource("AICondition_1_1")])
 
 [resource]
 script = ExtResource("2_script")
@@ -15,3 +52,4 @@ speed = 7
 exp_reward = 200
 buttons_reward = 100
 can_run = false
+ai_rules = Array[ExtResource("ai_rule")]([SubResource("AIRule_0"), SubResource("AIRule_1")])

@@ -19,3 +19,4 @@ extends Resource
 @export var buttons_reward: int = 5
 @export var can_run: bool = true
 @export var behavior: StringName = &"basic_attack"
+@export var ai_rules: Array[AIRule] = []
