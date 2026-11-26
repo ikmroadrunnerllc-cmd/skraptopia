@@ -17,7 +17,10 @@ const THANKS := [
 	["Casimir", "Come with me and I'll take you to Princess Asmara. She'll be able to help you."],
 	["Demari", "Oh, thank you!"],
 	["Casimir", "It's the least I can do for you saving me."],
-	["", "Casimir joined the party!"],
+	["Asmara", "Casimir! There you are. Who is this brave stranger?"],
+	["Casimir", "Your Highness! This traveler saved me from the Clay Sludge."],
+	["Asmara", "Then I'll travel with you both and hear the whole story on the way."],
+	["", "Casimir and Asmara joined the party!"],
 ]
 
 @export var sludge_path: NodePath
@@ -62,6 +65,7 @@ func _thanks() -> void:
 	for line in THANKS:
 		await _say(line[0], line[1])
 	GameState.join_party(&"casimir")
+	GameState.join_party(&"asmara")
 	GameState.set_flag(&"casimir_joined")
 	var actor := get_node_or_null(actor_path)
 	if actor:
