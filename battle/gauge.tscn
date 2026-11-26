@@ -1,0 +1,75 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://battle/gauge.gd" id="1_gauge"]
+[ext_resource type="Texture2D" path="res://GameAssets/UI/GaugeBar.png" id="2_bar"]
+[ext_resource type="Script" path="res://battle/ui_text.gd" id="3_text"]
+[ext_resource type="FontFile" path="res://GameAssets/UI/Fonts/FontStandardSmall.fnt" id="4_small"]
+[ext_resource type="FontFile" path="res://GameAssets/UI/Fonts/FontStandardBold.fnt" id="5_bold"]
+[ext_resource type="FontFile" path="res://GameAssets/UI/Fonts/FontStandard.fnt" id="6_std"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fg"]
+atlas = ExtResource("2_bar")
+region = Rect2(0, 0, 288, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bg"]
+atlas = ExtResource("2_bar")
+region = Rect2(0, 32, 288, 32)
+
+[node name="Gauge" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_gauge")
+
+[node name="Background" type="NinePatchRect" parent="."]
+self_modulate = Color(0.0784314, 0.0823529, 0.160784, 1)
+layout_mode = 0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_bg")
+patch_margin_left = 14
+patch_margin_right = 14
+axis_stretch_horizontal = 1
+
+[node name="Bar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+mouse_filter = 2
+max_value = 1.0
+step = 0.0
+nine_patch_stretch = true
+stretch_margin_left = 14
+stretch_margin_right = 14
+texture_under = SubResource("AtlasTexture_fg")
+texture_progress = SubResource("AtlasTexture_fg")
+
+[node name="CaptionText" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("3_text")
+text = "HP"
+font = ExtResource("4_small")
+render = 2
+
+[node name="CurrentText" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("3_text")
+font = ExtResource("5_bold")
+render = 2
+justify = 2
+
+[node name="SlashText" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("3_text")
+text = "/"
+font = ExtResource("6_std")
+render = 2
+justify = 1
+
+[node name="MaxText" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("3_text")
+font = ExtResource("5_bold")
+render = 2
+justify = 2
